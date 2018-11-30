@@ -1,4 +1,4 @@
-package pc.interfaces;
+package pc.payments;
 
 public interface IPaymentExtensionPoint {
 
