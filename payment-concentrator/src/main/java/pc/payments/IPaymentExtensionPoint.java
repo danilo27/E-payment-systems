@@ -1,5 +1,8 @@
 package pc.payments;
 
-public interface IPaymentExtensionPoint {
+import pc.model.PaymentRequest;
 
+public interface IPaymentExtensionPoint {
+	String prepareTransaction(PaymentRequest req);
+	String proceedTransaction(PaymentRequest req);
 }

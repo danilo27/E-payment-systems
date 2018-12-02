@@ -144,6 +144,8 @@ public class PaymentRequest implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public PaymentRequest(){}
 
 	public PaymentRequest(Long id, String merchantId, String merchantPassword, BigDecimal amount,
 			Integer merchantOrderId, Timestamp merchantTimestamp, String successUrl, String failedUrl, String errorUrl
@@ -161,5 +163,11 @@ public class PaymentRequest implements Serializable {
 		//this.paymentUrlAndId = paymentUrlAndId;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "PaymentRequest [id=" + id + ", merchantId=" + merchantId + ", merchantPassword=" + merchantPassword
+				+ ", amount=" + amount + ", merchantOrderId=" + merchantOrderId + ", merchantTimestamp="
+				+ merchantTimestamp + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl + ", errorUrl="
+				+ errorUrl + "]";
+	}
 }

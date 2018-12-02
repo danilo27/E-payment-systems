@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from "@angular/common/http";
 import { Router } from '@angular/router';
+import { CardService } from '../services/card.service';
 
 @Component({
   selector: 'app-payment-type',
@@ -11,7 +12,8 @@ import { Router } from '@angular/router';
 export class PaymentTypeComponent implements OnInit {
 
   constructor(private http: HttpClient,
-  	private router: Router) { }
+  	private router: Router,
+    private card_service: CardService) { }
 
   ngOnInit() {
   }
@@ -27,6 +29,16 @@ export class PaymentTypeComponent implements OnInit {
   			this.payment_types = data as any[];
   		}
   	})
+  }
+
+  sendRequest(type){
+    if(type == 'Credit Card'){
+      this.card_service.sendRequest();
+    } else if (type == 'Pay Pal'){
+
+    } else if (type == 'Bitcoin'){
+
+    }
   }
 
 }
