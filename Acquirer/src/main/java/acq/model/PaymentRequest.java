@@ -3,6 +3,7 @@ package acq.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import javax.persistence.Table;
 public class PaymentRequest implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	private String token = UUID.randomUUID().toString();
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "PAYMENT_REQUEST_ID")

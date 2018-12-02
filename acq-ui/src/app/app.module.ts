@@ -14,6 +14,9 @@ import { RegisterNewAccountComponent } from './register-new-account/register-new
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CardPaymentSuccessComponent } from './card-payment-success/card-payment-success.component';
+import { CardPaymentFailedComponent } from './card-payment-failed/card-payment-failed.component';
+import { CardPaymentErrorComponent } from './card-payment-error/card-payment-error.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { LogoutComponent } from './logout/logout.component';
     RegisterNewAccountComponent,
     HomeComponent,
     LoginComponent,
-    LogoutComponent
+    LogoutComponent,
+    CardPaymentSuccessComponent,
+    CardPaymentFailedComponent,
+    CardPaymentErrorComponent
   ],
   imports: [
     BrowserModule,

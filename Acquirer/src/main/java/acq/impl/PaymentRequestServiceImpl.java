@@ -34,6 +34,11 @@ public class PaymentRequestServiceImpl implements PaymentRequestService{
 		// TODO Auto-generated method stub
 		return repo.save(arg);
 	}
+
+	@Override
+	public PaymentRequest findByToken(String token) {
+		return repo.findByToken(token);
+	}
 	
 	
 }

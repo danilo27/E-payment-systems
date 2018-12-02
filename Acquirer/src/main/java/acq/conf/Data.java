@@ -1,0 +1,40 @@
+package acq.conf;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import acq.model.Account;
+import acq.model.Card;
+import acq.services.AccountService;
+import acq.services.CardService;
+@Component
+public class Data {
+	
+	@Autowired
+	private AccountService accService;
+	
+	@Autowired 
+	private CardService cardService;
+	 
+	@PostConstruct
+	private void init() throws ParseException {
+		String oldstring = "11-2019";
+		Date date = new SimpleDateFormat("MM-yyyy").parse(oldstring);
+		
+		Card c1 = new Card("333333333333", 4444, "John Wick", oldstring);
+		cardService.save(c1);
+		
+		Account a1 = new Account("1111111111111111", 5000.0, c1);
+		accService.save(a1);
+		
+		System.out.println(cardService.findAll());
+		System.out.println(accService.findAll());
+		
+	}
+}

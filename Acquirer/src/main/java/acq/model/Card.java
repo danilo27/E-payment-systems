@@ -23,18 +23,18 @@ public class Card implements Serializable{
 	
 	@Size(min = 8, max = 16)
 	@Column(name = "PAN")
-	private Long pan;
+	private String pan;
 	
-	@Size(min = 3, max = 4)
+	//@Size(min = 3, max = 4)
 	@Column(name = "SECURITY_CODE")
-	private Long securityCode;
+	private int securityCode;
 	
 	@Size(min = 1, max = 50)
 	@Column(name = "CARD_HOLDER_NAME")
 	private String cardHolderName;
 	
 	@Column(name = "EXPIRING_DATE")
-	private Date expiringDate;
+	private String expiringDate;
 
 	public Long getId() {
 		return id;
@@ -44,19 +44,19 @@ public class Card implements Serializable{
 		this.id = id;
 	}
 
-	public Long getPan() {
+	public String getPan() {
 		return pan;
 	}
 
-	public void setPan(Long pan) {
+	public void setPan(String pan) {
 		this.pan = pan;
 	}
 
-	public Long getSecurityCode() {
+	public int getSecurityCode() {
 		return securityCode;
 	}
 
-	public void setSecurityCode(Long securityCode) {
+	public void setSecurityCode(int securityCode) {
 		this.securityCode = securityCode;
 	}
 
@@ -68,11 +68,11 @@ public class Card implements Serializable{
 		this.cardHolderName = cardHolderName;
 	}
 
-	public Date getExpiringDate() {
+	public String getExpiringDate() {
 		return expiringDate;
 	}
 
-	public void setExpiringDate(Date expiringDate) {
+	public void setExpiringDate(String expiringDate) {
 		this.expiringDate = expiringDate;
 	}
 
@@ -80,15 +80,16 @@ public class Card implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Card(Long id, @Size(min = 8, max = 16) Long pan, @Size(min = 3, max = 4) Long securityCode,
-			@Size(min = 1, max = 50) String cardHolderName, Date expiringDate) {
+	public Card( @Size(min = 8, max = 16) String pan, int securityCode,
+			@Size(min = 1, max = 50) String cardHolderName, String expiringDate) {
 		super();
-		this.id = id;
+		
 		this.pan = pan;
 		this.securityCode = securityCode;
 		this.cardHolderName = cardHolderName;
 		this.expiringDate = expiringDate;
 	}
 	
+	public Card() {}
 	
 }

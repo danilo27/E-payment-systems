@@ -4,7 +4,8 @@ import org.springframework.stereotype.Repository;
 
 import acq.model.PaymentRequest;
 
+
 @Repository
 public interface PaymentRequestRepository extends JpaRepository<PaymentRequest, Long>{
-
+	PaymentRequest findByToken(String token);
 }

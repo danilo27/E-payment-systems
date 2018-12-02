@@ -21,14 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
-import pc.dto.CheckDTO;
 import pc.model.PaymentRequest;
 import pc.payments.card.URL_ID_DTO;
 import pc.services.PaymentRequestService;
 
 @RestController
 @RequestMapping("/api")
-public class PaymentController {
+public class CardPaymentController {
 	
 	@Autowired
 	private PaymentRequestService paymentRequestService;
@@ -63,7 +62,7 @@ public class PaymentController {
 		System.out.println("PaymentRequest: " + req.toString());
 		System.out.println("forwarding PaymentRequest to the Acquirer bank on port: " + bankAcquirer);
 		
-		String fooResourceUrl = bankAcquirer+"/api/to-be-redirected";
+		String fooResourceUrl = bankAcquirer+"/acqBank/to-be-redirected";
 		ResponseEntity<URL_ID_DTO> response = restTemplate().getForEntity(fooResourceUrl, URL_ID_DTO.class);
 		//URL_ID_DTO dto = (URL_ID_DTO)response.getBody();
 	

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +18,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PAYMENT_REQUEST")
 public class PaymentRequest implements Serializable {
+	
+	private String token = UUID.randomUUID().toString();
 	
 	private static final long serialVersionUID = 1L;
 

@@ -3,10 +3,12 @@ package pc.conf;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import pc.model.Merchant;
 import pc.services.MerchantService;
- 
+
+@Component
 public class Data {
 	
 	@Autowired

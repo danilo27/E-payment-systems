@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +25,11 @@ public class Account implements Serializable {
 	private String accountNumber;
 
 	@Column(name = "ACCOUNT_BALANCE")
-	private BigDecimal accountBalance;
-
+	private double accountBalance;
+	
+	@OneToOne
+	private Card card;
+	
 	public Long getId() {
 		return id;
 	}
@@ -42,11 +46,11 @@ public class Account implements Serializable {
 		this.accountNumber = accountNumber;
 	}
 
-	public BigDecimal getAccountBalance() {
+	public double getAccountBalance() {
 		return accountBalance;
 	}
 
-	public void setAccountBalance(BigDecimal accountBalance) {
+	public void setAccountBalance(double accountBalance) {
 		this.accountBalance = accountBalance;
 	}
 
@@ -54,12 +58,24 @@ public class Account implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Account(Long id, String accountNumber, BigDecimal accountBalance) {
+	public Account(String accountNumber, double accountBalance, Card card) {
 		super();
-		this.id = id;
+		
 		this.accountNumber = accountNumber;
 		this.accountBalance = accountBalance;
+		this.card = card;
 	}
+
+	public Card getCard() {
+		return card;
+	}
+
+	public void setCard(Card card) {
+		this.card = card;
+	}
+	
+	public Account(){}
+	 
 	
 	
 }
