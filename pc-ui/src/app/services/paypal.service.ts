@@ -9,7 +9,11 @@ export class PaypalService {
   constructor(private http: HttpClient) { }
 
   prepare(requestBody){
-    return this.http.post('/paypal/prepare', requestBody);
+    return this.http.post('/api/paypal/prepare', requestBody);
+  }
+
+  confirm(requestBody){
+    return this.http.post('/api/paypal/confirm', requestBody);
   }
   
 }

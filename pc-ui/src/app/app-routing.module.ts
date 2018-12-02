@@ -1,3 +1,5 @@
+import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.component';
+import { PaypalCancelComponent } from './paypal/paypal-cancel/paypal-cancel.component';
 import { PaypalSuccessComponent } from './paypal/paypal-success/paypal-success.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,7 +12,9 @@ const routes: Routes = [
 		component: PaymentTypeComponent,
 		pathMatch: 'full'
   },
-  { path: 'paypal-success', component: PaypalSuccessComponent }
+  { path: 'paypal-success', component: PaypalSuccessComponent },
+  { path: 'paypal-cancel', component: PaypalCancelComponent },
+  { path: 'paypal-failed', component: PaypalErrorComponent }
 ]
 
 @NgModule({
