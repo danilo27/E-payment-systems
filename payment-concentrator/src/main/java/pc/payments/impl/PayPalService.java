@@ -3,6 +3,8 @@ package pc.payments.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.paypal.api.payments.Amount;
@@ -10,11 +12,13 @@ import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
+import com.paypal.api.payments.PaymentExecution;
 import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
+import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
 import pc.payments.IPaymentExtensionPoint;
 
@@ -48,8 +52,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 	    payment.setTransactions(transactions);
 
 	    RedirectUrls redirectUrls = new RedirectUrls();
-	    redirectUrls.setCancelUrl(frontendPort + "/cancel");
-	    redirectUrls.setReturnUrl(frontendPort + "/success");
+	    redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");
+	    redirectUrls.setReturnUrl(frontendPort + "/paypal-success");
 	    payment.setRedirectUrls(redirectUrls);
 	    	    
 	    Payment createdPayment;
@@ -74,8 +78,21 @@ public class PayPalService implements IPaymentExtensionPoint {
 	}
 
 	@Override
-	public String proceedTransaction(PaymentRequestDto req) {
-		// TODO Auto-generated method stub
+	public String proceedTransaction(PaymentConfirmationDto req) {
+		Payment payment = new Payment();
+	    payment.setId(req.getPaymentId());
+
+	    PaymentExecution paymentExecution = new PaymentExecution();
+	    paymentExecution.setPayerId(req.getPayerId());
+	    try {
+	        APIContext context = new APIContext(clientId, clientSecret, production);
+	        Payment createdPayment = payment.execute(context, paymentExecution);
+	        if(createdPayment != null){
+	    	    return new String("Success");
+	        }
+	    } catch (PayPalRESTException e) {
+	        System.err.println(e.getDetails());
+	    }
 		return null;
 	}
 
