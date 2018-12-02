@@ -1,0 +1,34 @@
+package pc.controllers;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import pc.dto.PaymentRequestDto;
+import pc.dto.StringDto;
+import pc.payments.impl.PayPalService;
+
+
+@RestController
+@RequestMapping(value = "/paypal")
+public class PayPalController {
+	
+	@Autowired
+	private PayPalService payPalService;
+	
+	@RequestMapping(value = "/prepare",
+					method = RequestMethod.POST,
+					consumes = MediaType.APPLICATION_JSON_VALUE,
+					produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StringDto> paypalRequest(@RequestBody PaymentRequestDto requestDto){
+		String redirectUrl = payPalService.prepareTransaction(requestDto);
+		System.out.println(redirectUrl);
+		return new ResponseEntity<>(new StringDto(redirectUrl), HttpStatus.OK);
+	}
+
+}

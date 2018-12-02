@@ -1,3 +1,4 @@
+import { PaypalSuccessComponent } from './paypal/paypal-success/paypal-success.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
@@ -8,7 +9,8 @@ const routes: Routes = [
 		path:'',
 		component: PaymentTypeComponent,
 		pathMatch: 'full'
-	}
+  },
+  { path: 'paypal-success', component: PaypalSuccessComponent }
 ]
 
 @NgModule({

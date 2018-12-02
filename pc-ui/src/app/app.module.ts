@@ -9,6 +9,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { CardPaymentSuccessComponent } from './card-payment-success/card-payment-success.component';
 import { CardPaymentFailedComponent } from './card-payment-failed/card-payment-failed.component';
 import { CardPaymentErrorComponent } from './card-payment-error/card-payment-error.component';
+import { PaypalSuccessComponent } from './paypal/paypal-success/paypal-success.component';
+import { PaypalCancelComponent } from './paypal/paypal-cancel/paypal-cancel.component';
+import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { CardPaymentErrorComponent } from './card-payment-error/card-payment-err
     PaymentTypeComponent,
     CardPaymentSuccessComponent,
     CardPaymentFailedComponent,
-    CardPaymentErrorComponent
+    CardPaymentErrorComponent,
+    PaypalSuccessComponent,
+    PaypalCancelComponent,
+    PaypalErrorComponent
   ],
   imports: [
     BrowserModule,

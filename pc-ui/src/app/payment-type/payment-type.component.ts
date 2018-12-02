@@ -1,3 +1,4 @@
+import { PaypalService } from './../services/paypal.service';
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from "@angular/common/http";
@@ -13,7 +14,8 @@ export class PaymentTypeComponent implements OnInit {
 
   constructor(private http: HttpClient,
   	private router: Router,
-    private card_service: CardService) { }
+    private card_service: CardService,
+    private paypalService: PaypalService) { }
 
   ngOnInit() {
   }
@@ -34,8 +36,16 @@ export class PaymentTypeComponent implements OnInit {
   sendRequest(type){
     if(type == 'Credit Card'){
       this.card_service.sendRequest();
-    } else if (type == 'Pay Pal'){
-
+    } else if (type == 'PayPal'){
+      var mockData = {
+        'amount': '5',
+        'currency': 'USD',
+        'payee': 'marko.krajinovic1233-facilitator@gmail.com'
+      }
+      this.paypalService.prepare(mockData).subscribe((data: any) => {
+        //this.router.navigateByUrl(data.value);
+        window.location.href = data.value;
+      })
     } else if (type == 'Bitcoin'){
 
     }
