@@ -28,7 +28,9 @@ public class Account implements Serializable {
 	private double accountBalance;
 	
 	@OneToOne
-	private Card card;
+	private Card card; //for buyer
+	
+	private String merchantId; //for merchant 
 	
 	public Long getId() {
 		return id;

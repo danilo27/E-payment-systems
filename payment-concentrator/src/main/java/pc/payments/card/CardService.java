@@ -7,12 +7,14 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.model.Payment;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
@@ -41,9 +43,15 @@ public class CardService implements IPaymentExtensionPoint{
 		req.setMerchantTimestamp(Calendar.getInstance().getTime());
 		PaymentRequest request = paymentRequestService.save(req);
 		String fooResourceUrl = bankAcquirer+"/acqBank/getUrlAndId";
-		ResponseEntity<URL_ID_DTO> response = restTemplate().postForEntity(fooResourceUrl, request, URL_ID_DTO.class);
+		ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, request, Payment.class);
 		TransactionResult result = new TransactionResult();
-		result.setResponse(response);
+		if(response.getBody().getMessage().equals("")){
+			System.out.println(response.getBody().toString());
+			result.setResponse(response);
+			result.setSuccessMessage("SUCCESS");
+		} else {
+			result.setResponse(ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Error"));
+		}
 		return result;
 	}
 

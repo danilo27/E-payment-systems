@@ -12,6 +12,8 @@ import { CardPaymentErrorComponent } from './card-payment-error/card-payment-err
 import { PaypalSuccessComponent } from './paypal/paypal-success/paypal-success.component';
 import { PaypalCancelComponent } from './paypal/paypal-cancel/paypal-cancel.component';
 import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.component';
+import { BitcoinSuccessComponent } from './bitcoin/bitcoin-success/bitcoin-success.component';
+import { BitcoinErrorComponent } from './bitcoin/bitcoin-error/bitcoin-error.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.compone
     CardPaymentErrorComponent,
     PaypalSuccessComponent,
     PaypalCancelComponent,
-    PaypalErrorComponent
+    PaypalErrorComponent,
+    BitcoinSuccessComponent,
+    BitcoinErrorComponent
   ],
   imports: [
     BrowserModule,

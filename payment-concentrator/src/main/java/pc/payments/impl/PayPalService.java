@@ -55,8 +55,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 	    payment.setTransactions(transactions);
 
 	    RedirectUrls redirectUrls = new RedirectUrls();
-	    redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");
-	    redirectUrls.setReturnUrl(frontendPort + "/paypal-success");
+	    redirectUrls.setCancelUrl(frontendPort + "/bitcoin-error");
+	    redirectUrls.setReturnUrl(frontendPort + "/bitcoin-success");
 	    payment.setRedirectUrls(redirectUrls);
 	    	    
 	    Payment createdPayment;

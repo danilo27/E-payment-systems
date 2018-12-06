@@ -24,9 +24,9 @@ export class CardService {
   }
 
   sendRequest(){
-  	
+
   	var paymentRequest = {
-  		merchantId: "danilo",
+  		merchantId: "daniloMerchant",
   		merchantPassword: "pas",
   		amount: 320.0,
   		merchantOrderId: 1,

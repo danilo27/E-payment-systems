@@ -3,6 +3,7 @@ package pc.payments.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import com.mashape.unirest.request.body.MultipartBody;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.model.PaymentRequest;
+import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 
 @Service
@@ -57,23 +60,31 @@ public class BitcoinService implements IPaymentExtensionPoint {
     }
 	
 	@Override
-	public String prepareTransaction(PaymentRequestDto req) {
+	public TransactionResult prepareTransaction(PaymentRequest req) {
+		TransactionResult result = new TransactionResult();
+		result.setRedirectUrl("");
 		try {
 			JSONObject json = createOrder(5.0, 
 											"USD", 
 											"USD", 
 											"http://localhost:4200/bitcoin-success", 
 											"http://localhost:4200/bitcoin-cancel");
-			return (String) json.get("payment_url");
+			try {
+				result.setRedirectUrl((String)json.get("payment_url"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return result;
 		} catch (UnirestException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return "";
+		return result;
 	}
 
 	@Override
-	public String proceedTransaction(PaymentConfirmationDto req) {
+	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
 		// TODO Auto-generated method stub
 		return null;
 	}

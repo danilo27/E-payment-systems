@@ -35,4 +35,9 @@ public class AccountServiceImpl implements AccountService{
 		return repo.findByCardPan(pan);
 	}
 
+	@Override
+	public Account findByMerchantId(String merchantId) {
+		return repo.findByMerchantId(merchantId);
+	}
+
 }

@@ -13,6 +13,8 @@ import acq.model.Account;
 import acq.model.Card;
 import acq.services.AccountService;
 import acq.services.CardService;
+import acq.services.MerchantService;
+import acq.model.Merchant;
 @Component
 public class Data {
 	
@@ -21,7 +23,10 @@ public class Data {
 	
 	@Autowired 
 	private CardService cardService;
-	 
+	
+	@Autowired
+	private MerchantService merchantService;
+	
 	@PostConstruct
 	private void init() throws ParseException {
 		String oldstring = "11-2019";
@@ -36,5 +41,7 @@ public class Data {
 		System.out.println(cardService.findAll());
 		System.out.println(accService.findAll());
 		
+		Merchant m1 = new Merchant("daniloMerchant", "pas", "http://localhost:8081");
+		merchantService.save(m1);
 	}
 }

@@ -10,6 +10,6 @@ public interface AccountService {
 	List<Account> findAll();
 	Account save(Account arg);
 	Account findByPan(String pan);
-	//Account findByMerchantId(String merchantId);
+	Account findByMerchantId(String merchantId);
 }
 

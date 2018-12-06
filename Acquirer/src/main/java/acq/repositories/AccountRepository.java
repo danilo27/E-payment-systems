@@ -10,6 +10,6 @@ import acq.model.Account;
 public interface AccountRepository extends JpaRepository<Account, Long>{
 
 	Account findByCardPan(String pan);
-	//Account findByMerchantId(String merchantId);
+	Account findByMerchantId(String merchantId);
 
 }

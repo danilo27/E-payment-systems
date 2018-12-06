@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { PaymentTypeComponent } from './payment-type/payment-type.component';
+import { BitcoinSuccessComponent } from './bitcoin/bitcoin-success/bitcoin-success.component';
+import { BitcoinErrorComponent } from './bitcoin/bitcoin-error/bitcoin-error.component';
 
 const routes: Routes = [
 	{
@@ -16,7 +18,7 @@ const routes: Routes = [
   { path: 'paypal-cancel', component: PaypalCancelComponent },
   { path: 'paypal-failed', component: PaypalErrorComponent },
   { path: 'bitcoin-success', component: PaypalSuccessComponent },
-  { path: 'bitcoin-cancel', component: PaypalCancelComponent }
+  { path: 'bitcoin-error', component: PaypalErrorComponent }
 ]
 
 @NgModule({

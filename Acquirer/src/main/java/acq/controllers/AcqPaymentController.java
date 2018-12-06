@@ -21,8 +21,11 @@ import acq.dto.StringDTO;
 import acq.dto.URL_ID_DTO;
 import acq.dto.UserAccountDto;
 import acq.model.Card;
+import acq.model.Payment;
 import acq.model.PaymentRequest;
+import acq.model.enums.ReturnType;
 import acq.services.PaymentRequestService;
+import acq.services.PaymentService;
 import acq.services.ValidationService;
  
 @RestController
@@ -35,24 +38,27 @@ public class AcqPaymentController {
 	@Autowired
 	ValidationService validationService;
 	
+	@Autowired
+	PaymentService paymentService;
+	
 	@Value("${bank.iin}")
 	private String bankIin;
 	
 	@PostMapping("/getUrlAndId")
-	public URL_ID_DTO redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
+	public Payment redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
 		System.out.println("PaymentRequest: " + pr.toString());
-		URL_ID_DTO dto = new URL_ID_DTO();
-		
-		//TODO validate request
-		if(true){
-			dto.setPaymentUrl("http://localhost:4201/enter-buyer-details");
-			dto.setPaymentId(0); // size of repo
+		Payment payment = new Payment();
+ 
+		if(validationService.validatePaymentRequest(pr) == ReturnType.SUCCESS){
+			payment.setPaymentRequestId(pr.getId());
+			payment.setPaymentUrl("http://localhost:4201/enter-buyer-details");
+			payment.setPaymentId(paymentService.findAll().size());
+			payment.setMessage("");
 		} else {
-			dto.setPaymentUrl("");
-			dto.setPaymentId(-1);
+			payment.setMessage("Error");
 		}
 		
-	    return dto;
+	    return payment;
 	}
 	
 	@RequestMapping(path = "/sendPaymentRequest", method = RequestMethod.GET, produces = "application/json")
@@ -79,9 +85,9 @@ public class AcqPaymentController {
 		c.setPan(c.getPan().replace(" ", ""));
 		String url = "";
 		if(c.getPan().startsWith(bankIin)){
-			if(validationService.validate(pr, c).equals("SUCCESS")){ 
+			if(validationService.validateCard(pr, c) == ReturnType.SUCCESS){ 
 				url = "http://localhost:4201/success";
-			} else if (validationService.validate(pr, c).equals("FAILED"))
+			} else if (validationService.validateCard(pr, c) == ReturnType.FAILED)
 				url = pr.getFailedUrl();
 			else 
 				url = pr.getErrorUrl();
