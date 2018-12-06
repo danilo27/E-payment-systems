@@ -12,9 +12,13 @@ import { CardPaymentErrorComponent } from './card-payment-error/card-payment-err
 const routes: Routes = [
 	{
 		path:'',
-		component: EnterBuyerDetailsComponent,
+		component: HomeComponent,
 		pathMatch: 'full'
 	},
+  {
+    path:'enter-buyer-details',
+    component: EnterBuyerDetailsComponent
+  },
   {
     path:'newAccount',
     component: RegisterNewAccountComponent

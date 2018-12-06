@@ -24,6 +24,7 @@ export class CardService {
   }
 
   sendRequest(){
+  	
   	var paymentRequest = {
   		merchantId: "danilo",
   		merchantPassword: "pas",
@@ -33,9 +34,10 @@ export class CardService {
   		failedUrl: "",
   		errorUrl: ""
   	}
-  	this.http.post('/api/requestPayment', paymentRequest).subscribe(data=>{
+
+  	this.http.post('/api/card/prepare', paymentRequest).subscribe(data=>{
   		if(data!=null){
-  			console.log('ok');
+  			 
   			console.log(data);
   		 
   				if(data['paymentUrl']!==''){
@@ -48,4 +50,9 @@ export class CardService {
   	})
 
   }
+
+  proceed(requestBody){
+    return this.http.post('/api/card/proceed', requestBody);
+  }
+
 }

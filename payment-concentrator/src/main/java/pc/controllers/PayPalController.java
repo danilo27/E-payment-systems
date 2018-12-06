@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
 import pc.dto.StringDto;
+import pc.model.PaymentRequest;
 import pc.payments.impl.PayPalService;
 
 
@@ -26,8 +27,8 @@ public class PayPalController {
 					method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StringDto> paypalRequest(@RequestBody PaymentRequestDto requestDto){
-		String redirectUrl = payPalService.prepareTransaction(requestDto);
+	public ResponseEntity<StringDto> paypalRequest(@RequestBody PaymentRequest requestDto){
+		String redirectUrl = payPalService.prepareTransaction(requestDto).getRedirectUrl();
 		System.out.println(redirectUrl);
 		return new ResponseEntity<>(new StringDto(redirectUrl), HttpStatus.OK);
 	}
@@ -37,7 +38,7 @@ public class PayPalController {
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StringDto> paypalConfirmation(@RequestBody PaymentConfirmationDto requestDto){
-		String status = payPalService.proceedTransaction(requestDto);
+		String status = payPalService.proceedTransaction(requestDto).getSuccessMessage();
 		return new ResponseEntity<>(new StringDto(status), HttpStatus.OK);
 	}
 

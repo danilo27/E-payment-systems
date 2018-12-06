@@ -20,6 +20,8 @@ import com.paypal.base.rest.PayPalRESTException;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.model.PaymentRequest;
+import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 
 @Service
@@ -31,10 +33,11 @@ public class PayPalService implements IPaymentExtensionPoint {
 	private String production = "sandbox";
 
 	@Override
-	public String prepareTransaction(PaymentRequestDto req) {
+	public TransactionResult prepareTransaction(PaymentRequest req) {
+		TransactionResult result = new TransactionResult();
 	    Amount amount = new Amount();
 	    amount.setCurrency(req.getCurrency());
-	    amount.setTotal(req.getAmount());
+	    amount.setTotal(req.getAmount().toString());
 	    Transaction transaction = new Transaction();
 	    transaction.setAmount(amount);
 	    Payee payee = new Payee();
@@ -69,7 +72,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 	                    break;
 	                }
 	            }
-	            return redirectUrl;
+	            result.setRedirectUrl(redirectUrl);
+	            return result;
 	        }
 	    } catch (PayPalRESTException e) {
 	        System.out.println("Error happened during payment creation!");
@@ -78,7 +82,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 	}
 
 	@Override
-	public String proceedTransaction(PaymentConfirmationDto req) {
+	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
+		TransactionResult result = new TransactionResult();
 		Payment payment = new Payment();
 	    payment.setId(req.getPaymentId());
 
@@ -88,7 +93,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 	        APIContext context = new APIContext(clientId, clientSecret, production);
 	        Payment createdPayment = payment.execute(context, paymentExecution);
 	        if(createdPayment != null){
-	    	    return new String("Success");
+	        	result.setSuccessMessage("Success");
+	    	    return result;
 	        }
 	    } catch (PayPalRESTException e) {
 	        System.err.println(e.getDetails());

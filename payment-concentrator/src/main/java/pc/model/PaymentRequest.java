@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import pc.model.enums.PaymentType;
  
 @Entity
 @Table(name = "PAYMENT_REQUEST")
@@ -38,7 +40,7 @@ public class PaymentRequest implements Serializable {
 	
 	//iznos transakcije (tip Decimal(10, 2)),
 	@Column(name = "AMOUNT")
-	private BigDecimal amount;
+	private Long amount;
 	
 	//prodavčev ID transakcije (tip Number(10)),
 	@Column(name = "MERCHANT_ORDER_ID")
@@ -46,7 +48,7 @@ public class PaymentRequest implements Serializable {
 	
 	//MERCHANT_TIMESTAMP – prodavčev timestamp transakcije (tip DateTime).
 	@Column(name = "MERCHANT_TIMESTAMP")
-	private Timestamp merchantTimestamp;
+	private Date merchantTimestamp;
 	
 	//SUCCESS_URL – URL na koji će se kupac preusmeriti ako je transakcija uspešna
 	@Column(name = "SUCCESS_URL")
@@ -63,6 +65,43 @@ public class PaymentRequest implements Serializable {
 //	@OneToOne(cascade = CascadeType.ALL)
 //	@JoinColumn(name = "PAYMENT_URL_AND_ID")
 //	private PaymentURLandID paymentUrlAndId;
+	
+	private PaymentType paymentType; 
+	
+	
+	
+	public PaymentType getPaymentType() {
+		return paymentType;
+	}
+
+
+
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	private String currency;
+	private String payee;
+	
+	public String getPayee() {
+		return payee;
+	}
+
+
+
+	public void setPayee(String payee) {
+		this.payee = payee;
+	}
+	
+	
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	
 	
 	public Long getId() {
 		return id;
@@ -88,11 +127,11 @@ public class PaymentRequest implements Serializable {
 		this.merchantPassword = merchantPassword;
 	}
 
-	public BigDecimal getAmount() {
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
 
@@ -104,11 +143,11 @@ public class PaymentRequest implements Serializable {
 		this.merchantOrderId = merchantOrderId;
 	}
 
-	public Timestamp getMerchantTimestamp() {
+	public Date getMerchantTimestamp() {
 		return merchantTimestamp;
 	}
 
-	public void setMerchantTimestamp(Timestamp merchantTimestamp) {
+	public void setMerchantTimestamp(Date merchantTimestamp) {
 		this.merchantTimestamp = merchantTimestamp;
 	}
 
@@ -150,7 +189,7 @@ public class PaymentRequest implements Serializable {
 	
 	public PaymentRequest(){}
 
-	public PaymentRequest(Long id, String merchantId, String merchantPassword, BigDecimal amount,
+	public PaymentRequest(Long id, String merchantId, String merchantPassword, Long amount,
 			Integer merchantOrderId, Timestamp merchantTimestamp, String successUrl, String failedUrl, String errorUrl
 		 ) {
 		super();
