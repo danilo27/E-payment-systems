@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import acq.dto.MerchantAccountDto;
 import acq.dto.StringDTO;
 import acq.dto.URL_ID_DTO;
+import acq.dto.UserAccountDto;
 import acq.model.Card;
 import acq.model.PaymentRequest;
 import acq.services.PaymentRequestService;
@@ -36,15 +38,15 @@ public class AcqPaymentController {
 	@Value("${bank.iin}")
 	private String bankIin;
 	
-	@RequestMapping("/to-be-redirected")
-	public URL_ID_DTO redirectToExternalUrl() throws URISyntaxException {
-		
+	@PostMapping("/getUrlAndId")
+	public URL_ID_DTO redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
+		System.out.println("PaymentRequest: " + pr.toString());
 		URL_ID_DTO dto = new URL_ID_DTO();
 		
 		//TODO validate request
 		if(true){
-			dto.setPaymentUrl("http://localhost:4201");
-			dto.setPaymentId(0); // size of ids in repo
+			dto.setPaymentUrl("http://localhost:4201/enter-buyer-details");
+			dto.setPaymentId(0); // size of repo
 		} else {
 			dto.setPaymentUrl("");
 			dto.setPaymentId(-1);
@@ -72,28 +74,38 @@ public class AcqPaymentController {
 	public ResponseEntity<?> validateCardAndExecute(
 			@RequestBody Card c,
 			@PathVariable String token){
-		System.out.println(c.getPan());
-		c.setPan(c.getPan().replace(" ",""));
-		System.out.println(c.getPan());
-		HttpHeaders headers = new HttpHeaders();
+ 
 		PaymentRequest pr = paymentRequestService.findByToken(token);
+		c.setPan(c.getPan().replace(" ", ""));
 		String url = "";
 		if(c.getPan().startsWith(bankIin)){
-			if(validationService.validate(pr, c).equals("SUCCESS")){
-				//headers.add("Location", pr.getSuccessUrl());
-				System.out.println("IIN ok and success");
-				//headers.add("Location", "http://localhost:4201/success");
-				headers.setLocation(URI.create("http://localhost:4201/success"));
+			if(validationService.validate(pr, c).equals("SUCCESS")){ 
 				url = "http://localhost:4201/success";
 			} else if (validationService.validate(pr, c).equals("FAILED"))
-				headers.add("Location", pr.getFailedUrl());
+				url = pr.getFailedUrl();
 			else 
-				headers.add("Location", pr.getErrorUrl());
+				url = pr.getErrorUrl();
 		} else {
 			//TODO PCC
 		}
 	
 	    
 		return new ResponseEntity<>(new StringDTO(url), HttpStatus.OK);
+	}
+	
+	@PostMapping("/makeMerchantAccount")
+	public ResponseEntity<?> makeMerchantAccount( 
+			@RequestBody MerchantAccountDto acc
+			){
+		//TODO create MERCHANT_ID and MERCHANT_PASSWORD
+		return new ResponseEntity<>(new MerchantAccountDto(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/makeUserAccount")
+	public ResponseEntity<?> makeUserAccount(
+			@RequestBody UserAccountDto acc
+			){
+
+		return new ResponseEntity<>(new UserAccountDto(), HttpStatus.OK);
 	}
 }

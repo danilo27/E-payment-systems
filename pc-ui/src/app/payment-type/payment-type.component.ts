@@ -44,7 +44,7 @@ export class PaymentTypeComponent implements OnInit {
       }
       this.paypalService.prepare(mockData).subscribe((data: any) => {
         //this.router.navigateByUrl(data.value);
-        window.location.href = data.value;
+        window.location.href = data.value.redirectUrl;
       })
     } else if (type == 'Bitcoin'){
 

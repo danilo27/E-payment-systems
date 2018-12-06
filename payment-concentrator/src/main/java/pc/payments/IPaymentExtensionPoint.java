@@ -2,9 +2,11 @@ package pc.payments;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.model.PaymentRequest;
+import pc.model.TransactionResult;
 
 public interface IPaymentExtensionPoint {
 	
-	String prepareTransaction(PaymentRequestDto req);
-	String proceedTransaction(PaymentConfirmationDto req);
+	TransactionResult prepareTransaction(PaymentRequest req);
+	TransactionResult proceedTransaction(PaymentConfirmationDto req);
 }
