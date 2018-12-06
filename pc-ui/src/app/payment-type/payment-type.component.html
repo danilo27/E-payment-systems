@@ -5,6 +5,8 @@
 <ul style=" list-style-type: none">
 	<li *ngFor="let p of payment_types"><button type="button" class="btn btn-link" (click)="sendRequest(p.name)"><img width="200px" height="200px" src={{p.image}}><strong>{{p.name}}</strong></button></li>
 </ul>
+<button (click)="subscription()"> pretplata </button>
+
 </div>
 
  

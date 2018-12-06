@@ -14,6 +14,7 @@ import { PaypalCancelComponent } from './paypal/paypal-cancel/paypal-cancel.comp
 import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.component';
 import { BitcoinSuccessComponent } from './bitcoin/bitcoin-success/bitcoin-success.component';
 import { BitcoinErrorComponent } from './bitcoin/bitcoin-error/bitcoin-error.component';
+import { PaypalSuccessSubComponent } from './paypal/paypal-success-sub/paypal-success-sub.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { BitcoinErrorComponent } from './bitcoin/bitcoin-error/bitcoin-error.com
     PaypalCancelComponent,
     PaypalErrorComponent,
     BitcoinSuccessComponent,
-    BitcoinErrorComponent
+    BitcoinErrorComponent,
+    PaypalSuccessSubComponent
   ],
   imports: [
     BrowserModule,

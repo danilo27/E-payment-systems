@@ -15,6 +15,8 @@ import com.mashape.unirest.request.body.MultipartBody;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.dto.SubscriptionConfirmation;
+import pc.dto.SubscriptionRequest;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
@@ -85,6 +87,18 @@ public class BitcoinService implements IPaymentExtensionPoint {
 
 	@Override
 	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionResult prepareSubscription(SubscriptionRequest req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionResult proceedSubscription(SubscriptionConfirmation req) {
 		// TODO Auto-generated method stub
 		return null;
 	}

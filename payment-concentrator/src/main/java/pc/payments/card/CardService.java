@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.dto.SubscriptionConfirmation;
+import pc.dto.SubscriptionRequest;
 import pc.model.Payment;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
@@ -58,6 +60,18 @@ public class CardService implements IPaymentExtensionPoint{
 	@Override
 	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
 		return new TransactionResult();
+	}
+
+	@Override
+	public TransactionResult prepareSubscription(SubscriptionRequest req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TransactionResult proceedSubscription(SubscriptionConfirmation req) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

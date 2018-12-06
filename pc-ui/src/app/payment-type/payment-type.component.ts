@@ -44,11 +44,19 @@ export class PaymentTypeComponent implements OnInit {
       }
       this.paypalService.prepare(mockData).subscribe((data: any) => {
         //this.router.navigateByUrl(data.value);
-        window.location.href = data.value.redirectUrl;
+        window.location.href = data.value;
       })
     } else if (type == 'Bitcoin') {
       window.location.href = 'http://localhost:8080/api/bitcoin/prepare'
     }
+  }
+
+  subscription(){
+    this.paypalService.prepareSubscription({}).subscribe((data: any) => {
+      console.log(data.value);
+      window.location.href = data.value;
+      //this.router.navigateByUrl(data.redirect_url);
+    });
   }
 
 }
