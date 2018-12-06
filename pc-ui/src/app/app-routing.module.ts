@@ -1,3 +1,7 @@
+import { CardPaymentSuccessComponent } from './card-payment-success/card-payment-success.component';
+import { CardPaymentFailedComponent } from './card-payment-failed/card-payment-failed.component';
+import { CardPaymentErrorComponent } from './card-payment-error/card-payment-error.component';
+
 import { PaypalSuccessSubComponent } from './paypal/paypal-success-sub/paypal-success-sub.component';
 import { PaypalErrorComponent } from './paypal/paypal-error/paypal-error.component';
 import { PaypalCancelComponent } from './paypal/paypal-cancel/paypal-cancel.component';
@@ -15,6 +19,9 @@ const routes: Routes = [
 		component: PaymentTypeComponent,
 		pathMatch: 'full'
   },
+  { path: 'payment-card-success', component: CardPaymentSuccessComponent },
+  { path: 'payment-card-failed', component: CardPaymentFailedComponent },
+  { path: 'payment-card-error', component: CardPaymentErrorComponent },
   { path: 'paypal-success', component: PaypalSuccessComponent },
   { path: 'paypal-success-sub', component: PaypalSuccessSubComponent },
   { path: 'paypal-cancel', component: PaypalCancelComponent },

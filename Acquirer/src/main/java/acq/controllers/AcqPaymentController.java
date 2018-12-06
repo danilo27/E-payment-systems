@@ -90,7 +90,7 @@ public class AcqPaymentController {
 		String url = "";
 		if(c.getPan().startsWith(bankIin)){
 			if(validationService.validateCard(pr, c) == ReturnType.SUCCESS){ 
-				url = "http://localhost:4201/success";
+				url = "http://localhost:4200/payment-card-success";
 			} else if (validationService.validateCard(pr, c) == ReturnType.FAILED)
 				url = pr.getFailedUrl();
 			else 
