@@ -14,7 +14,9 @@ const routes: Routes = [
   },
   { path: 'paypal-success', component: PaypalSuccessComponent },
   { path: 'paypal-cancel', component: PaypalCancelComponent },
-  { path: 'paypal-failed', component: PaypalErrorComponent }
+  { path: 'paypal-failed', component: PaypalErrorComponent },
+  { path: 'bitcoin-success', component: PaypalSuccessComponent },
+  { path: 'bitcoin-cancel', component: PaypalCancelComponent }
 ]
 
 @NgModule({
