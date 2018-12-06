@@ -15,5 +15,13 @@ export class PaypalService {
   confirm(requestBody){
     return this.http.post('/api/paypal/confirm', requestBody);
   }
+
+  prepareSubscription(requestBody){
+    return this.http.post('/api/paypal/prepare/subscription', requestBody);
+  }
+
+  confirmSubscription(requestBody){
+    return this.http.post('/api/paypal/confirm/subscription', requestBody);
+  }
   
 }
