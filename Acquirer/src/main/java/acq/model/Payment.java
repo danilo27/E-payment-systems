@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 @Entity
 @Table(name = "PAYMENT")
 public class Payment implements Serializable {
@@ -20,6 +21,7 @@ public class Payment implements Serializable {
 	private int paymentId;
 	private Long paymentRequestId;
 	private String message;
+	private String paymentRequestToken;
 	public Payment(){}
 	public String getMessage() {
 		return message;
@@ -45,4 +47,16 @@ public class Payment implements Serializable {
 	public void setPaymentId(int paymentId) {
 		this.paymentId = paymentId;
 	}
+	public String getPaymentRequestToken() {
+		return paymentRequestToken;
+	}
+	public void setPaymentRequestToken(String paymentRequestToken) {
+		this.paymentRequestToken = paymentRequestToken;
+	}
+	@Override
+	public String toString() {
+		return "Payment [id=" + id + ", paymentUrl=" + paymentUrl + ", paymentId=" + paymentId + ", paymentRequestId="
+				+ paymentRequestId + ", message=" + message + ", paymentRequestToken=" + paymentRequestToken + "]";
+	}
+	
 }

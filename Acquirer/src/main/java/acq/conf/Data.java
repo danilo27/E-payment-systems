@@ -32,10 +32,11 @@ public class Data {
 		String oldstring = "11-2019";
 		Date date = new SimpleDateFormat("MM-yyyy").parse(oldstring);
 		
-		Card c1 = new Card("333333333333", 4444, "John Wick", oldstring);
+		Card c1 = new Card("1111111111111111", 111, "Danilo Bujisa", oldstring);
 		cardService.save(c1);
 		
 		Account a1 = new Account("1111111111111111", 5000.0, c1);
+		a1.setMerchantId("daniloMerchant");
 		accService.save(a1);
 		
 		System.out.println(cardService.findAll());

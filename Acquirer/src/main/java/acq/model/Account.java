@@ -77,7 +77,16 @@ public class Account implements Serializable {
 	}
 	
 	public Account(){}
+
+	public String getMerchantId() {
+		return merchantId;
+	}
+
+	public void setMerchantId(String merchantId) {
+		this.merchantId = merchantId;
+	}
 	 
+	
 	
 	
 }

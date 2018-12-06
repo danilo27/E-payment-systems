@@ -22,7 +22,7 @@ import pc.model.enums.PaymentType;
 public class PaymentRequest implements Serializable {
 	
 	private String token = UUID.randomUUID().toString();
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -198,18 +198,32 @@ public class PaymentRequest implements Serializable {
 		this.merchantPassword = merchantPassword;
 		this.amount = amount;
 		this.merchantOrderId = merchantOrderId;
-		this.merchantTimestamp = new Timestamp(new Date().getTime());
+		this.merchantTimestamp = new Date();
 		this.successUrl = successUrl;
 		this.failedUrl = failedUrl;
 		this.errorUrl = errorUrl;
 		//this.paymentUrlAndId = paymentUrlAndId;
 	}
+	
+	public String getToken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+
 
 	@Override
 	public String toString() {
-		return "PaymentRequest [id=" + id + ", merchantId=" + merchantId + ", merchantPassword=" + merchantPassword
-				+ ", amount=" + amount + ", merchantOrderId=" + merchantOrderId + ", merchantTimestamp="
-				+ merchantTimestamp + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl + ", errorUrl="
-				+ errorUrl + "]";
+		return "PaymentRequest [token=" + token + ", id=" + id + ", merchantId=" + merchantId + ", merchantPassword="
+				+ merchantPassword + ", amount=" + amount + ", merchantOrderId=" + merchantOrderId
+				+ ", merchantTimestamp=" + merchantTimestamp + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl
+				+ ", errorUrl=" + errorUrl + ", paymentType=" + paymentType + ", currency=" + currency + ", payee="
+				+ payee + "]";
 	}
+	
+	
+ 
 }

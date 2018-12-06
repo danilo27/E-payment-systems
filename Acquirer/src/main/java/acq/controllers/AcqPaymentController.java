@@ -46,7 +46,7 @@ public class AcqPaymentController {
 	
 	@PostMapping("/getUrlAndId")
 	public Payment redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
-		System.out.println("PaymentRequest: " + pr.toString());
+		System.out.println(pr.toString());
 		Payment payment = new Payment();
  
 		if(validationService.validatePaymentRequest(pr) == ReturnType.SUCCESS){
@@ -54,6 +54,9 @@ public class AcqPaymentController {
 			payment.setPaymentUrl("http://localhost:4201/enter-buyer-details");
 			payment.setPaymentId(paymentService.findAll().size());
 			payment.setMessage("");
+			payment.setPaymentRequestToken(pr.getToken());
+			paymentService.save(payment);
+			paymentRequestService.save(pr);
 		} else {
 			payment.setMessage("Error");
 		}
@@ -80,8 +83,9 @@ public class AcqPaymentController {
 	public ResponseEntity<?> validateCardAndExecute(
 			@RequestBody Card c,
 			@PathVariable String token){
- 
+		 
 		PaymentRequest pr = paymentRequestService.findByToken(token);
+		System.out.println("u validate and ex : " + pr.toString());
 		c.setPan(c.getPan().replace(" ", ""));
 		String url = "";
 		if(c.getPan().startsWith(bankIin)){

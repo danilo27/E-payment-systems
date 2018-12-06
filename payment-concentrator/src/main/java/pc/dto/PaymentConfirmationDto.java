@@ -1,10 +1,21 @@
 package pc.dto;
 
+import org.springframework.http.ResponseEntity;
+
 public class PaymentConfirmationDto {
 
 	private String paymentId;
 	private String payerId;
+	ResponseEntity<?> response;
 	
+	public ResponseEntity<?> getResponse() {
+		return response;
+	}
+
+	public void setResponse(ResponseEntity<?> response) {
+		this.response = response;
+	}
+
 	public PaymentConfirmationDto(){
 		
 	}

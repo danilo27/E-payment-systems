@@ -40,8 +40,8 @@ export class CardService {
   			 
   			console.log(data);
   		 
-  				if(data['paymentUrl']!==''){
-  				window.location.href = data['paymentUrl'];
+  			if(data['paymentUrl']!==''){
+  				window.location.href = data['paymentUrl']+'?t='+data['paymentRequestToken'];
   			} else {
   				alert('Error occured');
   			}

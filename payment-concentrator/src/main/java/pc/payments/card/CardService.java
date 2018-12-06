@@ -39,25 +39,27 @@ public class CardService implements IPaymentExtensionPoint{
 
 	@Override
 	public TransactionResult prepareTransaction(PaymentRequest req) {
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 		req.setMerchantTimestamp(Calendar.getInstance().getTime());
 		PaymentRequest request = paymentRequestService.save(req);
 		String fooResourceUrl = bankAcquirer+"/acqBank/getUrlAndId";
 		ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, request, Payment.class);
+		PaymentConfirmationDto dto = new PaymentConfirmationDto();
+		dto.setResponse(response);
+		return proceedTransaction(dto);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
 		TransactionResult result = new TransactionResult();
-		if(response.getBody().getMessage().equals("")){
-			System.out.println(response.getBody().toString());
-			result.setResponse(response);
+		if(((ResponseEntity<Payment>)req.getResponse()).getBody().getMessage().equals("")){
+			System.out.println(((ResponseEntity<Payment>)req.getResponse()).getBody().toString());
+			result.setResponse(((ResponseEntity<Payment>)req.getResponse()));
 			result.setSuccessMessage("SUCCESS");
 		} else {
 			result.setResponse(ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Error"));
 		}
 		return result;
-	}
-
-	@Override
-	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
-		return new TransactionResult();
 	}
 
 }
