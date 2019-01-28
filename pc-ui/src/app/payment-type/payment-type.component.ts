@@ -20,7 +20,7 @@ export class PaymentTypeComponent implements OnInit {
   ngOnInit() {
   }
   //payment_types: any;
-  payment_types = [{ name: "Credit Card", image: "https://png2.kisspng.com/20180410/jkw/kisspng-credit-card-balance-transfer-credit-card-balance-t-credit-card-5acd51316ac8b1.5522821715234051054374.png" },
+  payment_types = [{ name: "Credit Card", image: "https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg" },
   { name: "PayPal", image: "https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no" },
   { name: "Bitcoin", image: "http://mrjamie.cc/wp-content/uploads/2013/10/bitcoin-logo-1000.jpg" }]
 

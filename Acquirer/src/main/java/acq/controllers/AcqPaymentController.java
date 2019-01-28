@@ -1,11 +1,11 @@
 package acq.controllers;
 
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import acq.dto.AcqToPccDto;
 import acq.dto.MerchantAccountDto;
 import acq.dto.StringDTO;
-import acq.dto.URL_ID_DTO;
 import acq.dto.UserAccountDto;
+import acq.model.Account;
 import acq.model.Card;
 import acq.model.Payment;
 import acq.model.PaymentRequest;
 import acq.model.enums.ReturnType;
+import acq.model.enums.TransactionResult;
+import acq.services.AccountService;
+import acq.services.MerchantService;
 import acq.services.PaymentRequestService;
 import acq.services.PaymentService;
 import acq.services.ValidationService;
@@ -41,8 +46,25 @@ public class AcqPaymentController {
 	@Autowired
 	PaymentService paymentService;
 	
+	@Autowired
+	private AccountService accService;
+	
+	@Autowired
+	private MerchantService merchantService;
+	
 	@Value("${bank.iin}")
-	private String bankIin;
+	private String bankIin; //iin acquirer-a
+	
+	@Value("${pcc.url}")
+	private String pccUrl;
+	
+	@Value("${server.port}")
+	private String acq_url;
+	
+	@Bean
+	public RestTemplate restTemplate() {
+	    return new RestTemplate();
+	}
 	
 	@PostMapping("/getUrlAndId")
 	public Payment redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
@@ -86,6 +108,7 @@ public class AcqPaymentController {
 		 
 		PaymentRequest pr = paymentRequestService.findByToken(token);
 		System.out.println("u validate and ex : " + pr.toString());
+		Account merchant = accService.findByMerchantId(pr.getMerchantId());
 		c.setPan(c.getPan().replace(" ", ""));
 		String url = "";
 		if(c.getPan().startsWith(bankIin)){
@@ -97,6 +120,26 @@ public class AcqPaymentController {
 				url = pr.getErrorUrl();
 		} else {
 			//TODO PCC
+			AcqToPccDto toPcc = new AcqToPccDto();
+			toPcc.setCard(c);
+			toPcc.setAcquirer_timestamp(Calendar.getInstance().getTime());
+			toPcc.setAcquirer_order_id(pr.getId());
+			toPcc.setAcq_url(acq_url);
+			toPcc.setPr(pr);
+			String fooResourceUrl = pccUrl+"/pcc/forwardToIssuer";
+			ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(fooResourceUrl, toPcc, AcqToPccDto.class);
+			if(((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.SUCCESS){
+				url = "http://localhost:4200/payment-card-success";
+				 
+				if(merchant!=null){
+					System.out.println("[ACQ] Pre: " + merchant.getAccountBalance());
+					merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
+					System.out.println("[ACQ] Posle: " + merchant.getAccountBalance());
+					accService.save(merchant);
+				}
+			} else {
+				url = pr.getErrorUrl();
+			}
 		}
 	
 	    

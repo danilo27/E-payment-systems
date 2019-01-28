@@ -1,4 +1,4 @@
-package pcc.model;
+package iss.model;
 
 import java.io.Serializable;
 import java.util.Date;
