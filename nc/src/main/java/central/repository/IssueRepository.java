@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import central.model.Issue;
  
 @Repository
-public interface IssueRepository extends JpaRepository<Issue, String> {
+public interface IssueRepository extends JpaRepository<Issue, Long> {
 	public List<Issue> findByMagazineIssn(String issn);
 }

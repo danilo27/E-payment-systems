@@ -28,4 +28,9 @@ public class IssueController {
 	public ResponseEntity<List<Issue>> all(@PathVariable String issn){
 		return new ResponseEntity<List<Issue>>(issueRepository.findByMagazineIssn(issn), HttpStatus.OK);
 	}
+	
+	@GetMapping("/getOne/{id}")
+	public ResponseEntity<Issue> getOne(@PathVariable String id){
+		return new ResponseEntity<Issue>(issueRepository.findById(Long.parseLong(id)).orElse(null), HttpStatus.OK);
+	}
 }

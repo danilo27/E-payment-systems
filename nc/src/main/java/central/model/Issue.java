@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Table(name = "ISSUE")
@@ -21,6 +23,7 @@ public class Issue {
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "MAGAZINE")
+	@JsonBackReference
     private Magazine magazine;
 	
 	@Column(name = "DATE", nullable = false)

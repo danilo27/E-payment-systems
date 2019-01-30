@@ -1,14 +1,19 @@
 package central.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import central.model.MagazinePaymentType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "MAGAZINE")
@@ -26,6 +31,10 @@ public class Magazine {
 
     @Column(name = "MEMBERSHIP_PRICE", nullable = true)
     private Double membershipPrice;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Issue> issues = new ArrayList<Issue>();
     
     public Magazine(){}
 
@@ -59,6 +68,14 @@ public class Magazine {
 
 	public void setMembershipPrice(Double membershipPrice) {
 		this.membershipPrice = membershipPrice;
+	}
+
+	public List<Issue> getIssues() {
+		return issues;
+	}
+
+	public void setIssues(List<Issue> issues) {
+		this.issues = issues;
 	}
     
     

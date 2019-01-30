@@ -53,8 +53,8 @@ public class Data {
 		m2.setMembershipPrice(Double.parseDouble("35.0"));
 		
 		
-		magazineRepository.save(m1);
-		magazineRepository.save(m2);
+		m1 = magazineRepository.save(m1);
+		m2 = magazineRepository.save(m2);
 		
 		Issue i1 = new Issue();
 		i1.setDate("01-01-2019");
@@ -62,6 +62,11 @@ public class Data {
 		i1.setPrice(Double.parseDouble("15.0"));
 		
 		issueRepository.save(i1);
+
+		m1.getIssues().add(i1);
+		
+		magazineRepository.save(m1);
+		magazineRepository.save(m2);
 		
 	}
 

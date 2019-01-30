@@ -1,8 +1,19 @@
 <h3>Magazines:</h3>
 
-<ul style=" list-style-type: none">
+<ol >
 	<li *ngFor="let magazine of magazines">
-		{{magazine.name}} <strong>{{magazine.paymentType}}</strong>
+		{{magazine.name}} <strong>{{magazine.paymentType}}</strong><br>
+		Issues:
+			<ol>
+				<li *ngFor="let issue of magazine.issues">
+					<em>{{issue.date}}</em>
+					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Open</a>
+					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary">Buy Issue</button>
+
+				</li>
+			</ol>
+		<hr>
+		<br>
 	</li>
 
-</ul>
+</ol>
