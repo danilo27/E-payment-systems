@@ -5,10 +5,13 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import central.model.Article;
+import central.model.Author;
 import central.model.Issue;
 import central.model.Magazine;
 import central.model.MagazinePaymentType;
 import central.repository.ArticleRepository;
+import central.repository.AuthorRepository;
 import central.repository.IssueRepository;
 import central.repository.MagazineRepository;
 import central.repository.SubscriptionRepository;
@@ -20,6 +23,9 @@ public class Data {
 	
 	@Autowired
 	private TransactionRepository transactionRepository;
+	
+	@Autowired
+	private AuthorRepository authorRepository;
 	
 	@Autowired
 	private MagazineRepository magazineRepository;
@@ -39,6 +45,7 @@ public class Data {
 		issueRepository.deleteAll();
 		articleRepository.deleteAll();
 		subscriptionRepository.deleteAll();
+		authorRepository.deleteAll();
 		
 		Magazine m1 = new Magazine();
 		Magazine m2 = new Magazine();
@@ -74,6 +81,40 @@ public class Data {
 		
 		magazineRepository.save(m1);
 		magazineRepository.save(m2);
+		
+		Author author1 = new Author();
+		author1.setfName("Petar");
+		author1.setlName("Peric");
+		author1 = authorRepository.save(author1);
+		
+		Article a1 = new Article();
+		a1.setName("C++ Programming");
+		a1.setAuthor(author1);
+		a1.setIssue(i1);
+		a1.setPrice(Double.parseDouble("5.0"));
+		
+		Article a2 = new Article();
+		a2.setName("Introduction to Functional programming");
+		a2.setAuthor(author1);
+		a2.setIssue(i1);
+		a2.setPrice(Double.parseDouble("5.0"));
+		
+		Article a3 = new Article();
+		a3.setName("IOS and Android programming");
+		a3.setAuthor(author1);
+		a3.setIssue(i1);
+		a3.setPrice(Double.parseDouble("5.0"));
+		
+		a1 = articleRepository.save(a1);
+		a2 = articleRepository.save(a2);
+		a3 = articleRepository.save(a3);
+		
+		i1.getArticles().add(a1);
+		i1.getArticles().add(a2);
+		i1.getArticles().add(a3);
+		
+		issueRepository.save(i1);
+ 
 		
 	}
 

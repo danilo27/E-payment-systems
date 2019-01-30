@@ -9,7 +9,17 @@
 					<em>{{issue.date}}</em>
 					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Download</a>
 					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary">Buy Issue</button>
+					<br>
+					<br>
+					Single Articles from this Issue:
+					<ol>
+						<li *ngFor="let article of issue.articles">
+							<em>{{article.name}} by {{article.author.fName}} {{article.author.lName}}</em>
+							<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/article', article.id]">Download</a>
+							<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary btn-xs">Buy Article</button>
 
+						</li>
+					</ol>
 				</li>
 			</ol>
 		<hr>

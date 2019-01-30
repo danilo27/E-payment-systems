@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "ARTICLE")
 public class Article {
@@ -18,13 +20,20 @@ public class Article {
     @Column(name = "ID")
     private Long id;
 	
+	@Column(name = "NAME", nullable = false)
+	private String name;
+	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "MAGAZINE")
-    private Magazine magazine;
+    @JoinColumn(name = "ISSUE")
+	@JsonBackReference
+    private Issue issue;
 	
 	@Column(name = "PRICE", nullable = false)
 	private Double price;
 	
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	private Author author;
+ 
 	public Article(){}
 
 	public Long getId() {
@@ -34,13 +43,13 @@ public class Article {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public Magazine getMagazine() {
-		return magazine;
+	
+	public Issue getIssue() {
+		return issue;
 	}
 
-	public void setMagazine(Magazine magazine) {
-		this.magazine = magazine;
+	public void setIssue(Issue issue) {
+		this.issue = issue;
 	}
 
 	public Double getPrice() {
@@ -50,6 +59,23 @@ public class Article {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	
+ 
 }

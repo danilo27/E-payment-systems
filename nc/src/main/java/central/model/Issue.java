@@ -1,5 +1,9 @@
 package central.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,9 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -21,7 +27,7 @@ public class Issue {
     @Column(name = "ID")
     private Long id;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "MAGAZINE")
 	@JsonBackReference
     private Magazine magazine;
@@ -32,6 +38,10 @@ public class Issue {
 	@Column(name = "PRICE", nullable = true)
 	private Double price;
 	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Article> articles = new ArrayList<Article>();
+
 	public Issue(){}
 	
 	public Long getId() {
@@ -40,6 +50,14 @@ public class Issue {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public List<Article> getArticles() {
+		return articles;
+	}
+
+	public void setArticles(List<Article> articles) {
+		this.articles = articles;
 	}
 
 	public Magazine getMagazine() {

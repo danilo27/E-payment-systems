@@ -1,5 +1,7 @@
 package central.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +25,19 @@ public class Subscription {
     private Magazine magazine;
 	
 	@Column(name = "PRICE", nullable = false)
-	private Double price; //monthly
+	private Double price; 
+	
+	@Column(name = "TYPE", nullable = false)
+	private String typeOfSubscription; 
+	
+	@Column(name = "VALID_UNTIL", nullable = false)
+    private Date date;
+
+    @Column(name = "PAID", nullable = false)
+    private Boolean paid;
+
+    @Column(name = "CANCELLED", nullable = true)
+    private Boolean cancelled;
 	
 	public Subscription(){}
 
@@ -49,6 +63,38 @@ public class Subscription {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public String getTypeOfSubscription() {
+		return typeOfSubscription;
+	}
+
+	public void setTypeOfSubscription(String typeOfSubscription) {
+		this.typeOfSubscription = typeOfSubscription;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Boolean getPaid() {
+		return paid;
+	}
+
+	public void setPaid(Boolean paid) {
+		this.paid = paid;
+	}
+
+	public Boolean getCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(Boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 	
 	
