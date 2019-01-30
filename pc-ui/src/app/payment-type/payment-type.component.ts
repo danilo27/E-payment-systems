@@ -40,7 +40,8 @@ export class PaymentTypeComponent implements OnInit {
       var mockData = {
         'amount': '5',
         'currency': 'USD',
-        'payee': 'marko.krajinovic1233-facilitator@gmail.com'
+        'merchantId': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
+        'merchantPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr'
       }
       this.paypalService.prepare(mockData).subscribe((data: any) => {
         //this.router.navigateByUrl(data.value);
@@ -52,7 +53,24 @@ export class PaymentTypeComponent implements OnInit {
   }
 
   subscription(){
-    this.paypalService.prepareSubscription({}).subscribe((data: any) => {
+    var mockData = {
+      'merchantId': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
+      'merchantPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr',
+      'planName': 'T-Shirt of the Month Club Plan',
+      'planDescription': 'Template creation.',
+      'frequency': 'MONTH',
+      'frequencyInterval': '1',
+      'cycles': '12',
+      'currency': 'USD',
+      'amount': '20',
+      'shippingAddress': '111 First Street',
+      'stateCode': 'CA',
+      'countryCode': 'US',
+      'postalCode': '95070',
+      'city': 'Saratoga'
+
+    }
+    this.paypalService.prepareSubscription(mockData).subscribe((data: any) => {
       console.log(data.value);
       window.location.href = data.value;
       //this.router.navigateByUrl(data.redirect_url);
