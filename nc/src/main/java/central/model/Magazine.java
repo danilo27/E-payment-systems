@@ -19,8 +19,7 @@ public class Magazine {
 
     @Column(name = "NAME", length = 120, nullable = false)
     private String name;
-    
-    //da li se naplaćuje čitaocima ili autorima (OPEN ACCESS / PAID ACCESS)
+ 
     @Column(name = "PAYMENT_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private MagazinePaymentType paymentType;
