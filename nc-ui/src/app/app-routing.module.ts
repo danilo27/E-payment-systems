@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { IssueComponent } from './issue/issue.component';
+import { AuthorComponent } from './author/author.component';
 import { Routes, RouterModule } from '@angular/router';
  
 const routes: Routes = [
@@ -11,8 +12,16 @@ const routes: Routes = [
 		pathMatch: 'full'
 	},
   {
+    path:'home',
+    component: HomeComponent
+  },
+  {
     path:'issue/:id',
     component: IssueComponent
+  },
+  {
+    path:'authors',
+    component: AuthorComponent
   }
   
 ]

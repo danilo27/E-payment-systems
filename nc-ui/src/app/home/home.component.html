@@ -2,7 +2,7 @@
 
 <ol >
 	<li *ngFor="let magazine of magazines">
-		{{magazine.name}} <strong>{{magazine.paymentType}}</strong><br>
+		[<strong>{{magazine.paymentType}}</strong>] {{magazine.name}} <br>
 		Issues:
 			<ol>
 				<li *ngFor="let issue of magazine.issues">

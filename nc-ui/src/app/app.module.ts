@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClient, HttpClientModule  } from '@angular/common/http';
-
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -13,18 +13,21 @@ import { ArticleService } from './services/article/article.service';
 import { SubscriptionService } from './services/subscription/subscription.service';
 import { TransactionService } from './services/transaction.service';
 import { IssueComponent } from './issue/issue.component';
+import { AuthorComponent } from './author/author.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    IssueComponent
+    IssueComponent,
+    AuthorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule      
   ],
   providers: [MagazineService,
   IssueService,
