@@ -29,7 +29,7 @@ public class Issue {
 	@Column(name = "DATE", nullable = false)
 	private String date;
 	
-	@Column(name = "PRICE", nullable = false)
+	@Column(name = "PRICE", nullable = true)
 	private Double price;
 	
 	public Issue(){}

@@ -61,9 +61,16 @@ public class Data {
 		i1.setMagazine(m1);
 		i1.setPrice(Double.parseDouble("15.0"));
 		
+		Issue i2 = new Issue();
+		i2.setDate("15-01-2019");
+		i2.setMagazine(m2);
+		i2.setPrice(null);
+		
 		issueRepository.save(i1);
+		issueRepository.save(i2);
 
 		m1.getIssues().add(i1);
+		m2.getIssues().add(i2);
 		
 		magazineRepository.save(m1);
 		magazineRepository.save(m2);

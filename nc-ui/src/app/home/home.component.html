@@ -7,7 +7,7 @@
 			<ol>
 				<li *ngFor="let issue of magazine.issues">
 					<em>{{issue.date}}</em>
-					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Open</a>
+					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Download</a>
 					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary">Buy Issue</button>
 
 				</li>
