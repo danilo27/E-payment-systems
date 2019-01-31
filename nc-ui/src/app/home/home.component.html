@@ -2,7 +2,8 @@
 
 <ol >
 	<li *ngFor="let magazine of magazines">
-		[<strong>{{magazine.paymentType}}</strong>] {{magazine.name}} <br>
+		[<strong>{{magazine.paymentType}}</strong>] {{magazine.name}} <button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-default btn-xs">Subscribe</button>
+		<br>
 		Issues:
 			<ol>
 				<li *ngFor="let issue of magazine.issues">
