@@ -97,15 +97,20 @@ public class Data {
 		i1.setDate("01-01-2019");
 		i1.setMagazine(m1);
 		i1.setPrice(Double.parseDouble("15.0"));
+		 
+		//i1.setFilepath("C:/issues/issue1.pdf");
 		
 		Issue i2 = new Issue();
 		i2.setDate("15-01-2019");
 		i2.setMagazine(m2);
 		i2.setPrice(null);
+		//i2.setFilepath("C:/issues/issue2.pdf");
 		
 		issueRepository.save(i1);
 		issueRepository.save(i2);
-
+		
+		System.out.println("i1: " + i1.toString());
+		
 		m1.getIssues().add(i1);
 		m2.getIssues().add(i2);
 		
@@ -126,12 +131,15 @@ public class Data {
 		a1.setAuthor(author1);
 		a1.setIssue(i1);
 		a1.setPrice(Double.parseDouble("5.0"));
+		a1.setFilepath("C:/articles/article1.pdf");
 		
 		Article a2 = new Article();
 		a2.setName("Introduction to Functional programming");
 		a2.setAuthor(author1);
 		a2.setIssue(i1);
 		a2.setPrice(Double.parseDouble("5.0"));
+		a2.setFilepath("C:/articles/article2.pdf");
+		
 		
 		Article a3 = new Article();
 		a3.setName("IOS and Android programming");
