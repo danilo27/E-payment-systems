@@ -2,14 +2,16 @@
 
 <ol >
 	<li *ngFor="let magazine of magazines">
-		[<strong>{{magazine.paymentType}}</strong>] {{magazine.name}} <button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-default btn-xs">Subscribe</button>
+		[<strong>{{magazine.paymentType}}</strong>] {{magazine.name}} <button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-basic btn-xs" (click)=subscribe(magazine)>Subscribe</button>
 		<br>
 		Issues:
 			<ol>
 				<li *ngFor="let issue of magazine.issues">
 					<em>{{issue.date}}</em>
 					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Download</a>
-					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary">Buy Issue</button>
+					<span *ngIf="magazine.paymentType=='PAID_ACCESS'">${{issue.price}}</span>
+					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary btn-sm" (click)="buyIssue(issue)">Buy Issue</button>
+					
 					<br>
 					<br>
 					Single Articles from this Issue:
@@ -17,7 +19,9 @@
 						<li *ngFor="let article of issue.articles">
 							<em>{{article.name}} by {{article.author.fName}} {{article.author.lName}}</em>
 							<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/article', article.id]">Download</a>
-							<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary btn-xs">Buy Article</button>
+							<span *ngIf="magazine.paymentType=='PAID_ACCESS'">${{article.price}}</span>
+							<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-default btn-xs" (click)="buyArticle(article)">Buy Article</button>
+							
 
 						</li>
 					</ol>

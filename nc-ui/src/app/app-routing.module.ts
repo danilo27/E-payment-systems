@@ -13,7 +13,8 @@ const routes: Routes = [
 	},
   {
     path:'home',
-    component: HomeComponent
+    component: HomeComponent 
+
   },
   {
     path:'issue/:id',
@@ -29,7 +30,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forRoot(routes)
+   RouterModule.forRoot(routes, { useHash: true })
   ],
   exports: [RouterModule],
   declarations: []

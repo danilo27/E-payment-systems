@@ -41,9 +41,19 @@ public class Issue {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Article> articles = new ArrayList<Article>();
-
+	
+	private String filepath;
+	
 	public Issue(){}
 	
+	public String getFilepath() {
+		return filepath;
+	}
+
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -82,6 +92,12 @@ public class Issue {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	@Override
+	public String toString() {
+		return "Issue [id=" + id + ", magazine=" + magazine + ", date=" + date + ", price=" + price + ", articles="
+				+ articles + ", filepath=" + filepath + "]";
 	}
 	 
 	 

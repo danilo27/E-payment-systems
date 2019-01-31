@@ -33,7 +33,9 @@ public class Article {
 	
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private Author author;
- 
+	
+	private String filepath;
+	
 	public Article(){}
 
 	public Long getId() {
@@ -44,6 +46,14 @@ public class Article {
 		this.id = id;
 	}
 	
+	public String getFilepath() {
+		return filepath;
+	}
+
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
+	}
+
 	public Issue getIssue() {
 		return issue;
 	}

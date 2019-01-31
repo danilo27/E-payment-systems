@@ -39,5 +39,17 @@ export class AuthorComponent implements OnInit {
         }
     }
 
+  addArticle(title,fName,lName){
+    var obj = {
+      "name": title,
+      "fName": fName,
+      "lName": lName,
+      "issue": this.magazine.issues[this.magazine.issues.length-1]
+    }
+    console.log('obj ',obj);
+    this.articleService.addArticle(obj).subscribe(x=>{
+               console.log('success add');
+            });
+  }
 
 }

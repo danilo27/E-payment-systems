@@ -12,8 +12,12 @@ export class ArticleService {
   }
 
   sendFile(file:any){
-            let formData:FormData = new FormData();
-            formData.append('file', file);
-            return this.http.post("/nc/file/addFile",formData) as Observable<any>;
-    }
+        let formData:FormData = new FormData();
+        formData.append('file', file);
+        return this.http.post("/nc/file/addFile",formData) as Observable<any>;
+  }
+
+  addArticle(obj){
+        return this.http.post("/nc/file/addArticle", obj) as Observable<any>;
+   }
 }

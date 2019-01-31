@@ -17,7 +17,7 @@ public class FileConf  extends WebMvcConfigurerAdapter{
     	registry.addResourceHandler("/**")
         .addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
     	
-        registry.addResourceHandler("/**").addResourceLocations("file:///C:/pdfs/");
+        registry.addResourceHandler("/**").addResourceLocations("file:///C:/articles/");
         registry.addResourceHandler("/**").addResourceLocations("file:///C:/issues/");
     }
 }

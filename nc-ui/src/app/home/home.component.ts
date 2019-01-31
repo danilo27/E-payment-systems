@@ -19,4 +19,17 @@ export class HomeComponent implements OnInit {
   	})
   }
 
+   
+
+  subscribe(magazine){
+
+  }
+
+  buyIssue(issue){
+    console.log('Buying issue: ', issue);
+  }
+
+  buyArticle(article){
+
+  }
 }
