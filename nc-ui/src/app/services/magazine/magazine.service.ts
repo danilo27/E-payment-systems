@@ -8,6 +8,6 @@ export class MagazineService {
   constructor(private http: HttpClient) { }
 
   all(){
-  	 return this.http.get('/nc/magazine/all') as Observable<any>;
+  	 return this.http.get('api/nc/magazine/all') as Observable<any>;
   }
 }

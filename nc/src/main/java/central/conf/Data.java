@@ -3,6 +3,7 @@ package central.conf;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import central.model.Article;
@@ -10,12 +11,17 @@ import central.model.Author;
 import central.model.Issue;
 import central.model.Magazine;
 import central.model.MagazinePaymentType;
+import central.model.Role;
+import central.model.RoleName;
+import central.model.User;
 import central.repository.ArticleRepository;
 import central.repository.AuthorRepository;
 import central.repository.IssueRepository;
 import central.repository.MagazineRepository;
+import central.repository.RoleRepository;
 import central.repository.SubscriptionRepository;
 import central.repository.TransactionRepository;
+import central.repository.UserRepository;
  
 
 @Component
@@ -39,13 +45,37 @@ public class Data {
 	@Autowired
 	private SubscriptionRepository subscriptionRepository;
 	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@PostConstruct
 	private void init() {
+		//System.out.println(passwordEncoder.encode("pera"));
+		
 		magazineRepository.deleteAll();
 		issueRepository.deleteAll();
 		articleRepository.deleteAll();
 		subscriptionRepository.deleteAll();
 		authorRepository.deleteAll();
+		userRepository.deleteAll();
+		roleRepository.deleteAll();
+		
+		Role r1 = new Role();
+		r1.setName(RoleName.USER);
+		Role r2 = new Role();
+		r2.setName(RoleName.AUTHOR);
+		Role r3 = new Role();
+		r3.setName(RoleName.MERCHANT);
+
+		roleRepository.save(r1);
+		roleRepository.save(r2);
+		roleRepository.save(r3);
 		
 		Magazine m1 = new Magazine();
 		Magazine m2 = new Magazine();
@@ -88,8 +118,12 @@ public class Data {
 		magazineRepository.save(m2);
 		
 		Author author1 = new Author();
-		author1.setfName("Petar");
-		author1.setlName("Peric");
+		author1.setFirstName("Petar");
+		author1.setLastName("Peric");
+		author1.setAutorovoObelezje("proba");
+		author1.setUsername("petar");
+		author1.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
+		author1.setRole(r2);
 		author1 = authorRepository.save(author1);
 		
 		Article a1 = new Article();
@@ -122,8 +156,25 @@ public class Data {
 		i1.getArticles().add(a3);
 		
 		issueRepository.save(i1);
- 
 		
+		
+			
+		User u1 = new User();
+		u1.setFirstName("Milorad");
+		u1.setFirstName("Miloradic");
+		u1.setUsername("pera");
+		u1.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
+		u1.setRole(r1);
+		
+		User u2 = new User();
+		u2.setFirstName("Nemanja");
+		u2.setFirstName("Nemanjic");
+		u2.setUsername("sava");
+		u2.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
+		u2.setRole(r1);
+		
+		userRepository.save(u1);
+		userRepository.save(u2);
 	}
 
 }

@@ -1,22 +1,30 @@
+import { AuthenticationService } from './../services/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 import { MagazineService } from '../services/magazine/magazine.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [AuthenticationService]
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private magazineService: MagazineService) { }
+  constructor(private magazineService: MagazineService,
+    private authenticationService: AuthenticationService,
+    private router: Router) { }
 
   magazines = [];
 
 
   ngOnInit() {
-  	 this.magazineService.all().subscribe(data => {
-  		this.magazines = data as any[];
-  		console.log(this.magazines);
-  	})
+    if (!this.authenticationService.isAuthenticated())
+      this.router.navigate(['login']);
+
+    this.magazineService.all().subscribe(data => {
+      this.magazines = data as any[];
+      console.log(this.magazines);
+    })
   }
 
    

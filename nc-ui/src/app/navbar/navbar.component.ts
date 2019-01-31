@@ -1,3 +1,4 @@
+import { AuthenticationService } from './../services/authentication/authentication.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+/*
+  private logged = false;
+*/
+  constructor(private authService: AuthenticationService) { }
 
-  constructor() { }
+  ngOnInit() {/*
+    if (this.authService.isAuthenticated()) {
+      this.logged = true;
+    } else {
+      this.logged = false;
+    }*/
+  }
 
-  ngOnInit() {
+  isAuthenticated(){
+    return this.authService.isAuthenticated();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

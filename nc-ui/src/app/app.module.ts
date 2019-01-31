@@ -1,11 +1,13 @@
+import { TokenInterceptor } from './token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClient, HttpClientModule  } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
+
 
 import { MagazineService } from './services/magazine/magazine.service';
 import { IssueService } from './services/issue/issue.service';
@@ -14,6 +16,7 @@ import { SubscriptionService } from './services/subscription/subscription.servic
 import { TransactionService } from './services/transaction.service';
 import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { AuthorComponent } from './author/author.component';
     NavbarComponent,
     HomeComponent,
     IssueComponent,
-    AuthorComponent
+    AuthorComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +33,13 @@ import { AuthorComponent } from './author/author.component';
     HttpClientModule,
     FormsModule      
   ],
-  providers: [MagazineService,
+  providers: [
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  },
+  MagazineService,
   IssueService,
   ArticleService,
   SubscriptionService,
