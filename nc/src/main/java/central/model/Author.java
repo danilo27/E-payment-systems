@@ -2,46 +2,32 @@ package central.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
+
+
 
 @Entity
 @Table(name = "Author")
-public class Author {
+//@DiscriminatorValue(RoleName.AUTHOR)
+public class Author extends User {
 	
-	@Id
-    @GeneratedValue
-    @Column(name = "ID")
-    private Long id;
+	@Column
+	private String autorovoObelezje;
+	/*
+	@Autowired
+	private RoleRepository roleRepository;
 	
-	private String fName;
-	private String lName;
-	
-	public Author(){}
-
-	public Long getId() {
-		return id;
+	*/
+	public Author(){
+		//super.setRole(roleRepository.findByName(RoleName.AUTHOR));
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public String getAutorovoObelezje() {
+		return autorovoObelezje;
 	}
 
-	public String getfName() {
-		return fName;
-	}
-
-	public void setfName(String fName) {
-		this.fName = fName;
-	}
-
-	public String getlName() {
-		return lName;
-	}
-
-	public void setlName(String lName) {
-		this.lName = lName;
+	public void setAutorovoObelezje(String autorovoObelezje) {
+		this.autorovoObelezje = autorovoObelezje;
 	}
 	
 	
