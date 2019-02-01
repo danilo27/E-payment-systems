@@ -1,6 +1,8 @@
 package central.security;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import central.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -33,22 +36,30 @@ public class JwtTokenProvider {
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-
+       
+        String role = customUserDetails.getAuthorities().toArray()[0].toString();
+        
+        Map<String, Object> claims = new HashMap<String, Object>();
+        claims.put("sub", customUserDetails.getUsername());
+        claims.put("created", new Date());
+        claims.put("role", role);
+        
         return Jwts.builder()
-                .setSubject(Long.toString(customUserDetails.getId()))
-                .setIssuedAt(new Date())
+                .setClaims(claims)
+                //.setSubject(Long.toString(customUserDetails.getId()))
+                //.setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
     
-    public Long getUserIdFromJWT(String token) {
+    public String getUserUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong(claims.getSubject());
+        return claims.getSubject();
     }
     
     public boolean validateToken(String authToken) {

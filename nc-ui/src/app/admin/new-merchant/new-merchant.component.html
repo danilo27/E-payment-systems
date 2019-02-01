@@ -1,0 +1,20 @@
+<app-admin></app-admin>
+<p>
+  new-merchant works!
+</p>
+<form #form="ngForm" (ngSubmit)="sendData()">
+  MAGAZIN :
+  <select [(ngModel)]="selectedMagazineIssn" name="combobox1">
+    <option *ngFor="let m of magazines" value="{{m.issn}}">{{m.name}}</option>
+  </select>
+
+  <br>
+  Nacini placanja:
+  <div>
+    <label *ngFor="let sp of supportedPayments">
+      <input type="checkbox" value="{{sp.id}}">
+      {{sp.paymentName}}
+    </label>
+  </div>
+  <button class = "btn btn success" type="submit"> Kreiraj prodavca </button>
+</form>

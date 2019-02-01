@@ -1,3 +1,5 @@
+import { NewMerchantComponent } from './admin/new-merchant/new-merchant.component';
+import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -29,6 +31,14 @@ const routes: Routes = [
   {
     path:'authors',
     component: AuthorComponent
+  },
+  {
+    path:'admin',
+    component: AdminComponent
+  },
+  {
+    path:'admin/new-merchant',
+    component: NewMerchantComponent
   }
   
 ]

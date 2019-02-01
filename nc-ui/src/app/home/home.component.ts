@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { TransactionService } from '../services/transaction.service';
 
 export interface IHash {
-  [details: string] : string;
-} 
+  [details: string]: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -22,28 +22,29 @@ export class HomeComponent implements OnInit {
     private router: Router) { }
 
   magazines = [];
-  map: IHash = {};   
- 
+  map: IHash = {};
+
   ngOnInit() {
     if (!this.authenticationService.isAuthenticated())
       this.router.navigate(['login']);
-
-    this.magazineService.all().subscribe(data => {
-      this.magazines = data as any[];
-      console.log(this.magazines);
-    })
+    else {
+      this.magazineService.all().subscribe(data => {
+        this.magazines = data as any[];
+        console.log(this.magazines);
+      })
+    }
   }
 
-   
 
-  subscribe(magazine){
+
+  subscribe(magazine) {
 
   }
 
-  buyIssue(issue){
-     
+  buyIssue(issue) {
 
-    this.map["itemType"] = "issue";  
+
+    this.map["itemType"] = "issue";
     this.map["itemId"] = issue.id;
 
     var dto = {
@@ -56,13 +57,13 @@ export class HomeComponent implements OnInit {
 
     //sessionStorage.setItem('cart', JSON.stringify(dto));
 
-    this.transactionService.proceedToPc(dto).subscribe(data=>{
-      window.location.href=data['value'];
+    this.transactionService.proceedToPc(dto).subscribe(data => {
+      window.location.href = data['value'];
     })
 
   }
 
-  buyArticle(article){
+  buyArticle(article) {
 
   }
 }
