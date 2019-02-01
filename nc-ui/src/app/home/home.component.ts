@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
     //sessionStorage.setItem('cart', JSON.stringify(dto));
 
     this.transactionService.proceedToPc(dto).subscribe(data=>{
-     // window.location.href=data['value'];
+      window.location.href=data['value'];
     })
 
   }

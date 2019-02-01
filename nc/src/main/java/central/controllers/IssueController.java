@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import central.dto.CartDto;
+import central.model.Cart;
 import central.model.Issue;
 import central.repository.IssueRepository;
 import central.repository.MagazineRepository;

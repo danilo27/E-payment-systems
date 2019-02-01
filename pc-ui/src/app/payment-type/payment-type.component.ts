@@ -2,7 +2,7 @@ import { PaypalService } from './../services/paypal.service';
 import { Component, OnInit } from '@angular/core';
 
 import { HttpClient } from "@angular/common/http";
-import { Router } from '@angular/router';
+import {Router, ActivatedRoute, Params} from '@angular/router';
 import { CardService } from '../services/card.service';
 
 @Component({
@@ -15,9 +15,23 @@ export class PaymentTypeComponent implements OnInit {
   constructor(private http: HttpClient,
     private router: Router,
     private card_service: CardService,
-    private paypalService: PaypalService) { }
+    private paypalService: PaypalService,
+    private activatedRoute: ActivatedRoute) { }
+
+  token:string;
+  cart: any;
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe(params => {
+        this.token = params['t'];
+        console.log(this.token);
+        this.http.get('/api/pc/getCart/'+this.token).subscribe(data=>{
+          this.cart = data;
+          console.log('cart: ', this.cart);
+        })
+
+
+      });
   }
   //payment_types: any;
   payment_types = [{ name: "Credit Card", image: "https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg" },

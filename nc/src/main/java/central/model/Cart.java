@@ -1,12 +1,16 @@
-package central.dto;
+package central.model;
 
 import java.util.HashMap;
 
-public class CartDto {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+@Entity
+public class Cart {
 	private Double totalPrice;
 	private HashMap<String, String> itemDetails = new HashMap<String, String>();
-	
-	public CartDto(){}
+	@Id	
+	private String token;
+	public Cart(){}
 	
 	public Double getTotalPrice() {
 		return totalPrice;
@@ -19,6 +23,14 @@ public class CartDto {
 	}
 	public void setItemDetails(HashMap<String, String> itemDetails) {
 		this.itemDetails = itemDetails;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

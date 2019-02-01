@@ -1,12 +1,16 @@
-package pc.dto;
+package pc.model;
 
 import java.util.HashMap;
 
-public class CartDto {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+@Entity
+public class Cart {
 	private Double totalPrice;
 	private HashMap<String, String> itemDetails = new HashMap<String, String>();
-	
-	public CartDto(){}
+	@Id	
+	private String token;
+	public Cart(){}
 	
 	public Double getTotalPrice() {
 		return totalPrice;
@@ -21,9 +25,12 @@ public class CartDto {
 		this.itemDetails = itemDetails;
 	}
 
-	@Override
-	public String toString() {
-		return "CartDto [totalPrice=" + totalPrice + ", itemDetails=" + itemDetails + "]";
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
-import central.dto.CartDto;
+import central.model.Cart;
 import central.dto.StringDto;
 
 @RestController
 @RequestMapping(value = "/nc/transaction")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4204")
 public class TransactionController {
 	
 	@Bean
@@ -25,29 +25,17 @@ public class TransactionController {
 	    return new RestTemplate();
 	}
 	
-//	@PreAuthorize("hasAuthority('USER')")
-//	@PostMapping(value="/proceedToPc")
-//	public StringDto proceedToPc(@RequestBody CartDto cartDto){
-//		String fooResourceUrl = "http://localhost:8080/api/pc/sendCart";
-//		ResponseEntity<String> response = restTemplate().postForEntity(fooResourceUrl, cartDto, String.class);
-//		
-//		 
-//		
-//		System.out.println("[NC]" + response.getBody());
-//		return new StringDto("url",response.getBody());
-//	}
+ 
 	
 	//redirect
 	@PreAuthorize("hasAuthority('USER')")
 	@PostMapping("/proceedToPc")
-	public ModelAndView proceedToPc(@RequestBody CartDto cartDto){
+	public ResponseEntity<StringDto> proceedToPc(@RequestBody Cart cart){
 		String fooResourceUrl = "http://localhost:8080/api/pc/sendCart";
-		ResponseEntity<ModelAndView> response = restTemplate().postForEntity(fooResourceUrl, cartDto, ModelAndView.class);
-		
-		 
-		
-		System.out.println("[NC]" + response.getBody());
-		return response.getBody();
+		ResponseEntity<Cart> response = restTemplate().postForEntity(fooResourceUrl, cart, Cart.class);
+		StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
+		System.out.println("[NC]" + dto.toString());
+		return new ResponseEntity<StringDto>(dto, HttpStatus.OK);
 	}
 	 
 }
