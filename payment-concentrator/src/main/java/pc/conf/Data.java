@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import pc.model.Merchant;
 import pc.model.PaymentType;
 import pc.model.PaymentTypeField;
+import pc.repositories.PaymentTypeFieldRepository;
 import pc.repositories.PaymentTypeRepository;
 import pc.services.MerchantService;
 
@@ -23,24 +24,37 @@ public class Data {
 	@Autowired
 	private PaymentTypeRepository paymentTypeRepository;
 	
+	@Autowired
+	private PaymentTypeFieldRepository paymentTypeFieldRepository;
+	
 	@PostConstruct
 	private void init() {
-//		Merchant m1 = new Merchant("merchant1", "pas", "http://localhost:8081");
-//		
-//		paymentTypeRepository.deleteAll();
-//		
-//		PaymentType card = new PaymentType();
-//		List<PaymentTypeField> cardFields = new ArrayList<>();
-//		cardFields.add(new PaymentTypeField("PAN","string"));
-//		cardFields.add(new PaymentTypeField("Card Holder Name","string"));
-//		cardFields.add(new PaymentTypeField("Expiring Month", "string"));
-//		cardFields.add(new PaymentTypeField("Expiring Year", "string"));
-//		cardFields.add(new PaymentTypeField("CV","string"));
-//		card.setName("CARD");
-//		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
-//		card.setFields(cardFields);
-//		
-//		paymentTypeRepository.save(card);
+		Merchant m1 = new Merchant("merchant1", "pas", "http://localhost:8081");
+		
+		paymentTypeRepository.deleteAll();
+		
+		PaymentType card = new PaymentType();
+		card = paymentTypeRepository.save(card);
+		List<PaymentTypeField> cardFields = new ArrayList<>();
+		
+		PaymentTypeField panField = paymentTypeFieldRepository.save(new PaymentTypeField("PAN","string"));
+		PaymentTypeField cardHolderNameField = paymentTypeFieldRepository.save(new PaymentTypeField("Card Holder Name","string"));
+		PaymentTypeField expiringMonthField = paymentTypeFieldRepository.save(new PaymentTypeField("Expiring Month","string"));
+		PaymentTypeField expiringYearField = paymentTypeFieldRepository.save(new PaymentTypeField("Expiring Year","string"));
+		PaymentTypeField cvField = paymentTypeFieldRepository.save(new PaymentTypeField("CV","string"));
+	 
+		
+		cardFields.add(panField);
+		cardFields.add(cardHolderNameField);
+		cardFields.add(expiringMonthField);
+		cardFields.add(expiringYearField);
+		cardFields.add(cvField);
+		
+		card.setName("CARD");
+		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
+		card.setFields(cardFields);
+		
+		paymentTypeRepository.save(card);
 		
 		//TODO paypal
 		

@@ -21,7 +21,7 @@ public class PaymentType {
 	
 	private String name;
 	private String imageUrl;
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY)
 	private List<PaymentTypeField> fields = new ArrayList<>();
 	
 	public PaymentType(){}

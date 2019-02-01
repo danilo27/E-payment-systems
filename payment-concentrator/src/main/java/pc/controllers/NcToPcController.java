@@ -44,7 +44,7 @@ public class NcToPcController {
 	
 	@GetMapping("/getCart/{token}")
 	public ResponseEntity<Cart> getCart(@PathVariable String token) throws URISyntaxException{
-		System.out.println("[PC] getToken");
+		System.out.println("[PC] getCart, token: " + token);
 	    return new ResponseEntity<Cart>(cartRepository.findById(token).orElse(null), HttpStatus.OK);
 	    
 	}
