@@ -2,6 +2,12 @@ import { AuthenticationService } from './../services/authentication/authenticati
 import { Component, OnInit } from '@angular/core';
 import { MagazineService } from '../services/magazine/magazine.service';
 import { Router } from '@angular/router';
+import { TransactionService } from '../services/transaction.service';
+
+export interface IHash {
+  [details: string] : string;
+} 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -12,11 +18,12 @@ export class HomeComponent implements OnInit {
 
   constructor(private magazineService: MagazineService,
     private authenticationService: AuthenticationService,
+    private transactionService: TransactionService,
     private router: Router) { }
 
   magazines = [];
-
-
+  map: IHash = {};   
+ 
   ngOnInit() {
     if (!this.authenticationService.isAuthenticated())
       this.router.navigate(['login']);
@@ -34,7 +41,25 @@ export class HomeComponent implements OnInit {
   }
 
   buyIssue(issue){
-    console.log('Buying issue: ', issue);
+     
+
+    this.map["itemType"] = "issue";  
+    this.map["itemId"] = issue.id;
+
+    var dto = {
+      totalPrice: issue.price,
+      itemDetails: this.map
+
+    }
+
+    console.log('transaction: ', dto);
+
+    //sessionStorage.setItem('cart', JSON.stringify(dto));
+
+    this.transactionService.proceedToPc(dto).subscribe(data=>{
+     // window.location.href=data['value'];
+    })
+
   }
 
   buyArticle(article){
