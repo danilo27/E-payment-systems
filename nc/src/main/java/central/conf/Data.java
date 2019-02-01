@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import central.model.Administrator;
 import central.model.Article;
 import central.model.Author;
 import central.model.Issue;
@@ -13,13 +14,16 @@ import central.model.Magazine;
 import central.model.MagazinePaymentType;
 import central.model.Role;
 import central.model.RoleName;
+import central.model.SupportedPayments;
 import central.model.User;
+import central.repository.AdministratorRepository;
 import central.repository.ArticleRepository;
 import central.repository.AuthorRepository;
 import central.repository.IssueRepository;
 import central.repository.MagazineRepository;
 import central.repository.RoleRepository;
 import central.repository.SubscriptionRepository;
+import central.repository.SupportedPaymentsRepository;
 import central.repository.TransactionRepository;
 import central.repository.UserRepository;
  
@@ -54,6 +58,12 @@ public class Data {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private AdministratorRepository adminRepository;
+	
+	@Autowired
+	private SupportedPaymentsRepository supportedPaymentsRepository;
+	
 	@PostConstruct
 	private void init() {
 		//System.out.println(passwordEncoder.encode("pera"));
@@ -65,13 +75,15 @@ public class Data {
 		authorRepository.deleteAll();
 		userRepository.deleteAll();
 		roleRepository.deleteAll();
+		adminRepository.deleteAll();
+		supportedPaymentsRepository.deleteAll();
 		
 		Role r1 = new Role();
 		r1.setName(RoleName.USER);
 		Role r2 = new Role();
 		r2.setName(RoleName.AUTHOR);
 		Role r3 = new Role();
-		r3.setName(RoleName.MERCHANT);
+		r3.setName(RoleName.ADMINISTRATOR);
 
 		roleRepository.save(r1);
 		roleRepository.save(r2);
@@ -120,7 +132,6 @@ public class Data {
 		Author author1 = new Author();
 		author1.setFirstName("Petar");
 		author1.setLastName("Peric");
-		author1.setAutorovoObelezje("proba");
 		author1.setUsername("petar");
 		author1.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
 		author1.setRole(r2);
@@ -161,20 +172,40 @@ public class Data {
 			
 		User u1 = new User();
 		u1.setFirstName("Milorad");
-		u1.setFirstName("Miloradic");
+		u1.setLastName("Miloradic");
 		u1.setUsername("pera");
 		u1.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
 		u1.setRole(r1);
 		
 		User u2 = new User();
 		u2.setFirstName("Nemanja");
-		u2.setFirstName("Nemanjic");
+		u2.setLastName("Nemanjic");
 		u2.setUsername("sava");
 		u2.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
 		u2.setRole(r1);
 		
 		userRepository.save(u1);
 		userRepository.save(u2);
+		
+		Administrator a = new Administrator();
+		a.setFirstName("Admir");
+		a.setLastName("Admir");
+		a.setUsername("admin");
+		a.setPassword("$2a$10$L49EYcQMFQQOnOMxDkIv0.QwQNo1SYqMHKxY1iDDPxX8OF5Ovhnbu");
+		a.setRole(r3);
+		
+		adminRepository.save(a);
+		
+		SupportedPayments sp1 = new SupportedPayments();
+		sp1.setPaymentName("PayPal");
+		SupportedPayments sp2 = new SupportedPayments();
+		sp2.setPaymentName("Bitcoin");
+		SupportedPayments sp3 = new SupportedPayments();
+		sp3.setPaymentName("Credit Card");
+		
+		supportedPaymentsRepository.save(sp1);
+		supportedPaymentsRepository.save(sp2);
+		supportedPaymentsRepository.save(sp3);
 	}
 
 }

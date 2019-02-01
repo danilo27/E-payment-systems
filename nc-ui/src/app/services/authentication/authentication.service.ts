@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import * as decode from 'jwt-decode';
+
 
 @Injectable()
 export class AuthenticationService {
@@ -22,9 +24,15 @@ export class AuthenticationService {
     return false;
   }
 
+  public getRole() {
+    const token = localStorage.getItem('token');
+    const tokenPayload = decode(token);
+    //console.log(tokenPayload);
+    return tokenPayload.role;
+  }
+
   public logout(){
     localStorage.clear();
-    //localStorage.setItem("username", null);
     //localStorage.removeItem('token');
     this.router.navigate(['/login']);
     //window.location.reload();
