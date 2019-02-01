@@ -2,12 +2,14 @@ package acq.controllers;
 
 import java.net.URISyntaxException;
 import java.util.Calendar;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +25,7 @@ import acq.dto.StringDTO;
 import acq.dto.UserAccountDto;
 import acq.model.Account;
 import acq.model.Card;
+import acq.model.Merchant;
 import acq.model.Payment;
 import acq.model.PaymentRequest;
 import acq.model.enums.ReturnType;
@@ -146,12 +149,23 @@ public class AcqPaymentController {
 		return new ResponseEntity<>(new StringDTO(url), HttpStatus.OK);
 	}
 	
-	@PostMapping("/makeMerchantAccount")
-	public ResponseEntity<?> makeMerchantAccount( 
-			@RequestBody MerchantAccountDto acc
+	@GetMapping("/makeMerchantAccount")
+	public ResponseEntity<MerchantAccountDto> makeMerchantAccount( 
+			//@RequestBody MerchantAccountDto acc
 			){
-		//TODO create MERCHANT_ID and MERCHANT_PASSWORD
-		return new ResponseEntity<>(new MerchantAccountDto(), HttpStatus.OK);
+		Merchant m = new Merchant();
+		m.setMerchantBankUrl("http://localhost:"+acq_url);
+		m.setMerchantPass(UUID.randomUUID().toString());
+		m = merchantService.save(m);
+		m.setMerchantId(m.getId().toString());
+		
+		Account a = new Account();
+		a.setAccountBalance(0);
+		a.setMerchantId(m.getMerchantId());
+		MerchantAccountDto dto = new MerchantAccountDto();
+		dto.setMerchantId(m.getMerchantId().toString());
+		dto.setMerchantPassword(m.getMerchantPass());
+		return new ResponseEntity<MerchantAccountDto>(dto, HttpStatus.OK);
 	}
 	
 	@PostMapping("/makeUserAccount")
