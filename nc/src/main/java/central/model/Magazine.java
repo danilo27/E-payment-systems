@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -35,6 +36,9 @@ public class Magazine {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Issue> issues = new ArrayList<Issue>();
+    
+    @OneToOne
+    private Merchant merchant;
     
     public Magazine(){}
 
@@ -76,6 +80,14 @@ public class Magazine {
 
 	public void setIssues(List<Issue> issues) {
 		this.issues = issues;
+	}
+
+	public Merchant getMerchant() {
+		return merchant;
+	}
+
+	public void setMerchant(Merchant merchant) {
+		this.merchant = merchant;
 	}
     
     

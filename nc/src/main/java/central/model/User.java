@@ -12,6 +12,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import central.repository.RoleRepository;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name="role", discriminatorType = DiscriminatorType.STRING)
@@ -35,10 +39,20 @@ public class User {
 	
 	@ManyToOne(optional = false)
 	private Role role;
+ 
 	
 	@ManyToMany
     private List<UserItem> userItems = new ArrayList<UserItem>();
-	
+ 
+	/*
+	@Autowired
+	private RoleRepository roleRepository;
+	*/
+	public User() {
+		//this.role = roleRepository.findByName(RoleName.USER);
+	}
+
+ 
 	public Long getId() {
 		return id;
 	}

@@ -92,9 +92,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 		.permitAll()
                 	.antMatchers("/auth/**")
                 		.permitAll()
-                		.antMatchers("/h2-console/**")
+                	.antMatchers("/h2-console/**")
                 		.permitAll()
+
                 	.antMatchers("/nc/transaction/returnToNc").permitAll()
+
+                		.antMatchers("/nc/magazine/all")
+                	.permitAll()
+
                     .anyRequest()
                         .authenticated();
     	 
