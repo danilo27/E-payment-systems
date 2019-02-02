@@ -7,6 +7,6 @@ import central.model.Cart;
 import central.model.Magazine;
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, String>{
-
+public interface CartRepository extends JpaRepository<Cart, Long>{
+	Cart findOneByToken(String token);
 }

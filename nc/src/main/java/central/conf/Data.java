@@ -97,8 +97,7 @@ public class Data {
 		i1.setDate("01-01-2019");
 		i1.setMagazine(m1);
 		i1.setPrice(Double.parseDouble("15.0"));
-		 
-		//i1.setFilepath("C:/issues/issue1.pdf");
+		i1.setFilepath("C:/issues/"+i1.getMagazine().getIssn()+"_"+i1.getDate()+".pdf");
 		
 		Issue i2 = new Issue();
 		i2.setDate("15-01-2019");

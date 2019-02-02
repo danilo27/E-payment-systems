@@ -2,13 +2,20 @@ package central.model;
 
 import java.util.HashMap;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 @Entity
 public class Cart {
+	@Id
+    @GeneratedValue
+    @Column(name = "ID")
+    private Long id;
+	
 	private Double totalPrice;
 	private HashMap<String, String> itemDetails = new HashMap<String, String>();
-	@Id	
+ 
 	private String token;
 	public Cart(){}
 	
@@ -31,6 +38,20 @@ public class Cart {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", totalPrice=" + totalPrice + ", itemDetails=" + itemDetails + ", token=" + token
+				+ "]";
 	}
 	
 	

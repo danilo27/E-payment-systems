@@ -49,7 +49,7 @@ export class PaymentTypeComponent implements OnInit {
 
   sendRequest(type) {
     if (type == 'Credit Card') {
-      this.card_service.sendRequest();
+      this.card_service.sendRequest(this.cart);
     } else if (type == 'PayPal') {
       var mockData = {
         'amount': '5',

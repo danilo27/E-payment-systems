@@ -23,18 +23,18 @@ export class CardService {
 
   }
 
-  sendRequest(){
+  sendRequest(cart){
 
   	var paymentRequest = {
-  		merchantId: "daniloMerchant",
-  		merchantPassword: "pas",
-  		amount: 320.0,
-  		merchantOrderId: 1,
+  		merchantId: cart.itemDetails["merchantId"],
+  		merchantPassword: cart.itemDetails["merchantPas"],
+  		amount: cart.totalPrice,
+  		merchantOrderId: cart.id,
   		successUrl: "",
   		failedUrl: "",
   		errorUrl: ""
   	}
-
+    console.log('[pc] paymentRequest ', paymentRequest);
   	this.http.post('/api/card/prepare', paymentRequest).subscribe(data=>{
   		if(data!=null){
   			 

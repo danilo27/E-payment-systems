@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
+import { ItemsComponent } from './items/items.component';
 import { Routes, RouterModule } from '@angular/router';
  
 const routes: Routes = [
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path:'authors',
     component: AuthorComponent
+  },
+  {
+    path:'items',
+    component: ItemsComponent
   }
   
 ]

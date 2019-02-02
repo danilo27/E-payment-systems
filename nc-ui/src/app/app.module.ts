@@ -17,6 +17,7 @@ import { TransactionService } from './services/transaction.service';
 import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
 import { LoginComponent } from './login/login.component';
+import { ItemsComponent } from './items/items.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { LoginComponent } from './login/login.component';
     HomeComponent,
     IssueComponent,
     AuthorComponent,
-    LoginComponent
+    LoginComponent,
+    ItemsComponent
   ],
   imports: [
     BrowserModule,

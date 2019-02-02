@@ -33,41 +33,26 @@ public class PaymentRequest implements Serializable {
 	@Column(name = "MERCHANT_ID", length = 30)
 	private String merchantId;
 
-	// MERCHANT_PASSWORD – lozinka koja se dobije od banke
-	// prilikom registracije prodavca za onlajn prodaju (tip String(100)),
 	@Column(name = "MERCHANT_PASSWORD", length = 100)
 	private String merchantPassword;
 
-	// iznos transakcije (tip Decimal(10, 2)),
 	@Column(name = "AMOUNT")
 	private Long amount;
 
-	// prodavčev ID transakcije (tip Number(10)),
 	@Column(name = "MERCHANT_ORDER_ID")
 	private Integer merchantOrderId;
 
-	// MERCHANT_TIMESTAMP – prodavčev timestamp transakcije (tip DateTime).
 	@Column(name = "MERCHANT_TIMESTAMP")
 	private Date merchantTimestamp;
 
-	// SUCCESS_URL – URL na koji će se kupac preusmeriti ako je transakcija
-	// uspešna
 	@Column(name = "SUCCESS_URL")
 	private String successUrl;
 
-	// FAILED_URL - URL na koji će se kupac preusmeriti ako je transakcija
-	// neuspešna
 	@Column(name = "FAILED_URL")
 	private String failedUrl;
 
-	// ERROR_URL – URL na koji će se kupac preusmeriti ako se desi bilo kakva
-	// greška.
 	@Column(name = "ERROR_URL")
 	private String errorUrl;
-
-	// @OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "PAYMENT_URL_AND_ID")
-	// private PaymentURLandID paymentUrlAndId;
 
 	private PaymentType paymentType;
 
@@ -160,14 +145,6 @@ public class PaymentRequest implements Serializable {
 	public void setErrorUrl(String errorUrl) {
 		this.errorUrl = errorUrl;
 	}
-
-	// public PaymentURLandID getPaymentUrlAndId() {
-	// return paymentUrlAndId;
-	// }
-	//
-	// public void setPaymentUrlAndId(PaymentURLandID paymentUrlAndId) {
-	// this.paymentUrlAndId = paymentUrlAndId;
-	// }
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
