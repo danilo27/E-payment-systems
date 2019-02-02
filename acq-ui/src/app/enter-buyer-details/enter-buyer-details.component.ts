@@ -12,10 +12,15 @@ export class EnterBuyerDetailsComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, 
     private activatedRoute: ActivatedRoute) { }
   token: string;
+  cart: any;
   ngOnInit() {
      this.activatedRoute.queryParams.subscribe(params => {
         this.token = params['t'];
         console.log(this.token);
+        this.http.get('/acqBank/getCart/'+this.token).subscribe(data=>{
+          this.cart = data;
+          console.log('cart: ', this.cart);
+        })
       });
   }
 
@@ -31,10 +36,10 @@ export class EnterBuyerDetailsComponent implements OnInit {
   			if(data!=null){
 	  			console.log('ok');
 	  			console.log(data);
-	  		  if(data['value']==='')
+	  		  if(data.itemDetails['result']==='error')
   				  window.location.href = 'failed';
           else
-            window.location.href = data['value'];
+            window.location.href = data.itemDetails['successUrl'];
   			} else {
   				alert('Error occured');
   			}

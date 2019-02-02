@@ -1,4 +1,4 @@
-package pc.model;
+package acq.model;
 
 import java.util.HashMap;
 
@@ -46,6 +46,12 @@ public class Cart {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "Cart [id=" + id + ", totalPrice=" + totalPrice + ", itemDetails=" + itemDetails + ", token=" + token
+				+ "]";
 	}
 	
 	

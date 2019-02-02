@@ -46,6 +46,9 @@ export class HomeComponent implements OnInit {
 
     this.map["itemType"] = "issue";
     this.map["itemId"] = issue.id;
+    this.map["merchantId"] = "daniloMerchant";
+    this.map["merchantPas"] = "pas";
+    this.map["username"] = localStorage.getItem("username");
 
     var dto = {
       totalPrice: issue.price,

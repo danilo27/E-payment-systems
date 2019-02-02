@@ -1,0 +1,10 @@
+<app-navbar></app-navbar>
+<h3>My Products:</h3>
+
+<ol >
+	<li *ngFor="let item of items">
+		<em>{{item.itemType}}</em> {{item.itemName}} 
+		<button class="btn btn-link" (click)="download(item.itemUrl)">Download</button>
+	 
+	</li>
+</ol>

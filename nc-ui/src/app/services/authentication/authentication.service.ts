@@ -28,7 +28,7 @@ export class AuthenticationService {
     const token = localStorage.getItem('token');
     const tokenPayload = decode(token);
     //console.log(tokenPayload);
-    return tokenPayload.role;
+    return tokenPayload['role'];
   }
 
   public logout(){

@@ -1,11 +1,15 @@
 package central.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,11 @@ public class User {
 	
 	@ManyToOne(optional = false)
 	private Role role;
+ 
+	
+	@ManyToMany
+    private List<UserItem> userItems = new ArrayList<UserItem>();
+ 
 	/*
 	@Autowired
 	private RoleRepository roleRepository;
@@ -43,12 +52,22 @@ public class User {
 		//this.role = roleRepository.findByName(RoleName.USER);
 	}
 
+ 
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+ 
+	public List<UserItem> getUserItems() {
+		return userItems;
+	}
+
+	public void setUserItems(List<UserItem> userItems) {
+		this.userItems = userItems;
 	}
 
 	public String getUsername() {

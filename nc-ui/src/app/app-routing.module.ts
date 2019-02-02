@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HomeComponent } from './home/home.component';
 import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
+import { ItemsComponent } from './items/items.component';
 import { Routes, RouterModule } from '@angular/router';
  
 const routes: Routes = [
@@ -33,13 +34,18 @@ const routes: Routes = [
     component: AuthorComponent
   },
   {
-    path:'admin',
+ 
+    path:'items',
+    component: ItemsComponent
+  },
+  {
+      path:'admin',
     component: AdminComponent
   },
   {
     path:'admin/new-merchant',
     component: NewMerchantComponent
-  }
+   }
   
 ]
 

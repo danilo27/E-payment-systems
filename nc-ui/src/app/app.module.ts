@@ -17,8 +17,12 @@ import { TransactionService } from './services/transaction.service';
 import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
 import { LoginComponent } from './login/login.component';
+ 
+import { ItemsComponent } from './items/items.component';
+ 
 import { AdminComponent } from './admin/admin.component';
 import { NewMerchantComponent } from './admin/new-merchant/new-merchant.component';
+ 
 
 @NgModule({
   declarations: [
@@ -28,8 +32,12 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
     IssueComponent,
     AuthorComponent,
     LoginComponent,
+ 
+    ItemsComponent,
+ 
     AdminComponent,
     NewMerchantComponent
+ 
   ],
   imports: [
     BrowserModule,

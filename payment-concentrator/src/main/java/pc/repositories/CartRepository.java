@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import pc.model.Cart; 
 
 @Repository
-public interface CartRepository extends JpaRepository<Cart, String>{
-
+public interface CartRepository extends JpaRepository<Cart, Long>{
+	public Cart findByToken(String token);
 }

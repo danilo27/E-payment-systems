@@ -10,6 +10,7 @@ export class CardPaymentSuccessComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  	//todo return to nc
   }
 
 }
