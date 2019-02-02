@@ -33,7 +33,7 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
     AuthorComponent,
     LoginComponent,
  
-    ItemsComponent
+    ItemsComponent,
  
     AdminComponent,
     NewMerchantComponent

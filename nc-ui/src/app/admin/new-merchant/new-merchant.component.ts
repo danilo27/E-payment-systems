@@ -13,7 +13,7 @@ export class NewMerchantComponent implements OnInit {
   private magazines;
   private supportedPayments;
   private selectedMagazineIssn;
-  private selectedPayments: [];
+  private selectedPayments = [];
 
   constructor(private magazineService: MagazineService, 
               private supportedPaymentsService: SupportedPaymentsService) { }
