@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import central.model.Article;
 
 @Repository
-public interface ArticleRepository extends JpaRepository<Article, String> {
+public interface ArticleRepository extends JpaRepository<Article, Long> {
 
 }

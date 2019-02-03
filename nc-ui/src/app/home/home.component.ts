@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   buyIssue(issue) {
-
+    this.map = {};
 
     this.map["itemType"] = "issue";
     this.map["itemId"] = issue.id;
@@ -57,8 +57,8 @@ export class HomeComponent implements OnInit {
     }
 
     console.log('transaction: ', dto);
-
-    //sessionStorage.setItem('cart', JSON.stringify(dto));
+    console.log('itemId', issue.id)
+    
 
     this.transactionService.proceedToPc(dto).subscribe(data => {
       window.location.href = data['value'];
@@ -67,6 +67,26 @@ export class HomeComponent implements OnInit {
   }
 
   buyArticle(article) {
+    this.map = {};
 
+     this.map["itemType"] = "article";
+    this.map["itemId"] = article.id;
+    this.map["merchantId"] = "daniloMerchant";
+    this.map["merchantPas"] = "pas";
+    this.map["username"] = localStorage.getItem("username");
+
+    var dto = {
+      totalPrice: article.price,
+      itemDetails: this.map
+
+    }
+
+    console.log('transaction: ', dto);
+    console.log('itemId', article.id)
+ 
+
+    this.transactionService.proceedToPc(dto).subscribe(data => {
+      window.location.href = data['value'];
+    })
   }
 }

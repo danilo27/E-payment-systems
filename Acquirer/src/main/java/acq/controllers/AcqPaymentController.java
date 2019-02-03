@@ -123,6 +123,13 @@ public class AcqPaymentController {
 		if(c.getPan().startsWith(bankIin)){
 			if(validationService.validateCard(pr, c) == ReturnType.SUCCESS){ 
 				url = "http://localhost:4200/payment-card-success";
+				cart.setId(pr.getId());
+				cart.setMerchantOrderId(pr.getMerchantOrderId());
+				cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
+				cart.getItemDetails().put("status", "success");
+				cart.getItemDetails().put("successUrl", url);
+				cart.setToken(pr.getMerchantOrderId().toString());
+				System.out.println("[ACQ] cart after success: " + cart.toString());
 			} else if (validationService.validateCard(pr, c) == ReturnType.FAILED)
 				url = pr.getFailedUrl();
 			else 
@@ -148,21 +155,20 @@ public class AcqPaymentController {
 				cart.getItemDetails().put("successUrl", url);
 				cart.setToken(pr.getMerchantOrderId().toString());
 				System.out.println("[ACQ] cart after success: " + cart.toString());
-				
-				ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
-				
-				if(merchant!=null){
-					System.out.println("[ACQ] Pre: " + merchant.getAccountBalance());
-					merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
-					System.out.println("[ACQ] Posle: " + merchant.getAccountBalance());
-					accService.save(merchant);
-				}
-				
+							
 			} else {
 				url = pr.getErrorUrl();
 			}
 		}
 	
+		if(merchant!=null){
+			System.out.println("[ACQ] Merchant Balance - Before: " + merchant.getAccountBalance());
+			merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
+			System.out.println("[ACQ] Merchant Balance - After: " + merchant.getAccountBalance());
+			accService.save(merchant);
+		}
+		
+		ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 	    
 		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 	}

@@ -78,7 +78,7 @@ public class TransactionController {
 		String fooResourceUrl = "http://localhost:8080/api/pc/sendCart";
 		ResponseEntity<Cart> response = restTemplate().postForEntity(fooResourceUrl, cart, Cart.class);//notify PC to save new transaction
 		//cart.setToken(response.getBody().getToken());
-		cart = cartRepository.save(cart);
+		//cart = cartRepository.save(cart);
 		
 		//cart = cartRepository.save(response.getBody());
 		//StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
@@ -130,7 +130,7 @@ public class TransactionController {
 		} else if (c.getItemDetails().get("itemType").equals("subscription")){
 			 
 		} else if (c.getItemDetails().get("itemType").equals("article")){
-			Article article = articleRepository.findById(c.getItemDetails().get("itemId")).orElse(null);
+			Article article = articleRepository.findById(Long.parseLong(c.getItemDetails().get("itemId"))).orElse(null);
 			if(article!=null){
 				item.setItemUrl(article.getFilepath());
 				item.setItemType("article");
