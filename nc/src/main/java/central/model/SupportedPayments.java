@@ -17,11 +17,14 @@ public class SupportedPayments {
 	private Long id;
 	
 	@Column
-	private String paymentName;
+	private String name;
 	
+	@Column
+	private String imageUrl;
+	/*
 	@ManyToMany(mappedBy = "supportedPayments")
 	private Set<Merchant> merchants = new HashSet<Merchant>();
-
+*/
 	public Long getId() {
 		return id;
 	}
@@ -30,20 +33,30 @@ public class SupportedPayments {
 		this.id = id;
 	}
 
-	public String getPaymentName() {
-		return paymentName;
-	}
 
-	public void setPaymentName(String paymentName) {
-		this.paymentName = paymentName;
-	}
-
+/*
 	public Set<Merchant> getMerchants() {
 		return merchants;
 	}
 
 	public void setMerchants(Set<Merchant> merchants) {
 		this.merchants = merchants;
+	}*/
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	

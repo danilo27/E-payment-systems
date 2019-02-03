@@ -194,7 +194,7 @@ public class Data {
 		a.setRole(r3);
 		
 		adminRepository.save(a);
-		
+		/*
 		SupportedPayments sp1 = new SupportedPayments();
 		sp1.setPaymentName("PayPal");
 		SupportedPayments sp2 = new SupportedPayments();
@@ -204,7 +204,7 @@ public class Data {
 		
 		supportedPaymentsRepository.save(sp1);
 		supportedPaymentsRepository.save(sp2);
-		supportedPaymentsRepository.save(sp3);
+		supportedPaymentsRepository.save(sp3);*/
 	}
 
 }

@@ -1,21 +1,16 @@
 package pc.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import pc.model.enums.PaymentType;
 
 @Entity
 @Table(name = "PAYMENT_REQUEST")
@@ -54,16 +49,19 @@ public class PaymentRequest implements Serializable {
 	@Column(name = "ERROR_URL")
 	private String errorUrl;
 
-	private PaymentType paymentType;
+	private String paymentTypeName;
 
 	private String currency;
 
-	public PaymentType getPaymentType() {
-		return paymentType;
+
+	
+	
+	public String getPaymentTypeName() {
+		return paymentTypeName;
 	}
 
-	public void setPaymentType(PaymentType paymentType) {
-		this.paymentType = paymentType;
+	public void setPaymentTypeName(String paymentTypeName) {
+		this.paymentTypeName = paymentTypeName;
 	}
 
 	public String getCurrency() {
@@ -181,7 +179,7 @@ public class PaymentRequest implements Serializable {
 		return "PaymentRequest [token=" + token + ", id=" + id + ", merchantId=" + merchantId + ", merchantPassword="
 				+ merchantPassword + ", amount=" + amount + ", merchantOrderId=" + merchantOrderId
 				+ ", merchantTimestamp=" + merchantTimestamp + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl
-				+ ", errorUrl=" + errorUrl + ", paymentType=" + paymentType + ", currency=" + currency + "]";
+				+ ", errorUrl=" + errorUrl + ", "  + ", currency=" + currency + "]";
 	}
 
 }
