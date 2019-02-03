@@ -122,7 +122,7 @@ public class AcqPaymentController {
 		Cart cart = new Cart();
 		if(c.getPan().startsWith(bankIin)){
 			if(validationService.validateCard(pr, c) == ReturnType.SUCCESS){ 
-				url = "http://localhost:4200/payment-card-success";
+				url ="http://localhost:4200/payment-card-success";
 				cart.setId(pr.getId());
 				cart.setMerchantOrderId(pr.getMerchantOrderId());
 				cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
@@ -167,7 +167,7 @@ public class AcqPaymentController {
 			System.out.println("[ACQ] Merchant Balance - After: " + merchant.getAccountBalance());
 			accService.save(merchant);
 		}
-		
+		System.out.println("[ACQ] end Cart" + cart.toString());
 		ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 	    
 		return new ResponseEntity<Cart>(cart, HttpStatus.OK);

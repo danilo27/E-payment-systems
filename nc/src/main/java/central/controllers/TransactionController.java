@@ -82,7 +82,8 @@ public class TransactionController {
 		
 		//cart = cartRepository.save(response.getBody());
 		//StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
-		StringDto dto = new StringDto("value","http://localhost:4200?t="+cart.getId()); //id cart-a u PC-u!
+		Long cartIdInPc = response.getBody().getId();
+		StringDto dto = new StringDto("value","http://localhost:4200?t="+cartIdInPc); //id cart-a u PC-u!
 		System.out.println("[NC]" + dto.toString());
 		return new ResponseEntity<StringDto>(dto, HttpStatus.OK);
 	}
