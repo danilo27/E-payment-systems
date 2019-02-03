@@ -19,7 +19,7 @@ import acq.model.PaymentType;
 @Entity
 @Table(name = "PAYMENT_REQUEST")
 public class PaymentRequest implements Serializable {
-	
+
 	private String token = UUID.randomUUID().toString();
 
 	private static final long serialVersionUID = 1L;
@@ -28,60 +28,43 @@ public class PaymentRequest implements Serializable {
 	@GeneratedValue
 	@Column(name = "PAYMENT_REQUEST_ID")
 	private Long id;
-	
+
 	@Column(name = "MERCHANT_ID", length = 30)
 	private String merchantId;
- 
+
 	@Column(name = "MERCHANT_PASSWORD", length = 100)
 	private String merchantPassword;
- 
+
 	@Column(name = "AMOUNT")
-	private Long amount;
- 
+	private Double amount;
+
 	@Column(name = "MERCHANT_ORDER_ID")
-	private Integer merchantOrderId;
- 
+	private Long merchantOrderId;
+
 	@Column(name = "MERCHANT_TIMESTAMP")
 	private Date merchantTimestamp;
- 
+
 	@Column(name = "SUCCESS_URL")
 	private String successUrl;
- 
+
 	@Column(name = "FAILED_URL")
 	private String failedUrl;
- 
+
 	@Column(name = "ERROR_URL")
 	private String errorUrl;
-  
-	
-	private PaymentType paymentType; 
-	
-	
-	
+
+	private PaymentType paymentType;
+
+	private String currency;
+
 	public PaymentType getPaymentType() {
 		return paymentType;
 	}
-
-
 
 	public void setPaymentType(PaymentType paymentType) {
 		this.paymentType = paymentType;
 	}
 
-	private String currency;
-	private String payee;
-	
-	public String getPayee() {
-		return payee;
-	}
-
-
-
-	public void setPayee(String payee) {
-		this.payee = payee;
-	}
-	
-	
 	public String getCurrency() {
 		return currency;
 	}
@@ -89,8 +72,7 @@ public class PaymentRequest implements Serializable {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -115,19 +97,21 @@ public class PaymentRequest implements Serializable {
 		this.merchantPassword = merchantPassword;
 	}
 
-	public Long getAmount() {
+ 
+
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public Integer getMerchantOrderId() {
+	public Long getMerchantOrderId() {
 		return merchantOrderId;
 	}
 
-	public void setMerchantOrderId(Integer merchantOrderId) {
+	public void setMerchantOrderId(Long merchantOrderId) {
 		this.merchantOrderId = merchantOrderId;
 	}
 
@@ -163,55 +147,46 @@ public class PaymentRequest implements Serializable {
 		this.errorUrl = errorUrl;
 	}
 
-//	public PaymentURLandID getPaymentUrlAndId() {
-//		return paymentUrlAndId;
-//	}
-//
-//	public void setPaymentUrlAndId(PaymentURLandID paymentUrlAndId) {
-//		this.paymentUrlAndId = paymentUrlAndId;
-//	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	public PaymentRequest(){}
 
-	public PaymentRequest(Long id, String merchantId, String merchantPassword, Long amount,
-			Integer merchantOrderId, Timestamp merchantTimestamp, String successUrl, String failedUrl, String errorUrl
-		 ) {
+	public PaymentRequest() {
+	}
+
+	 
+	public PaymentRequest(String token, Long id, String merchantId, String merchantPassword, Double amount,
+			Long merchantOrderId, Date merchantTimestamp, String successUrl, String failedUrl, String errorUrl,
+			PaymentType paymentType, String currency) {
 		super();
+		this.token = token;
 		this.id = id;
 		this.merchantId = merchantId;
 		this.merchantPassword = merchantPassword;
 		this.amount = amount;
 		this.merchantOrderId = merchantOrderId;
-		this.merchantTimestamp = new Date();
+		this.merchantTimestamp = merchantTimestamp;
 		this.successUrl = successUrl;
 		this.failedUrl = failedUrl;
 		this.errorUrl = errorUrl;
-		//this.paymentUrlAndId = paymentUrlAndId;
+		this.paymentType = paymentType;
+		this.currency = currency;
 	}
-	
+
 	public String getToken() {
 		return token;
 	}
-	
+
 	public void setToken(String token) {
 		this.token = token;
 	}
-
-
 
 	@Override
 	public String toString() {
 		return "PaymentRequest [token=" + token + ", id=" + id + ", merchantId=" + merchantId + ", merchantPassword="
 				+ merchantPassword + ", amount=" + amount + ", merchantOrderId=" + merchantOrderId
 				+ ", merchantTimestamp=" + merchantTimestamp + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl
-				+ ", errorUrl=" + errorUrl + ", paymentType=" + paymentType + ", currency=" + currency + ", payee="
-				+ payee + "]";
+				+ ", errorUrl=" + errorUrl + ", paymentType=" + paymentType + ", currency=" + currency + "]";
 	}
-	
-	
- 
+
 }

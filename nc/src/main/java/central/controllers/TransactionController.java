@@ -1,6 +1,7 @@
 package central.controllers;
 
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,14 +66,23 @@ public class TransactionController {
 	@PostMapping("/proceedToPc")
 	public ResponseEntity<StringDto> proceedToPc(@RequestBody Cart cart){
 		cart.getItemDetails().put("status", "inProcess");
+		cart.setMerchantId(cart.getItemDetails().get("merchantId"));
+		cart.setMerchantPassword(cart.getItemDetails().get("merchantPas"));
+		cart.setStatus("inProgress");
+		cart = cartRepository.save(cart);
+		cart.setMerchantOrderId(cart.getId());
+		cart.setMerchantTimestamp(Calendar.getInstance().getTime());
 		cart = cartRepository.save(cart);
 		 
 		 
 		String fooResourceUrl = "http://localhost:8080/api/pc/sendCart";
-		ResponseEntity<Cart> response = restTemplate().postForEntity(fooResourceUrl, cart, Cart.class);
-		 
-		cart = cartRepository.save(response.getBody());
-		StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
+		ResponseEntity<Cart> response = restTemplate().postForEntity(fooResourceUrl, cart, Cart.class);//notify PC to save new transaction
+		//cart.setToken(response.getBody().getToken());
+		cart = cartRepository.save(cart);
+		
+		//cart = cartRepository.save(response.getBody());
+		//StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
+		StringDto dto = new StringDto("value","http://localhost:4200?t="+cart.getId()); //id cart-a u PC-u!
 		System.out.println("[NC]" + dto.toString());
 		return new ResponseEntity<StringDto>(dto, HttpStatus.OK);
 	}
@@ -84,9 +94,10 @@ public class TransactionController {
 		System.out.println("all: " + cartRepository.findAll().toString());
 		if(cart.getItemDetails().get("status").equals("success")){
 			//Cart c = cartRepository.findOneByToken(cart.getToken());
-			Cart c = cartRepository.findById(cart.getId()).orElse(null);
-			c.getItemDetails().put("status", "success");
+			Cart c = cartRepository.findByMerchantOrderId(cart.getMerchantOrderId());
+ 
 			if(c!=null){
+				c.getItemDetails().put("status", "success");
 				User user = userRepository.findByUsername(c.getItemDetails().get("username")).orElse(null);
 				if(user!=null){ 
 					user.getUserItems().add(getItem(c));

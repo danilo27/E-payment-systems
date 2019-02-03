@@ -16,10 +16,12 @@ import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
+import pc.model.Cart;
 import pc.model.Payment;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
+import pc.repositories.CartRepository;
 import pc.services.PaymentRequestService;
 
 @Service
@@ -39,15 +41,32 @@ public class CardService implements IPaymentExtensionPoint{
 	    return new RestTemplate();
 	}
 
+	@Autowired
+	private CartRepository cartRepository;
+	
 	@Override
 	public TransactionResult prepareTransaction(PaymentRequest req) {
-		req.setMerchantTimestamp(Calendar.getInstance().getTime());
-		PaymentRequest request = paymentRequestService.save(req);
-		String fooResourceUrl = bankAcquirer+"/acqBank/getUrlAndId";
-		ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, request, Payment.class);
-		PaymentConfirmationDto dto = new PaymentConfirmationDto();
-		dto.setResponse(response);
-		return proceedTransaction(dto);
+		System.out.println("req: " + req.getId());
+		System.out.println(cartRepository.findAll().toString());
+		Cart cart = cartRepository.findByMerchantOrderId(req.getId());
+		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
+		if(cart!=null){
+			req.setId(null);
+			req.setMerchantId(cart.getMerchantId());
+			req.setMerchantOrderId(cart.getMerchantOrderId());
+			req.setMerchantPassword(cart.getMerchantPassword());
+			req.setMerchantTimestamp(cart.getMerchantTimestamp());
+			req.setAmount(cart.getTotalPrice());
+			req = paymentRequestService.save(req);
+			System.out.println("req obj: " + req.toString());
+			String fooResourceUrl = bankAcquirer+"/acqBank/getUrlAndId";
+			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, req, Payment.class);
+			PaymentConfirmationDto dto = new PaymentConfirmationDto();
+			dto.setResponse(response);
+			return proceedTransaction(dto);
+		}
+ 
+		 return null;
 	}
 
 	@SuppressWarnings("unchecked")

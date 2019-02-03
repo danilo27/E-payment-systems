@@ -75,7 +75,7 @@ public class AcqPaymentController {
 	
 	@PostMapping("/getUrlAndId")
 	public Payment redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
-		System.out.println(pr.toString());
+		System.out.println("[ACQ] " + pr.toString());
 		Payment payment = new Payment();
  
 		if(validationService.validatePaymentRequest(pr) == ReturnType.SUCCESS){
@@ -141,7 +141,8 @@ public class AcqPaymentController {
 				
 				 
 				url = "http://localhost:4200/payment-card-success";
-				cart.setId(Long.valueOf(pr.getMerchantOrderId()));
+				cart.setId(pr.getId());
+				cart.setMerchantOrderId(pr.getMerchantOrderId());
 				cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
 				cart.getItemDetails().put("successUrl", url);
@@ -199,7 +200,7 @@ public class AcqPaymentController {
 		PaymentRequest pr = paymentRequestService.findByToken(token);
 		System.out.println("pr: " + pr.toString());
 		Cart cart = new Cart();
-		cart.setTotalPrice(Double.valueOf(pr.getAmount()));
+		cart.setTotalPrice(pr.getAmount());
 		cart.setId(Long.valueOf(pr.getMerchantOrderId()));
 		cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
 	    return new ResponseEntity<Cart>(cart, HttpStatus.OK);

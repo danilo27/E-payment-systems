@@ -37,10 +37,10 @@ public class PaymentRequest implements Serializable {
 	private String merchantPassword;
 
 	@Column(name = "AMOUNT")
-	private Long amount;
+	private Double amount;
 
 	@Column(name = "MERCHANT_ORDER_ID")
-	private Integer merchantOrderId;
+	private Long merchantOrderId;
 
 	@Column(name = "MERCHANT_TIMESTAMP")
 	private Date merchantTimestamp;
@@ -98,19 +98,21 @@ public class PaymentRequest implements Serializable {
 		this.merchantPassword = merchantPassword;
 	}
 
-	public Long getAmount() {
+ 
+
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 
-	public Integer getMerchantOrderId() {
+	public Long getMerchantOrderId() {
 		return merchantOrderId;
 	}
 
-	public void setMerchantOrderId(Integer merchantOrderId) {
+	public void setMerchantOrderId(Long merchantOrderId) {
 		this.merchantOrderId = merchantOrderId;
 	}
 
@@ -153,19 +155,23 @@ public class PaymentRequest implements Serializable {
 	public PaymentRequest() {
 	}
 
-	public PaymentRequest(Long id, String merchantId, String merchantPassword, Long amount, Integer merchantOrderId,
-			Timestamp merchantTimestamp, String successUrl, String failedUrl, String errorUrl) {
+	 
+	public PaymentRequest(String token, Long id, String merchantId, String merchantPassword, Double amount,
+			Long merchantOrderId, Date merchantTimestamp, String successUrl, String failedUrl, String errorUrl,
+			PaymentType paymentType, String currency) {
 		super();
+		this.token = token;
 		this.id = id;
 		this.merchantId = merchantId;
 		this.merchantPassword = merchantPassword;
 		this.amount = amount;
 		this.merchantOrderId = merchantOrderId;
-		this.merchantTimestamp = new Date();
+		this.merchantTimestamp = merchantTimestamp;
 		this.successUrl = successUrl;
 		this.failedUrl = failedUrl;
 		this.errorUrl = errorUrl;
-		// this.paymentUrlAndId = paymentUrlAndId;
+		this.paymentType = paymentType;
+		this.currency = currency;
 	}
 
 	public String getToken() {

@@ -89,6 +89,14 @@ public class AcqToPccDto {
 	public void setIssuer_timestamp(Date issuer_timestamp) {
 		this.issuer_timestamp = issuer_timestamp;
 	}
+
+	@Override
+	public String toString() {
+		return "AcqToPccDto [acquirer_order_id=" + acquirer_order_id + ", acquirer_timestamp=" + acquirer_timestamp
+				+ ", issuer_order_id=" + issuer_order_id + ", issuer_timestamp=" + issuer_timestamp + ", acq_url="
+				+ acq_url + ", iss_url=" + iss_url + ", card=" + card + ", pr=" + pr + ", transactionResult="
+				+ transactionResult + "]";
+	}
 	
 	
 	

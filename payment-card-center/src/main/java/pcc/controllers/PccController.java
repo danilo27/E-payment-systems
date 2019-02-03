@@ -43,6 +43,8 @@ public class PccController {
 		System.out.println("[PCC]");
 		Bank bank = bankRepo.findByIin(toPcc.getCard().getPan().toString().substring(0, 6)); 
 		 
+		//TODO evidentirati zahtev
+		
 		ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(
 				bank.getUrl() + "/issBank/transaction", 
 				toPcc, AcqToPccDto.class); 

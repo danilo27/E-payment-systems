@@ -9,4 +9,5 @@ import central.model.Magazine;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Long>{
 	Cart findOneByToken(String token);
+	public Cart findByMerchantOrderId(Long merchantOrderId);
 }

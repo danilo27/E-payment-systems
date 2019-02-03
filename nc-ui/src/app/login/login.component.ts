@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   private token;
+  private username:string;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { }
 
@@ -18,10 +19,12 @@ export class LoginComponent implements OnInit {
   }
 
   submit(username, password) {
+    this.username = username;
     this.authenticationService.login(username, password).subscribe((data: any) => {
       if (data) {
         this.token = data.accessToken;
         localStorage.setItem("token", this.token);
+        localStorage.setItem("username", this.username);
         if(this.authenticationService.getRole() == "ADMINISTRATOR")
           this.router.navigate(['/admin']);
         else

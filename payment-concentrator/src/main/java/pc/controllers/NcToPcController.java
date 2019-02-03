@@ -43,10 +43,11 @@ public class NcToPcController {
 	@PostMapping("/sendCart")
 	public ResponseEntity<Cart> sendCart(@RequestBody Cart cart) throws URISyntaxException{
 		System.out.println("[PC] " + cart.toString());
-		cart.getItemDetails().put("pcUrl", "http://localhost:4200");
-		String uuid = UUID.randomUUID().toString();
-		cart.setToken(uuid);
-		cartRepository.save(cart);
+		//cart.getItemDetails().put("pcUrl", "http://localhost:4200");
+		//String uuid = UUID.randomUUID().toString();
+		//cart.setToken(uuid);
+	 
+		cart = cartRepository.save(cart);//promenice id, ali ce merchantOrderId ostati kao u NC
 		
 	     
 	    return new ResponseEntity<Cart>(cart, HttpStatus.OK);

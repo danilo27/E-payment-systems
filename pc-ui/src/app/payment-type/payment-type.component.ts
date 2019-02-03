@@ -25,11 +25,12 @@ export class PaymentTypeComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
         this.token = params['t'];
         console.log(this.token);
-        this.http.get('/api/pc/getCart/'+this.token).subscribe(data=>{
-          this.cart = data;
-          console.log('cart: ', this.cart);
-        })
+        // this.http.get('/api/pc/getCart/'+this.token).subscribe(data=>{
+        //   this.cart = data;
+        //   console.log('cart: ', this.cart);
+        // })
 
+        //todo dobaviti nacine placanja preko merchantId-a
 
       });
   }
@@ -49,7 +50,7 @@ export class PaymentTypeComponent implements OnInit {
 
   sendRequest(type) {
     if (type == 'Credit Card') {
-      this.card_service.sendRequest(this.cart);
+      this.card_service.sendRequest(this.token); //token == id cart-a u pc-u
     } else if (type == 'PayPal') {
       var mockData = {
         'amount': '5',
