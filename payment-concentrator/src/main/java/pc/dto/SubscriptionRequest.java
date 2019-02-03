@@ -16,6 +16,7 @@ public class SubscriptionRequest {
 	private String stateCode;
 	private String countryCode;
 	private String postalCode;
+	private String paymentTypeName;
 
 	public String getMerchantId() {
 		return merchantId;
@@ -127,6 +128,14 @@ public class SubscriptionRequest {
 
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
+	}
+
+	public String getPaymentTypeName() {
+		return paymentTypeName;
+	}
+
+	public void setPaymentTypeName(String paymentTypeName) {
+		this.paymentTypeName = paymentTypeName;
 	}
 
 }

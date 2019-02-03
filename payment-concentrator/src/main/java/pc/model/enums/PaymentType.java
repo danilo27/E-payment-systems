@@ -1,5 +1,5 @@
-package pc.model.enums;
+/*package pc.model.enums;
 
 public enum PaymentType {
 
-}
+}*/

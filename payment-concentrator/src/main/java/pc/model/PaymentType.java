@@ -8,21 +8,29 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "PAYMENT_TYPE")
 public class PaymentType {
+	
 	@Id
 	@GeneratedValue
     @Column(name = "ID")
     private Long id;
 	
+	@Column(unique = true)
 	private String name;
+	
 	private String imageUrl;
+	
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<PaymentTypeField> fields = new ArrayList<>();
+	
+	@ManyToMany(mappedBy = "supportedPayments")
+	private List<Merchant> merchants = new ArrayList<>();
 	
 	public PaymentType(){}
 

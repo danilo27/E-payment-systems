@@ -10,11 +10,14 @@ import javax.persistence.Table;
 @Table(name = "PAYMENT_TYPE_FIELD")
 public class PaymentTypeField {
 	@Id
-    @Column(name = "ID")
+	@Column(name = "ID")
 	String label;
+
 	String type;
-	public PaymentTypeField(){}
-	
+
+	public PaymentTypeField() {
+	}
+
 	public PaymentTypeField(String label, String type) {
 		super();
 		this.label = label;
@@ -24,14 +27,17 @@ public class PaymentTypeField {
 	public String getLabel() {
 		return label;
 	}
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
+
 	public String getType() {
 		return type;
 	}
+
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 }

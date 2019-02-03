@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Merchant {
 
@@ -16,14 +18,16 @@ public class Merchant {
 	private String merchantId;
 	
 	@Column
-	private String merchantPassword;
+	private String merchantPass;
 	
+	@JsonIgnore
 	@OneToOne
 	private Magazine magazine;
 	
+	/*
 	@ManyToMany
 	private Set<SupportedPayments> supportedPayments = new HashSet<SupportedPayments>();
-
+*/
 	public String getMerchantId() {
 		return merchantId;
 	}
@@ -32,12 +36,14 @@ public class Merchant {
 		this.merchantId = merchantId;
 	}
 
-	public String getMerchantPassword() {
-		return merchantPassword;
+
+
+	public String getMerchantPass() {
+		return merchantPass;
 	}
 
-	public void setMerchantPassword(String merchantPassword) {
-		this.merchantPassword = merchantPassword;
+	public void setMerchantPass(String merchantPass) {
+		this.merchantPass = merchantPass;
 	}
 
 	public Magazine getMagazine() {
@@ -47,14 +53,14 @@ public class Merchant {
 	public void setMagazine(Magazine magazine) {
 		this.magazine = magazine;
 	}
-
+/*
 	public Set<SupportedPayments> getSupportedPayments() {
 		return supportedPayments;
 	}
 
 	public void setSupportedPayments(Set<SupportedPayments> supportedPayments) {
 		this.supportedPayments = supportedPayments;
-	}
+	}*/
 	
 	
 }

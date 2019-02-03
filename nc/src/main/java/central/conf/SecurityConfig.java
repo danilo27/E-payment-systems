@@ -62,16 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-  
-
-    @Autowired
-    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("pera")
-                .password("pera")
-                .roles("USER");
-    }
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -96,22 +86,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 		.permitAll()
 
                 	.antMatchers("/nc/transaction/returnToNc").permitAll()
-
+                	.antMatchers("/api/merchant/all").permitAll()
+                	
                 		.antMatchers("/nc/magazine/all")
                 	.permitAll()
 
                     .anyRequest()
                         .authenticated();
     	 
- 
-    		
+
         // Add our custom JWT security filter
         http.addFilterAfter(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         
     }
-    
-   
-
- 
-
 }
