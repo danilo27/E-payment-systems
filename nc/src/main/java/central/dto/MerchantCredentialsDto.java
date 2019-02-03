@@ -1,12 +1,9 @@
-package acq.dto;
+package central.dto;
 
-public class MerchantAccountDto {
-	
+public class MerchantCredentialsDto {
+
 	private String merchantId;
 	private String merchantPassword;
-
-	public MerchantAccountDto() {
-	}
 
 	public String getMerchantId() {
 		return merchantId;
@@ -23,5 +20,4 @@ public class MerchantAccountDto {
 	public void setMerchantPassword(String merchantPassword) {
 		this.merchantPassword = merchantPassword;
 	}
-
 }
