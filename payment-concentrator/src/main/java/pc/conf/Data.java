@@ -56,9 +56,17 @@ public class Data {
 		
 		paymentTypeRepository.save(card);
 		
-		//TODO paypal
+		PaymentType paypal = new PaymentType();
+		paypal.setName("PAYPAL");
+		paypal.setImageUrl("https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no");
 		
-		//TODO bitcoin
+		paymentTypeRepository.save(paypal);
+
+		PaymentType bitcoin = new PaymentType();
+		bitcoin.setName("BITCOIN");
+		bitcoin.setImageUrl("http://mrjamie.cc/wp-content/uploads/2013/10/bitcoin-logo-1000.jpg");
+		
+		paymentTypeRepository.save(bitcoin);
 		
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import central.dto.ApiResponse;
 import central.dto.MerchantCredentialsDto;
+import central.dto.MerchantToPcDto;
 import central.dto.NewMerchantDto;
 import central.model.Cart;
 import central.model.Magazine;
@@ -34,24 +35,23 @@ public class MerchantController {
 	private MagazineRepository magazineRepository;
 	
 	@Autowired
-	private SupportedPaymentsRepository supportedPaymentsRepository;
-	
-	@Autowired
 	private MerchantRepository merchantRepository;
 	
-	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
+	//@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity <ApiResponse> newMerchant(@RequestBody NewMerchantDto merchant){
 		
 		Merchant newMerchant = new Merchant();
 		Magazine magazine;
+		List<SupportedPayments> supportedPayments = new ArrayList<SupportedPayments>();
 		try {
 			magazine = magazineRepository.findById(merchant.getMagazineIssn()).orElseThrow(() -> new NotFoundException("magazine with issn " + merchant.getMagazineIssn() + " not found"));
 			for (Long spId : merchant.getSupportedPaymentsIds()){
-				SupportedPayments sp = supportedPaymentsRepository.findById(spId).orElseThrow(() -> new NotFoundException("supported payment with id " + spId + " not found"));
+				String fooResourceUrl = "http://localhost:8080/api/payment-types/" + spId;
+				RestTemplate rt = new RestTemplate();
+				SupportedPayments sp = rt.getForObject(fooResourceUrl, SupportedPayments.class);
 				
-				newMerchant.getSupportedPayments().add(sp);
-				//sp.getMerchants().add(newMerchant);
+				supportedPayments.add(sp);
 			}
 			newMerchant.setMagazine(magazine);			
 			
@@ -66,11 +66,21 @@ public class MerchantController {
 		MerchantCredentialsDto response = rt.getForObject(fooResourceUrl, MerchantCredentialsDto.class);
 		
 		newMerchant.setMerchantId(response.getMerchantId());
-		newMerchant.setMerchantPassword(response.getMerchantPassword());
+		newMerchant.setMerchantPass(response.getMerchantPassword());
 		
 		merchantRepository.save(newMerchant);
 		magazine.setMerchant(newMerchant);
 		magazineRepository.save(magazine);
-		return new ResponseEntity<>(new ApiResponse("success", true), HttpStatus.OK);
+		
+		String fooResourceUrl2 = "http://localhost:8080/api/pc/merchant/new";
+		RestTemplate rt2 = new RestTemplate();
+		MerchantToPcDto mcp = new MerchantToPcDto();
+		mcp.setMerchantId(newMerchant.getMerchantId());
+		mcp.setMerchantPass(newMerchant.getMerchantPass());
+		mcp.setSupportedPayments(supportedPayments);
+		
+		ApiResponse response2 = rt2.postForObject(fooResourceUrl2, mcp, ApiResponse.class);
+				
+		return new ResponseEntity<>(response2, HttpStatus.OK);
 	}
 }

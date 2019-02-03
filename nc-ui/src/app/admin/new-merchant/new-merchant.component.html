@@ -13,7 +13,7 @@
   <div>
     <label *ngFor="let sp of supportedPayments">
       <input type="checkbox" (change)="checkSupportedPayment(sp)" >
-      {{sp.paymentName}}
+      {{sp.name}}
     </label>
   </div>
 

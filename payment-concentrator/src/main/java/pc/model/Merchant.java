@@ -1,25 +1,32 @@
 package pc.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
  
 @Entity
 public class Merchant {
 	
-	@Id
-	@GeneratedValue
-	private Long id;
-	
 	//ID prodavca, koji se dobije od banke prilikom registracije prodavca za
 	//onlajn prodaju
+	@Id
 	private String merchantId;
 	
 	//lozinka koja se dobije od banke prilikom registracije prodavca
 	//za onlajn prodaju (tip String(100))
+	@Column
 	private String merchantPass;
 	
+	@Column
 	private String merchantBankUrl;
+	
+	@ManyToMany
+	private List<PaymentType> supportedPayments = new ArrayList<>();
 	
 	public Merchant(){} 
 
@@ -28,14 +35,6 @@ public class Merchant {
 		this.merchantId = merchantId;
 		this.merchantPass = merchantPass;
 		this.merchantBankUrl = merchantBankUrl;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getMerchantId() {
@@ -61,5 +60,15 @@ public class Merchant {
 	public void setMerchantBankUrl(String merchantBankUrl) {
 		this.merchantBankUrl = merchantBankUrl;
 	}
+
+	public List<PaymentType> getSupportedPayments() {
+		return supportedPayments;
+	}
+
+	public void setSupportedPayments(List<PaymentType> supportedPayments) {
+		this.supportedPayments = supportedPayments;
+	}
+	
+	
 
 }
