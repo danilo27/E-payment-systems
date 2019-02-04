@@ -15,6 +15,8 @@ public class Cart {
     private Long id;
 	private String merchantId;
 	private String merchantPassword;
+	private String paypalApiKey;
+	private String paypalApiPassword;
 	private Long merchantOrderId;
 	private Date merchantTimestamp;
 	private String status;
@@ -92,6 +94,22 @@ public class Cart {
 
 	public void setMerchantTimestamp(Date merchantTimestamp) {
 		this.merchantTimestamp = merchantTimestamp;
+	}
+
+	public String getPaypalApiKey() {
+		return paypalApiKey;
+	}
+
+	public void setPaypalApiKey(String paypalApiKey) {
+		this.paypalApiKey = paypalApiKey;
+	}
+
+	public String getPaypalApiPassword() {
+		return paypalApiPassword;
+	}
+
+	public void setPaypalApiPassword(String paypalApiPassword) {
+		this.paypalApiPassword = paypalApiPassword;
 	}
 
 	@Override

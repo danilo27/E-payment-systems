@@ -13,6 +13,7 @@ import pc.dto.PaymentConfirmationDto;
 import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
+import pc.model.Cart;
 import pc.model.PaymentRequest;
 import pc.payments.IPaymentExtensionPoint;
 import pc.payments.impl.PayPalService;
@@ -29,10 +30,8 @@ public class PayPalController {
 					method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StringDto> paypalRequest(@RequestBody PaymentRequest requestDto){
-		String redirectUrl = paymentService.prepareTransaction(requestDto).getRedirectUrl();
-		System.out.println(redirectUrl);
-		return new ResponseEntity<>(new StringDto(redirectUrl), HttpStatus.OK);
+	public ResponseEntity<StringDto> paypalRequest(@RequestBody Cart requestDto){
+		return paymentService.prepareTransaction(requestDto);
 	}
 	
 	@RequestMapping(value = "/confirm",

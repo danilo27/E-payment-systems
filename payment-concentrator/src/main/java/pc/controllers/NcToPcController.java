@@ -63,23 +63,7 @@ public class NcToPcController {
 	    
 	}
 	
-	@GetMapping("/getPaymentTypes/{cartId}")
-	public ResponseEntity<List<PaymentType>> getPaymentTypes(@PathVariable String cartId) throws URISyntaxException{
-		System.out.println("[PC] getPaymentTypes, cartId: " + cartId);
-		Cart c = cartRepository.findById(Long.parseLong(cartId)).orElse(null);
-		if(c!=null){
-			return new ResponseEntity<List<PaymentType>>(merchantRepository.findByMerchantId(c.getMerchantId()).getSupportedPayments(), HttpStatus.OK);
-		}
-	    return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	    
-	}
-	
-	@GetMapping("/getCart/{token}")
-	public ResponseEntity<Cart> getCart(@PathVariable String token) throws URISyntaxException{
-		System.out.println("[PC] getCart, token: " + token);
-	    return new ResponseEntity<Cart>(cartRepository.findById(Long.parseLong(token)).orElse(null), HttpStatus.OK);
-	    
-	}
+
 	
 	@PostMapping("/returnToPc")
 	public ResponseEntity<Boolean> returnToPc(@RequestBody Cart cart) throws URISyntaxException{

@@ -18,7 +18,7 @@ import pc.payments.impl.BitcoinService;
 @RestController
 @RequestMapping(value = "/bitcoin")
 public class BitcoinController {
-
+/*
 	@Autowired
 	BitcoinService bitcoinService;
 	
@@ -31,6 +31,6 @@ public class BitcoinController {
 		headers.setLocation(URI.create(result.getRedirectUrl()));
 		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
-	
+	*/
 
 }

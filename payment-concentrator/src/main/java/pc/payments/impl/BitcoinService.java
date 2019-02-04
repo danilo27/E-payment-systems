@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -15,8 +17,10 @@ import com.mashape.unirest.request.body.MultipartBody;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
+import pc.model.Cart;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
@@ -62,9 +66,9 @@ public class BitcoinService implements IPaymentExtensionPoint {
     }
 	
 	@Override
-	public TransactionResult prepareTransaction(PaymentRequest req) {
-		TransactionResult result = new TransactionResult();
-		result.setRedirectUrl("");
+	public ResponseEntity<StringDto> prepareTransaction(Cart req) {
+		StringDto result = new StringDto();
+		result.setValue("");
 		try {
 			JSONObject json = createOrder(5.0, 
 											"USD", 
@@ -72,17 +76,17 @@ public class BitcoinService implements IPaymentExtensionPoint {
 											"http://localhost:4200/bitcoin-success", 
 											"http://localhost:4200/bitcoin-cancel");
 			try {
-				result.setRedirectUrl((String)json.get("payment_url"));
+				result.setValue((String)json.get("payment_url"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return result;
+			return new ResponseEntity<> (result, HttpStatus.OK);
 		} catch (UnirestException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return result;
+		return new ResponseEntity<> (result, HttpStatus.OK);
 	}
 
 	@Override

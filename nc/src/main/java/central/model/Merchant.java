@@ -75,12 +75,12 @@ public class Merchant {
 	public void setMerchantBankUrl(String merchantBankUrl) {
 		this.merchantBankUrl = merchantBankUrl;
 	}
-
+/*
 	@Override
 	public String toString() {
 		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
 				+ merchantBankUrl + ", magazine=" + magazine + "]";
 	}
-	
+	*/
 	
 }
