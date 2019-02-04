@@ -62,4 +62,11 @@ public class Merchant {
 		this.merchantBankUrl = merchantBankUrl;
 	}
 
+	@Override
+	public String toString() {
+		return "Merchant [id=" + id + ", merchantId=" + merchantId + ", merchantPass=" + merchantPass
+				+ ", merchantBankUrl=" + merchantBankUrl + "]";
+	}
+	
+	
 }

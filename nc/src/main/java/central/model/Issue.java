@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -30,6 +31,7 @@ public class Issue {
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "MAGAZINE")
 	@JsonBackReference
+	//@JsonIgnoreProperties("issues")
     private Magazine magazine;
 	
 	@Column(name = "DATE", nullable = false)

@@ -17,11 +17,13 @@ import pc.dto.PaymentRequestDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
+import pc.model.Merchant;
 import pc.model.Payment;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 import pc.repositories.CartRepository;
+import pc.repositories.MerchantRepository;
 import pc.services.PaymentRequestService;
 
 @Service
@@ -35,6 +37,9 @@ public class CardService implements IPaymentExtensionPoint{
 	
 	@Value("${bank.issuer}")
 	private String bankIssuer;
+	
+	@Autowired 
+	MerchantRepository merchantRepository;
 	
 	@Bean
 	public RestTemplate restTemplate() {
@@ -55,6 +60,7 @@ public class CardService implements IPaymentExtensionPoint{
 		
 		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
 		if(cart!=null){
+			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 			req.setId(null);
 			req.setMerchantId(cart.getMerchantId());
 			req.setMerchantOrderId(cart.getMerchantOrderId());
@@ -63,7 +69,7 @@ public class CardService implements IPaymentExtensionPoint{
 			req.setAmount(cart.getTotalPrice());
 			req = paymentRequestService.save(req);
 			System.out.println("PaymentRequest saved: " + req.toString());
-			String fooResourceUrl = bankAcquirer+"/acqBank/getUrlAndId";
+			String fooResourceUrl = merchant.getMerchantBankUrl()+"/acqBank/getUrlAndId";
 			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, req, Payment.class);
 			PaymentConfirmationDto dto = new PaymentConfirmationDto();
 			dto.setResponse(response);

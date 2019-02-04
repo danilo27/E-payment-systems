@@ -168,7 +168,7 @@ public class PaymentRequest implements Serializable {
 		this.successUrl = successUrl;
 		this.failedUrl = failedUrl;
 		this.errorUrl = errorUrl;
-		this.paymentType = paymentType;
+		//this.paymentType = paymentType;
 		this.currency = currency;
 	}
 

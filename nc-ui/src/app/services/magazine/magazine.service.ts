@@ -10,4 +10,8 @@ export class MagazineService {
   all(){
   	 return this.http.get('api/nc/magazine/all') as Observable<any>;
   }
+
+  withoutMerchant(){
+  	 return this.http.get('api/nc/magazine/withoutMerchant') as Observable<any>;
+  }
 }

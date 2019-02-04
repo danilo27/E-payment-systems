@@ -6,10 +6,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Merchant {
@@ -20,8 +23,11 @@ public class Merchant {
 	@Column
 	private String merchantPass;
 	
+	private String merchantBankUrl;
+	
+	//@JsonIgnoreProperties("merchant")
 	@JsonIgnore
-	@OneToOne
+	 @OneToOne
 	private Magazine magazine;
 	
 	/*
@@ -61,6 +67,20 @@ public class Merchant {
 	public void setSupportedPayments(Set<SupportedPayments> supportedPayments) {
 		this.supportedPayments = supportedPayments;
 	}*/
+
+	public String getMerchantBankUrl() {
+		return merchantBankUrl;
+	}
+
+	public void setMerchantBankUrl(String merchantBankUrl) {
+		this.merchantBankUrl = merchantBankUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
+				+ merchantBankUrl + ", magazine=" + magazine + "]";
+	}
 	
 	
 }

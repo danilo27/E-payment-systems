@@ -12,6 +12,7 @@ import central.model.Author;
 import central.model.Issue;
 import central.model.Magazine;
 import central.model.MagazinePaymentType;
+import central.model.Merchant;
 import central.model.Role;
 import central.model.RoleName;
 import central.model.SupportedPayments;
@@ -21,6 +22,7 @@ import central.repository.ArticleRepository;
 import central.repository.AuthorRepository;
 import central.repository.IssueRepository;
 import central.repository.MagazineRepository;
+import central.repository.MerchantRepository;
 import central.repository.RoleRepository;
 import central.repository.SubscriptionRepository;
 import central.repository.SupportedPaymentsRepository;
@@ -64,6 +66,9 @@ public class Data {
 	@Autowired
 	private SupportedPaymentsRepository supportedPaymentsRepository;
 	
+	@Autowired
+	private MerchantRepository merchantRepository;
+	
 	@PostConstruct
 	private void init() {
 		//System.out.println(passwordEncoder.encode("pera"));
@@ -77,6 +82,7 @@ public class Data {
 		roleRepository.deleteAll();
 		adminRepository.deleteAll();
 		supportedPaymentsRepository.deleteAll();
+		merchantRepository.deleteAll();
 		
 		Role r1 = new Role();
 		r1.setName(RoleName.USER);
@@ -91,19 +97,61 @@ public class Data {
 		
 		Magazine m1 = new Magazine();
 		Magazine m2 = new Magazine();
+		Magazine m3 = new Magazine();
 		
 		m1.setIssn("12345678");
 		m1.setPaymentType(MagazinePaymentType.PAID_ACCESS);
 		m1.setName("Computer Science Magazine");
-		 
+		
+		
 		m2.setIssn("87654321");
 		m2.setPaymentType(MagazinePaymentType.OPEN_ACCESS);
 		m2.setName("Biology Magazine");
 		m2.setMembershipPrice(Double.parseDouble("35.0"));
 		
+		m3.setIssn("12344321");
+		m3.setPaymentType(MagazinePaymentType.OPEN_ACCESS);
+		m3.setName("Architecture Magazine");
+		m3.setMembershipPrice(Double.parseDouble("35.0"));
 		
 		m1 = magazineRepository.save(m1);
 		m2 = magazineRepository.save(m2);
+		m3 = magazineRepository.save(m3);
+		
+		System.out.println(m1.toString());
+		
+		Merchant daniloMerchant = new Merchant();
+		daniloMerchant.setMerchantId("daniloMerchant");
+		daniloMerchant.setMerchantPass("pas");
+		merchantRepository.save(daniloMerchant);
+		//daniloMerchant = merchantRepository.save(daniloMerchant);
+		//daniloMerchant.setMagazine(m1);
+		//merchantRepository.save(daniloMerchant);
+		
+		m1.setMerchant(daniloMerchant);
+		
+		Merchant drugiMerchant = new Merchant();
+		drugiMerchant.setMerchantId("drugiMerchant");
+		drugiMerchant.setMerchantPass("pas");
+		merchantRepository.save(drugiMerchant);
+		//drugiMerchant = merchantRepository.save(drugiMerchant);
+		//drugiMerchant.setMagazine(m2);
+		//merchantRepository.save(drugiMerchant);
+		
+		m2.setMerchant(drugiMerchant);
+		
+		magazineRepository.save(m1);
+		magazineRepository.save(m2);
+		
+		daniloMerchant.setMagazine(m1);
+		drugiMerchant.setMagazine(m2);
+		
+		
+		 
+		 
+		
+		
+		System.out.println(m1.toString());
 		
 		Issue i1 = new Issue();
 		i1.setDate("01-01-2019");
@@ -205,6 +253,12 @@ public class Data {
 		supportedPaymentsRepository.save(sp1);
 		supportedPaymentsRepository.save(sp2);
 		supportedPaymentsRepository.save(sp3);*/
+		
+		 
+		//System.out.println(m1.toString());
+		//magazineRepository.save(m1);
+		//magazineRepository.save(m2);
+		
 	}
 
 }

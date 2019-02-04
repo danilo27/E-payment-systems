@@ -14,7 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -36,10 +38,12 @@ public class Magazine {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
+   // @JsonIgnoreProperties("magazine")
     private List<Issue> issues = new ArrayList<Issue>();
     
-    @JsonIgnore
-    @OneToOne
+//    @JsonIgnoreProperties("magazine")
+//    @JsonIgnore
+    @OneToOne// ( optional = false, orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Merchant merchant;
     
     public Magazine(){}
@@ -90,6 +94,12 @@ public class Magazine {
 
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
+	}
+
+	@Override
+	public String toString() {
+		return "Magazine [issn=" + issn + ", name=" + name + ", paymentType=" + paymentType + ", membershipPrice="
+				+ membershipPrice + ", issues=" + issues + ", merchant=" + merchant + "]";
 	}
     
     

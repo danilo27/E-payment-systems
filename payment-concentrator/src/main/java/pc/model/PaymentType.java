@@ -24,6 +24,8 @@ public class PaymentType {
 	@Column(unique = true)
 	private String name;
 	
+	private String label;
+	
 	private String imageUrl;
 	
 	@OneToMany(fetch = FetchType.LAZY)
@@ -34,9 +36,10 @@ public class PaymentType {
 	
 	public PaymentType(){}
 
-	public PaymentType(String name, String imageUrl, List<PaymentTypeField> fields) {
+	public PaymentType(String name, String label, String imageUrl, List<PaymentTypeField> fields) {
 		super();
 		this.name = name;
+		this.label = label;
 		this.imageUrl = imageUrl;
 		this.fields = fields;
 	}
@@ -64,6 +67,14 @@ public class PaymentType {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 	
 }

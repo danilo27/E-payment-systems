@@ -1,11 +1,11 @@
  
 <div class="center">
-
-<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Choose your payment method:</h3>
+<h3 class="text-center">Supported Payment Methods by Merchant</h3>
+<h4 class="text-center">Choose your payment method</h4>
 <ul style=" list-style-type: none">
-	<li *ngFor="let p of payment_types"><button type="button" class="btn btn-link" (click)="sendRequest(p.name)"><img width="200px" height="200px" src={{p.image}}><strong>{{p.name}}</strong></button></li>
+	<li class="text-center" *ngFor="let p of supportedPaymentTypes"><button type="button" class="btn btn-link" (click)="sendRequest(p.name)"><img width="200px" height="200px" src={{p.imageUrl}}><strong>{{p.label}}</strong></button></li>
 </ul>
-<button (click)="subscription()"> pretplata </button>
+<button class="text-center" (click)="subscription()"> pretplata </button>
 
 </div>
 

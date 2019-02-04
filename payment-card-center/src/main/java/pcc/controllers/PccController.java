@@ -1,13 +1,14 @@
 package pcc.controllers;
 
 import java.net.URISyntaxException;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,9 @@ public class PccController {
 //	@Value("${pcc.url}")
 //	private String pccUrl;
 	
+	@Autowired
+	BankRepository bankRepository;
+	
 	@Bean
 	public RestTemplate restTemplate() {
 	    return new RestTemplate();
@@ -50,5 +54,16 @@ public class PccController {
 				toPcc, AcqToPccDto.class); 
  
 		return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/getBanks")
+	public ResponseEntity<List<String>> getBanks() throws URISyntaxException {
+		System.out.println("[PCC] getBanks");
+		List<String> banks = new ArrayList<String>();
+		for(Bank b : bankRepository.findAll()){
+			banks.add(b.getUrl());
+		}
+ 		return new ResponseEntity<List<String>>(banks, HttpStatus.OK);
 	}
 }

@@ -182,6 +182,8 @@ public class AcqPaymentController {
 		m.setMerchantPass(UUID.randomUUID().toString());
 		m = merchantService.save(m);
 		m.setMerchantId(m.getId().toString());
+		merchantService.save(m);
+		System.out.println("[ACQ] New Merchant: " + m.toString());
 		
 		Account a = new Account();
 		a.setAccountBalance(0);

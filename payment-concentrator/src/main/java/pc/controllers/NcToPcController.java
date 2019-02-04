@@ -1,7 +1,7 @@
 package pc.controllers;
 
 import java.net.URISyntaxException;
-import java.util.UUID;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import pc.model.Cart;
+import pc.model.PaymentType;
 import pc.payments.card.CardService;
 import pc.repositories.CartRepository;
+import pc.repositories.MerchantRepository;
+
 
 @RestController
 @RequestMapping("/pc")
@@ -35,11 +38,17 @@ public class NcToPcController {
 	@Value("${nc.url}")
 	private String ncUrl;
 	
+	@Value("${pcc.url}")
+	private String pccUrl;
+	
 	@Bean
 	public RestTemplate restTemp() {
 	    return new RestTemplate();
 	}
- 
+	
+	@Autowired
+	private MerchantRepository merchantRepository;
+	
 	@PostMapping("/sendCart")
 	public ResponseEntity<Cart> sendCart(@RequestBody Cart cart) throws URISyntaxException{
 		System.out.println("[PC] " + cart.toString());
@@ -48,16 +57,27 @@ public class NcToPcController {
 		//cart.setToken(uuid);
 	 
 		cart = cartRepository.save(cart);//promenice id, ali ce merchantOrderId ostati kao u NC
-		
+		System.out.println("Cart in PC: " + cart.toString());
 	     
 	    return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+	    
+	}
+	
+	@GetMapping("/getPaymentTypes/{cartId}")
+	public ResponseEntity<List<PaymentType>> getPaymentTypes(@PathVariable String cartId) throws URISyntaxException{
+		System.out.println("[PC] getPaymentTypes, cartId: " + cartId);
+		Cart c = cartRepository.findById(Long.parseLong(cartId)).orElse(null);
+		if(c!=null){
+			return new ResponseEntity<List<PaymentType>>(merchantRepository.findByMerchantId(c.getMerchantId()).getSupportedPayments(), HttpStatus.OK);
+		}
+	    return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 	    
 	}
 	
 	@GetMapping("/getCart/{token}")
 	public ResponseEntity<Cart> getCart(@PathVariable String token) throws URISyntaxException{
 		System.out.println("[PC] getCart, token: " + token);
-	    return new ResponseEntity<Cart>(cartRepository.findByToken(token), HttpStatus.OK);
+	    return new ResponseEntity<Cart>(cartRepository.findById(Long.parseLong(token)).orElse(null), HttpStatus.OK);
 	    
 	}
 	
@@ -70,8 +90,12 @@ public class NcToPcController {
 	    
 	}
  
-	 
+	@GetMapping("/getBanks")
+	public ResponseEntity<List<String>> getBanks() throws URISyntaxException {
+		ResponseEntity<List> response = restTemp().getForEntity(pccUrl+"/pcc/getBanks", List.class);
+		return new ResponseEntity<List<String>>(response.getBody(), HttpStatus.OK);
+	}
 	
-	 
+ 
 	
 }

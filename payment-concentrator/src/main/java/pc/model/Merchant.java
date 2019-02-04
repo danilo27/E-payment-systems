@@ -68,6 +68,12 @@ public class Merchant {
 	public void setSupportedPayments(List<PaymentType> supportedPayments) {
 		this.supportedPayments = supportedPayments;
 	}
+
+	@Override
+	public String toString() {
+		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
+				+ merchantBankUrl + ", supportedPayments=" + supportedPayments + "]";
+	}
 	
 	
 

@@ -22,7 +22,7 @@ public class MerchantController {
 	
 	@RequestMapping(value = "/new", method = RequestMethod.POST)
 	public ResponseEntity <ApiResponse> newMerchant(@RequestBody Merchant merchant){
-
+		System.out.println("[PC] New Merchant: " + merchant.toString());
 		merchantRepository.save(merchant);
 
 		return new ResponseEntity<>(new ApiResponse("success", true), HttpStatus.OK);

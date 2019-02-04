@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import pc.model.Merchant;
 import pc.model.PaymentType;
 import pc.model.PaymentTypeField;
+import pc.repositories.MerchantRepository;
 import pc.repositories.PaymentTypeFieldRepository;
 import pc.repositories.PaymentTypeRepository;
 import pc.services.MerchantService;
@@ -27,10 +28,12 @@ public class Data {
 	@Autowired
 	private PaymentTypeFieldRepository paymentTypeFieldRepository;
 	
+	@Autowired
+	private MerchantRepository merchantRepository;
+	
 	@PostConstruct
 	private void init() {
-		Merchant m1 = new Merchant("merchant1", "pas", "http://localhost:8081");
-		
+
 		paymentTypeRepository.deleteAll();
 		
 		PaymentType card = new PaymentType();
@@ -51,6 +54,7 @@ public class Data {
 		cardFields.add(cvField);
 		
 		card.setName("CARD");
+		card.setLabel("Card");
 		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
 		card.setFields(cardFields);
 		
@@ -58,15 +62,40 @@ public class Data {
 		
 		PaymentType paypal = new PaymentType();
 		paypal.setName("PAYPAL");
+		paypal.setLabel("PayPal");
 		paypal.setImageUrl("https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no");
 		
 		paymentTypeRepository.save(paypal);
 
 		PaymentType bitcoin = new PaymentType();
 		bitcoin.setName("BITCOIN");
+		bitcoin.setLabel("Bitcoin");
 		bitcoin.setImageUrl("http://mrjamie.cc/wp-content/uploads/2013/10/bitcoin-logo-1000.jpg");
 		
 		paymentTypeRepository.save(bitcoin);
+		
+		
+		merchantRepository.deleteAll();
+		
+		Merchant daniloMerchant = new Merchant("daniloMerchant", "pas", null);
+		daniloMerchant.setMerchantBankUrl("http://localhost:8081");
+		List<PaymentType> supportedPayments = new ArrayList<>();
+		supportedPayments.add(paymentTypeRepository.findByName("CARD").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
+		//supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+		daniloMerchant.setSupportedPayments(supportedPayments);
+		merchantRepository.save(daniloMerchant);
+		
+		Merchant drugiMerchant = new Merchant("drugiMerchant", "pas", null);
+		drugiMerchant.setMerchantBankUrl("http://localhost:8081");
+		supportedPayments = new ArrayList<>();
+		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+		drugiMerchant.setSupportedPayments(supportedPayments);
+		merchantRepository.save(drugiMerchant);
+		
+		
+		
 		
 	}
 }

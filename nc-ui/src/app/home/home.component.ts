@@ -41,15 +41,15 @@ export class HomeComponent implements OnInit {
 
   }
 
-  buyIssue(issue) {
+  buyIssue(magazine, issue) {
     this.map = {};
 
     this.map["itemType"] = "issue";
     this.map["itemId"] = issue.id;
-    this.map["merchantId"] = "daniloMerchant";
-    this.map["merchantPas"] = "pas";
+    this.map["merchantId"] = magazine.merchant.merchantId;
+    this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
-
+ 
     var dto = {
       totalPrice: issue.price,
       itemDetails: this.map
@@ -66,13 +66,13 @@ export class HomeComponent implements OnInit {
 
   }
 
-  buyArticle(article) {
+  buyArticle(magazine, article) {
     this.map = {};
 
      this.map["itemType"] = "article";
     this.map["itemId"] = article.id;
-    this.map["merchantId"] = "daniloMerchant";
-    this.map["merchantPas"] = "pas";
+    this.map["merchantId"] = magazine.merchant.merchantId;
+    this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
 
     var dto = {

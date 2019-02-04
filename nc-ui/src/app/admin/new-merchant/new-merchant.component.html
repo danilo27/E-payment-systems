@@ -1,14 +1,23 @@
 <app-admin></app-admin>
-<p>
-  new-merchant works!
-</p>
+<br>
+<h3>Creating New Merchant</h3>
+Create Account in Bank:
+  <select [(ngModel)]="selectedBankUrl" name="combobox2">
+    <option *ngFor="let b of banks" value="{{b}}">{{b}}</option>
+  </select><button (click)="request()">Request</button>
+  <div *ngIf="merchantId!=null">
+    Your account info:<br>
+    <label>Merchant Id: </label>{{merchantId}}<br>
+    <label>Merchant Password: </label> {{merchantPassword}}
+  </div>
+
 <form #form="ngForm" (ngSubmit)="sendData()">
   MAGAZIN :
   <select [(ngModel)]="selectedMagazineIssn" name="combobox1">
     <option *ngFor="let m of magazines" value="{{m.issn}}">{{m.name}}</option>
-  </select>
-
-  <br>
+  </select><br>
+   
+   
   Nacini placanja:
   <div>
     <label *ngFor="let sp of supportedPayments">
