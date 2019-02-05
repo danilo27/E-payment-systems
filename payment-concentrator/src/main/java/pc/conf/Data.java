@@ -82,7 +82,7 @@ public class Data {
 		List<PaymentType> supportedPayments = new ArrayList<>();
 		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));
 		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
-		//supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
 		daniloMerchant.setSupportedPayments(supportedPayments);
 		merchantRepository.save(daniloMerchant);
 		

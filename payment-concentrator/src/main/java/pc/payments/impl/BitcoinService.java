@@ -40,21 +40,25 @@ public class BitcoinService implements IPaymentExtensionPoint {
     }
 	
 	public JSONObject createOrder(
+			long orderId,
             Double priceAmount,
             String priceCurrency,
             String receiveCurrency,
             String successUrl,
-            String cancelUrl
+            String cancelUrl,
+            String callbackUrl
     ) throws UnirestException {
 
         MultipartBody request = Unirest
                 .post(getUri("/orders"))
                 .headers(prepareHeaders())
+                .field("order_id", orderId)
                 .field("price_amount", priceAmount)
                 .field("price_currency", priceCurrency.toUpperCase())
                 .field("receive_currency", receiveCurrency.toUpperCase())
         		.field("cancel_url", cancelUrl)
-        		.field("success_url", successUrl);
+        		.field("success_url", successUrl)
+        		.field("callback_url", callbackUrl);
 
 
         HttpResponse<JsonNode> response = request.asJson();
@@ -70,11 +74,12 @@ public class BitcoinService implements IPaymentExtensionPoint {
 		StringDto result = new StringDto();
 		result.setValue("");
 		try {
-			JSONObject json = createOrder(5.0, 
+			JSONObject json = createOrder(req.getId(), req.getTotalPrice(), 
 											"USD", 
 											"USD", 
-											"http://localhost:4200/bitcoin-success", 
-											"http://localhost:4200/bitcoin-cancel");
+											"http://localhost:8080/api/bitcoin/confirm/" + req.getId(), 
+											"http://localhost:8080/api/bitcoin/cancel/" + req.getId(), 
+											"http://localhost:8080/api/bitcoin/callback/" + req.getId());
 			try {
 				result.setValue((String)json.get("payment_url"));
 			} catch (JSONException e) {
