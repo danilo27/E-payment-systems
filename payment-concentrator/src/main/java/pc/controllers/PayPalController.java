@@ -14,9 +14,7 @@ import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
-import pc.model.PaymentRequest;
-import pc.payments.IPaymentExtensionPoint;
-import pc.payments.impl.PayPalService;
+import pc.payments.impl.PaypalService;
 
 
 @RestController
@@ -24,7 +22,7 @@ import pc.payments.impl.PayPalService;
 public class PayPalController {
 	
 	@Autowired
-	private PayPalService paymentService;
+	private PaypalService paymentService;
 	
 	@RequestMapping(value = "/prepare",
 					method = RequestMethod.POST,

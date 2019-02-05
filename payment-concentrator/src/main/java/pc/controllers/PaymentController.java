@@ -32,7 +32,8 @@ public class PaymentController {
 					method = RequestMethod.POST,
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StringDto> paypalRequest(@RequestBody Cart cart, @PathVariable String paymentType) throws NotFoundException{
+	public ResponseEntity<StringDto> paypalRequest(@RequestBody Cart cart, @PathVariable String paymentType) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		System.out.println(paymentType);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return payment.prepareTransaction(cart);
 	}
@@ -41,7 +42,7 @@ public class PaymentController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalConfirmation(@RequestBody PaymentConfirmationDto requestDto) throws NotFoundException{
+	public ResponseEntity<TransactionResult> paypalConfirmation(@RequestBody PaymentConfirmationDto requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
 		TransactionResult tr = paymentType.proceedTransaction(requestDto);
 		return new ResponseEntity<>(tr, HttpStatus.OK);
@@ -51,7 +52,7 @@ public class PaymentController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalSubscription(@RequestBody SubscriptionRequest requestDto) throws NotFoundException{
+	public ResponseEntity<TransactionResult> paypalSubscription(@RequestBody SubscriptionRequest requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
 		TransactionResult tr = paymentType.prepareSubscription(requestDto);
 		return new ResponseEntity<>(tr, HttpStatus.OK);
@@ -61,7 +62,7 @@ public class PaymentController {
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalSubscriptionConfirmation(@RequestBody SubscriptionConfirmation requestDto) throws NotFoundException{
+	public ResponseEntity<TransactionResult> paypalSubscriptionConfirmation(@RequestBody SubscriptionConfirmation requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
 		TransactionResult tr = paymentType.proceedSubscription(requestDto);
 		return new ResponseEntity<>(tr, HttpStatus.OK);

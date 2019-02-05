@@ -53,7 +53,7 @@ public class Data {
 		cardFields.add(expiringYearField);
 		cardFields.add(cvField);
 		
-		card.setName("CARD");
+		card.setName("Card");
 		card.setLabel("Card");
 		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
 		card.setFields(cardFields);
@@ -61,14 +61,14 @@ public class Data {
 		paymentTypeRepository.save(card);
 		
 		PaymentType paypal = new PaymentType();
-		paypal.setName("PAYPAL");
+		paypal.setName("Paypal");
 		paypal.setLabel("PayPal");
 		paypal.setImageUrl("https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no");
 		
 		paymentTypeRepository.save(paypal);
 
 		PaymentType bitcoin = new PaymentType();
-		bitcoin.setName("BITCOIN");
+		bitcoin.setName("Bitcoin");
 		bitcoin.setLabel("Bitcoin");
 		bitcoin.setImageUrl("http://mrjamie.cc/wp-content/uploads/2013/10/bitcoin-logo-1000.jpg");
 		
@@ -80,8 +80,8 @@ public class Data {
 		Merchant daniloMerchant = new Merchant("daniloMerchant", "pas", null);
 		daniloMerchant.setMerchantBankUrl("http://localhost:8081");
 		List<PaymentType> supportedPayments = new ArrayList<>();
-		supportedPayments.add(paymentTypeRepository.findByName("CARD").orElse(null));
-		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
 		//supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
 		daniloMerchant.setSupportedPayments(supportedPayments);
 		merchantRepository.save(daniloMerchant);
@@ -89,8 +89,8 @@ public class Data {
 		Merchant drugiMerchant = new Merchant("drugiMerchant", "pas", null);
 		drugiMerchant.setMerchantBankUrl("http://localhost:8081");
 		supportedPayments = new ArrayList<>();
-		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
-		supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
 		drugiMerchant.setSupportedPayments(supportedPayments);
 		merchantRepository.save(drugiMerchant);
 		

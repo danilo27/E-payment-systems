@@ -21,7 +21,6 @@ import com.paypal.api.payments.Currency;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.MerchantPreferences;
 import com.paypal.api.payments.Patch;
-import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentDefinition;
@@ -38,12 +37,11 @@ import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
-import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 
 @Service
-public class PayPalService implements IPaymentExtensionPoint {
+public class PaypalService implements IPaymentExtensionPoint {
 
 	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
@@ -53,7 +51,7 @@ public class PayPalService implements IPaymentExtensionPoint {
 
 	@Override
 	public ResponseEntity<StringDto> prepareTransaction(Cart req) {
-		System.out.println(req.getPaypalApiKey() + " " + req.getPaypalApiPassword());
+		System.out.println("PAYPAL KEYS " + req.getPaypalApiKey() + " " + req.getPaypalApiPassword());
 		APIContext context = new APIContext(req.getPaypalApiKey(), req.getPaypalApiPassword(), production);
 		merchantId = req.getMerchantId();
 		merchantPassword = req.getMerchantPassword();

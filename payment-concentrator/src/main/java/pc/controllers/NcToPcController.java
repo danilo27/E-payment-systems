@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import pc.model.Cart;
 import pc.model.PaymentType;
-import pc.payments.card.CardService;
+import pc.payments.impl.CardService;
 import pc.repositories.CartRepository;
 import pc.repositories.MerchantRepository;
 

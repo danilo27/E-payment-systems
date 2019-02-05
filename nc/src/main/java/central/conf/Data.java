@@ -244,7 +244,7 @@ public class Data {
 		adminRepository.save(a);
 		/*
 		SupportedPayments sp1 = new SupportedPayments();
-		sp1.setPaymentName("PayPal");
+		sp1.setPaymentName("Paypal");
 		SupportedPayments sp2 = new SupportedPayments();
 		sp2.setPaymentName("Bitcoin");
 		SupportedPayments sp3 = new SupportedPayments();

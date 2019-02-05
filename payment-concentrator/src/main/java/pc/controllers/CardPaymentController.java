@@ -15,7 +15,7 @@ import pc.dto.StringDto;
 import pc.model.Cart;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
-import pc.payments.card.CardService;
+import pc.payments.impl.CardService;
 
 @RestController
 @RequestMapping("/card")
