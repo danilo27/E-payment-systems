@@ -73,10 +73,17 @@ public class Data {
 		
 		
 		
+//<<<<<<< HEAD
+//=======
+//		card.setName("Card");
+//		card.setLabel("Card");
+//		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
+//		card.setFields(cardFields);
+//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607
 		
 		
 		PaymentType paypal = new PaymentType();
-		paypal.setName("PAYPAL");
+		paypal.setName("Paypal");
 		paypal.setLabel("PayPal");
 		paypal.setImageUrl("https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no");
 		paypal = paymentTypeRepository.save(paypal);
@@ -101,7 +108,7 @@ public class Data {
 		
 		
 		PaymentType bitcoin = new PaymentType();
-		bitcoin.setName("BITCOIN");
+		bitcoin.setName("Bitcoin");
 		bitcoin.setLabel("Bitcoin");
 		bitcoin.setImageUrl("http://mrjamie.cc/wp-content/uploads/2013/10/bitcoin-logo-1000.jpg");
 		bitcoin = paymentTypeRepository.save(bitcoin);
@@ -134,9 +141,15 @@ public class Data {
 		Merchant daniloMerchant = new Merchant("12345678");
 		//daniloMerchant.setMerchantBankUrl("http://localhost:8081"); //uzeti iz MerchantInfo
 		List<PaymentType> supportedPayments = new ArrayList<>();
+//<<<<<<< HEAD
 		supportedPayments.add(paymentTypeRepository.findByName("CARD").orElse(null));
 		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
 		supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+//=======
+//		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));
+//		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
+//		supportedPayments.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
+//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607
 		daniloMerchant.setSupportedPayments(supportedPayments);
 		merchantRepository.save(daniloMerchant);
 	
@@ -187,6 +200,16 @@ public class Data {
 		
  
 		
+//<<<<<<< HEAD
+//=======
+//		Merchant drugiMerchant = new Merchant("drugiMerchant", "pas", null);
+//		drugiMerchant.setMerchantBankUrl("http://localhost:8081");
+//		supportedPayments = new ArrayList<>();
+//		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
+//		supportedPayments.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
+//		drugiMerchant.setSupportedPayments(supportedPayments);
+//		merchantRepository.save(drugiMerchant);
+//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607
 		
 		
 		

@@ -1,4 +1,4 @@
-package pc.payments.card;
+package pc.payments.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
@@ -55,39 +56,68 @@ public class CardService implements IPaymentExtensionPoint{
 	private CartRepository cartRepository;
 	
 	@Override
-	public TransactionResult prepareTransaction(PaymentRequest req) { //req.getId() == id cart-a u PC-u
-		System.out.println("req: " + req.toString());
+	public ResponseEntity<StringDto> prepareTransaction(Cart cart) { //req.getId() == id cart-a u PC-u
+		/*System.out.println("req: " + req.toString());
 		//System.out.println(cartRepository.findAll().toString());
 		for(Cart c : cartRepository.findAll()){
 			System.out.println(c.getId() + " - " + c.getMerchantOrderId());
 		}
-		Cart cart = cartRepository.findById(req.getId()).orElse(null);
+		Cart cart = cartRepository.findById(req.getId()).orElse(null);*/
 		
 		 
 		
 		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
 		if(cart!=null){
 			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
-			req.setId(null);
+//<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
+			//req.setId(null);
 			
-			String merchantBankId = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantId").getValue();
-			String merchantBankPass = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantPassword").getValue();
-			
-			req.setMerchantId(merchantBankId);
+			String merchantBankId = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantId").getValue();
+			String merchantBankPass = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantPassword").getValue();
+			String bankUrl = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantBankUrl").getValue();
+		//	req.setMerchantId(merchantBankId);
+//=======
+			/*req.setId(null);
+			req.setMerchantId(cart.getMerchantId());
+>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607:payment-concentrator/src/main/java/pc/payments/impl/CardService.java
 			req.setMerchantOrderId(cart.getMerchantOrderId());
 			req.setMerchantPassword(merchantBankPass);
 			req.setMerchantTimestamp(cart.getMerchantTimestamp());
 			req.setAmount(cart.getTotalPrice());
 			req = paymentRequestService.save(req);
+<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
 			System.out.println("PaymentRequest saved: " + req.toString());
 			 
-			String bankUrl = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantBankUrl").getValue();
+			 
 			
 			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
 			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, req, Payment.class);
+=======
+			System.out.println("PaymentRequest saved: " + req.toString());*/
+			
+			
+			
+			PaymentRequest pr = new PaymentRequest();
+			pr.setAmount(cart.getTotalPrice());
+			pr.setMerchantId(cart.getMerchantId());
+			pr.setMerchantOrderId(cart.getMerchantOrderId());
+			pr.setMerchantTimestamp(cart.getMerchantTimestamp());
+			pr.setMerchantId(merchantBankId);
+			pr.setMerchantPassword(merchantBankPass);
+			 
+			
+			
+			
+			
+			
+			
+			
+			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
+			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, cart, Payment.class);
+//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607:payment-concentrator/src/main/java/pc/payments/impl/CardService.java
 			PaymentConfirmationDto dto = new PaymentConfirmationDto();
 			dto.setResponse(response);
-			return proceedTransaction(dto);
+			return new ResponseEntity<> (new StringDto(proceedTransaction(dto).getRedirectUrl()), HttpStatus.OK);		//	SKONTATI
 		}
  
 		 return null;

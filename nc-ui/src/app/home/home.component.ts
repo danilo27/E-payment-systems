@@ -25,14 +25,10 @@ export class HomeComponent implements OnInit {
   map: IHash = {};
 
   ngOnInit() {
-    if (!this.authenticationService.isAuthenticated())
-      this.router.navigate(['login']);
-    else {
       this.magazineService.all().subscribe(data => {
         this.magazines = data as any[];
         console.log(this.magazines);
       })
-    }
   }
 
 

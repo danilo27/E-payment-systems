@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.paypal.api.payments.Agreement;
@@ -19,7 +21,6 @@ import com.paypal.api.payments.Currency;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.MerchantPreferences;
 import com.paypal.api.payments.Patch;
-import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentDefinition;
@@ -32,14 +33,15 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
 import pc.dto.PaymentConfirmationDto;
+import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
-import pc.model.PaymentRequest;
+import pc.model.Cart;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 
 @Service
-public class PayPalService implements IPaymentExtensionPoint {
+public class PaypalService implements IPaymentExtensionPoint {
 
 	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
@@ -48,15 +50,16 @@ public class PayPalService implements IPaymentExtensionPoint {
 	private String merchantPassword;
 
 	@Override
-	public TransactionResult prepareTransaction(PaymentRequest req) {
-		APIContext context = new APIContext(req.getMerchantId(), req.getMerchantPassword(), production);
+	public ResponseEntity<StringDto> prepareTransaction(Cart req) {
+		System.out.println("PAYPAL KEYS " + req.getPaypalApiKey() + " " + req.getPaypalApiPassword());
+		APIContext context = new APIContext(req.getPaypalApiKey(), req.getPaypalApiPassword(), production);
 		merchantId = req.getMerchantId();
 		merchantPassword = req.getMerchantPassword();
 		
-		TransactionResult result = new TransactionResult();
+		StringDto result = new StringDto("");
 		Amount amount = new Amount();
-		amount.setCurrency(req.getCurrency());
-		amount.setTotal(req.getAmount().toString());
+		amount.setCurrency("USD");
+		amount.setTotal(req.getTotalPrice().toString());
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
 		List<Transaction> transactions = new ArrayList<Transaction>();
@@ -87,8 +90,8 @@ public class PayPalService implements IPaymentExtensionPoint {
 						break;
 					}
 				}
-				result.setRedirectUrl(redirectUrl);
-				return result;
+				result.setValue(redirectUrl);
+				return new ResponseEntity<> (result, HttpStatus.OK);
 			}
 		} catch (PayPalRESTException e) {
 			System.out.println("Error happened during payment creation!");

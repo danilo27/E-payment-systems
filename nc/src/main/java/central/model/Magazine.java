@@ -95,12 +95,12 @@ public class Magazine {
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
 	}
-
+/*
 	@Override
 	public String toString() {
 		return "Magazine [issn=" + issn + ", name=" + name + ", paymentType=" + paymentType + ", membershipPrice="
 				+ membershipPrice + ", issues=" + issues + ", merchant=" + merchant + "]";
-	}
+	}*/
     
     
 

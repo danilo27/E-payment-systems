@@ -1,3 +1,4 @@
+import { JwtHelper } from 'angular2-jwt';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -18,8 +19,13 @@ export class AuthenticationService {
   }
 
   public isAuthenticated(): boolean {
-    if (localStorage.getItem('token') != null) {
-      return true;
+    const token = localStorage.getItem('token');
+    if (token != null) {
+      const jwtHelper: JwtHelper = new JwtHelper();
+      if (jwtHelper.isTokenExpired(token)){
+        localStorage.clear();
+      }
+      return (!jwtHelper.isTokenExpired(token));
     }
     return false;
   }

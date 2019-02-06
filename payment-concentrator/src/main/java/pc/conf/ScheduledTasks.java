@@ -18,6 +18,11 @@ public class ScheduledTasks {
 		//Reflections controllerR = new Reflections("pc.controllers");
 
 		Set<Class<? extends IPaymentExtensionPoint>> paymentImplementations = paymentTypeR.getSubTypesOf(IPaymentExtensionPoint.class);
+		//Set<Class<? extends IPaymentExtensionPoint>> factoryClass = paymentTypeR.getSubTypesOf(IPaymentExtensionPoint.class);
+
+		Class<?> c = Class.forName("pc.payments.IPaymentExtensionPointFactory");
+		
+		System.out.println("FABRIKA " + c);
 
 		for(Class<?> a : paymentImplementations){
 			System.out.println(a.getName());
@@ -28,4 +33,5 @@ public class ScheduledTasks {
 		}
 
     }
-}*/
+}
+*/

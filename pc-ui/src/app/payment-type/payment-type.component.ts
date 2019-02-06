@@ -26,17 +26,18 @@ export class PaymentTypeComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(params => {
         this.token = params['t'];
         console.log(this.token);
-        this.http.get('/api/pc/getPaymentTypes/'+this.token).subscribe(data=>{
+        this.http.get('/api/payment-types/'+this.token).subscribe(data=>{
           this.supportedPaymentTypes = data as any[];
           console.log('supportedPaymentTypes: ', this.supportedPaymentTypes);
         })
       });
   }
  
-  sendRequest(type) {
-    if (type == 'CARD') {
-      this.card_service.sendRequest(this.token); //token == id cart-a u pc-u
-    } else if (type == 'PAYPAL') {
+  sendRequest(paymantName) {
+    //if (paymantName == 'CARD') {
+      this.card_service.sendRequest(this.token, paymantName); //token == id cart-a u pc-u
+      /*
+    } else if (paymantName == 'PAYPAL') {
       var mockData = {
         'amount': '5',
         'currency': 'USD',
@@ -47,9 +48,9 @@ export class PaymentTypeComponent implements OnInit {
         //this.router.navigateByUrl(data.value);
         window.location.href = data.value;
       })
-    } else if (type == 'BITCOIN') {
+    } else if (paymantName == 'BITCOIN') {
       window.location.href = 'http://localhost:8080/api/bitcoin/prepare'
-    }
+    }*/
   }
 
   subscription(){

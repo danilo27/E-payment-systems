@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import pc.model.Cart;
 import pc.model.PaymentType;
-import pc.payments.card.CardService;
+import pc.payments.impl.CardService;
 import pc.repositories.CartRepository;
 import pc.repositories.MerchantInfoRepository;
 import pc.repositories.MerchantRepository;
@@ -60,7 +60,7 @@ public class NcToPcController {
 		//String uuid = UUID.randomUUID().toString();
 		//cart.setToken(uuid);
 		
-		String merchantpas = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantPassword").getValue();
+		String merchantpas = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantPassword").getValue();
 		cart.setMerchantPassword(merchantpas);
 		cart = cartRepository.save(cart);//promenice id, ali ce merchantOrderId ostati kao u NC
 		System.out.println("Cart in PC: " + cart.toString());
@@ -69,23 +69,7 @@ public class NcToPcController {
 	    
 	}
 	
-	@GetMapping("/getPaymentTypes/{cartId}")
-	public ResponseEntity<List<PaymentType>> getPaymentTypes(@PathVariable String cartId) throws URISyntaxException{
-		System.out.println("[PC] getPaymentTypes, cartId: " + cartId);
-		Cart c = cartRepository.findById(Long.parseLong(cartId)).orElse(null);
-		if(c!=null){
-			return new ResponseEntity<List<PaymentType>>(merchantRepository.findByMerchantId(c.getMerchantId()).getSupportedPayments(), HttpStatus.OK);
-		}
-	    return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-	    
-	}
-	
-	@GetMapping("/getCart/{token}")
-	public ResponseEntity<Cart> getCart(@PathVariable String token) throws URISyntaxException{
-		System.out.println("[PC] getCart, token: " + token);
-	    return new ResponseEntity<Cart>(cartRepository.findById(Long.parseLong(token)).orElse(null), HttpStatus.OK);
-	    
-	}
+
 	
 	@PostMapping("/returnToPc")
 	public ResponseEntity<Boolean> returnToPc(@RequestBody Cart cart) throws URISyntaxException{

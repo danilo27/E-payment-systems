@@ -72,6 +72,7 @@ public class Merchant {
 	//	return merchantBankUrl;
 	//}
 
+ 
 	//public void setMerchantBankUrl(String merchantBankUrl) {
 	//	this.merchantBankUrl = merchantBankUrl;
 	//}
@@ -82,5 +83,17 @@ public class Merchant {
 	//			+ merchantBankUrl + ", magazine=" + magazine + "]";
 	//}
 	
+ 
+//	public void setMerchantBankUrl(String merchantBankUrl) {
+//		this.merchantBankUrl = merchantBankUrl;
+//	}
+/*
+	@Override
+	public String toString() {
+		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
+				+ merchantBankUrl + ", magazine=" + magazine + "]";
+	}
+	*/
+ 
 	
 }

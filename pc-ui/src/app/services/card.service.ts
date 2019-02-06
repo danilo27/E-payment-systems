@@ -23,8 +23,8 @@ export class CardService {
 
   }
 
-  sendRequest(token){
-
+  sendRequest(cartId, paymentName){
+/*
   	var paymentRequest = {
   		// merchantId: cart["merchantId"],
   		// merchantPassword: cart["merchantPassword"],
@@ -33,8 +33,9 @@ export class CardService {
   		// successUrl: "",
   		// failedUrl: "",
   		// errorUrl: ""
-      id: token //id cart-a u PC-u
+      id: cartId //id cart-a u PC-u
   	}
+<<<<<<< HEAD
 
 
 
@@ -56,6 +57,31 @@ export class CardService {
   		
   		}
   	})
+=======
+		console.log('[pc] paymentRequest ', paymentRequest);*/
+		console.log('[pc] paymentType ', paymentName);
+
+		this.http.get('/api/pc/cart/' + cartId).subscribe((cart: any) => {
+			cart.paypalApiKey = "AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o";
+			cart.paypalApiPassword = "EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr";
+			this.http.post('/api/payment/prepare/' + paymentName, cart).subscribe((data: any) => {
+				if(data != null){
+					 
+					console.log(data);
+				 
+					if(data.value!==''){		//value = redirekt url
+						window.location.href = data.value;
+						//window.location.href = data['paymentUrl']+'?t='+data['paymentRequestToken'];
+					} else {
+						alert('Error occured');
+					}
+				
+				}
+			})
+		});
+		
+  	
+//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607
 
   }
 

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mashape.unirest.http.HttpResponse;
@@ -15,8 +17,10 @@ import com.mashape.unirest.request.body.MultipartBody;
 
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.PaymentRequestDto;
+import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
+import pc.model.Cart;
 import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
@@ -36,21 +40,25 @@ public class BitcoinService implements IPaymentExtensionPoint {
     }
 	
 	public JSONObject createOrder(
+			long orderId,
             Double priceAmount,
             String priceCurrency,
             String receiveCurrency,
             String successUrl,
-            String cancelUrl
+            String cancelUrl,
+            String callbackUrl
     ) throws UnirestException {
 
         MultipartBody request = Unirest
                 .post(getUri("/orders"))
                 .headers(prepareHeaders())
+                .field("order_id", orderId)
                 .field("price_amount", priceAmount)
                 .field("price_currency", priceCurrency.toUpperCase())
                 .field("receive_currency", receiveCurrency.toUpperCase())
         		.field("cancel_url", cancelUrl)
-        		.field("success_url", successUrl);
+        		.field("success_url", successUrl)
+        		.field("callback_url", callbackUrl);
 
 
         HttpResponse<JsonNode> response = request.asJson();
@@ -62,27 +70,28 @@ public class BitcoinService implements IPaymentExtensionPoint {
     }
 	
 	@Override
-	public TransactionResult prepareTransaction(PaymentRequest req) {
-		TransactionResult result = new TransactionResult();
-		result.setRedirectUrl("");
+	public ResponseEntity<StringDto> prepareTransaction(Cart req) {
+		StringDto result = new StringDto();
+		result.setValue("");
 		try {
-			JSONObject json = createOrder(5.0, 
+			JSONObject json = createOrder(req.getId(), req.getTotalPrice(), 
 											"USD", 
 											"USD", 
-											"http://localhost:4200/bitcoin-success", 
-											"http://localhost:4200/bitcoin-cancel");
+											"http://localhost:8080/api/bitcoin/confirm/" + req.getId(), 
+											"http://localhost:8080/api/bitcoin/cancel/" + req.getId(), 
+											"http://localhost:8080/api/bitcoin/callback/" + req.getId());
 			try {
-				result.setRedirectUrl((String)json.get("payment_url"));
+				result.setValue((String)json.get("payment_url"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return result;
+			return new ResponseEntity<> (result, HttpStatus.OK);
 		} catch (UnirestException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return result;
+		return new ResponseEntity<> (result, HttpStatus.OK);
 	}
 
 	@Override
