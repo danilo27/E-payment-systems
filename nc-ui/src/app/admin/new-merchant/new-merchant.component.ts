@@ -3,11 +3,18 @@ import { SupportedPaymentsService } from './../../services/supported-payments/su
 import { MagazineService } from './../../services/magazine/magazine.service';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from '@angular/core';
+ import { GetValuesPipe } from '../../pip.pipe';
+
+export interface IHash{
+
+}
 
 @Component({
   selector: 'app-new-merchant',
   templateUrl: './new-merchant.component.html',
   styleUrls: ['./new-merchant.component.css'],
+  
   providers: [MagazineService, SupportedPaymentsService, MerchantService]
 })
 export class NewMerchantComponent implements OnInit {
@@ -17,10 +24,11 @@ export class NewMerchantComponent implements OnInit {
   private selectedMagazineIssn;
   private checkedSupportedPayments: any[] = [];
   private banks = [];
-  private merchantId: string;
-  private merchantPassword: string;
+  private cardMerchantId: string;
+  private cardMerchantPassword: string;
   private selectedBankUrl: string;
-
+  private dynamicForms: IHash = {};  
+  private pipeForm = [];
   constructor(private magazineService: MagazineService, 
               private supportedPaymentsService: SupportedPaymentsService,
               private merchantService: MerchantService,
@@ -29,7 +37,7 @@ export class NewMerchantComponent implements OnInit {
   ngOnInit() {
     this.supportedPaymentsService.all().subscribe(data => {
       this.supportedPayments = data as any[];
-      //console.log(this.supportedPayments);
+      console.log(this.supportedPayments);
     })
 
     // this.magazineService.all().subscribe(data => {
@@ -49,17 +57,106 @@ export class NewMerchantComponent implements OnInit {
       
     
   }
+  
+  paymentTypeFields: IHash = {}; 
+  innerMapFields: IHash = {};
 
-  sendData(){
+  sendData(value, form){
+    
+
+   // let lista = [];
+    //pokupi sve fieldove za odredjeni tip placanja
+    // for (var property in value) {
+    //   let payTypeKey = property.split('-')[0];
+    //   var index = this.containsElement(lista, sp);
+    //   if (index == -1) {
+    //   }
+    // }
+
+
+
+    
+
+    for(var type in this.types){
+      console.log('typename ', this.types[type]['name'])
+      this.innerMapFields = {}; //restartuj unutrasnju mapu
+      for (var property in value) {
+       // console.log('prop: ', property)
+        let payTypeKey = property.split('-')[0];
+        let fieldKey = property.split('-')[1];
+        //console.log('fk', fieldKey)
+
+        if(this.types[type]['name'] == payTypeKey){
+          this.innerMapFields[fieldKey] = value[property];
+        }
+      }
+      this.paymentTypeFields[this.types[type]['name']] = this.innerMapFields;
+    }
+
+    console.log(this.paymentTypeFields);
+
+
+
+    // let o = new Array();
+    // for (var property in value) {
+    //   let payTypeKey = property.split('-')[0];
+    //   let fieldKey = property.split('-')[1];
+
+      
+
+
+
+
+
+
+      
+       
+
+      //innerListFields[fieldKey] = value[property];
+
+    //  console.log(payTypeKey);
+     // console.log(fieldKey);
+      //paymentTypeFields[payTypeKey]
+
+
+     // if(fieldKey!==undefined){
+    //    console.log('iner:', innerListFields);
+    //  }
+
+
+
+
+    //  o.push({fieldId : property, fieldValue : value[property]});
+//
+      //this.paymentTypeFields[property.split('-')[0]] = innerListFields;
+      //console.log(this.paymentTypeFields);
+
+     // if(property.split('-')[0] in paymentTypeFields){
+
+     // }
+
+     
+
+    //  this.paymentTypeFields[property.split('-')[0]] = innerListFields;
+
+   // }
+
+  //  console.log('params: ', o);
+
+    var paymentTypeFields = {
+
+    }
+
     var request = {
       "magazineIssn": this.selectedMagazineIssn,
       "supportedPaymentsIds": this.checkedSupportedPayments,
-      "merchantId": this.merchantId,
-      "merchantPassword": this.merchantPassword,
-      "merchantBankUrl": this.selectedBankUrl
+       paymentTypeFields: this.paymentTypeFields,
+       merchantId: this.selectedMagazineIssn
+    //  "merchantPassword": this.merchantPassword,
+     //  "merchantBankUrl": this.selectedBankUrl
     }
 
-    console.log(request);
+   console.log('request: ', request);
     this.merchantService.createMerchant(request).subscribe((data: any) => {
       alert(data.message);
     })
@@ -69,21 +166,44 @@ export class NewMerchantComponent implements OnInit {
     var dto = {
       value: this.selectedBankUrl
     }
+    console.log(dto)
     this.http.post('/api/merchant/request',dto).subscribe(data=>{
-      this.merchantId = data['merchantId'];
-      this.merchantPassword = data['merchantPassword'];
-      console.log('credentials: ', this.merchantId, this.merchantPassword);
+      this.cardMerchantId = data['merchantId'];
+      this.cardMerchantPassword = data['merchantPassword'];
+      console.log('credentials: ', this.cardMerchantId, this.cardMerchantPassword);
     })
   }
+
+  objectKeys = Object.keys;
+  types = [];
 
   checkSupportedPayment(sp){
     var index = this.containsElement(this.checkedSupportedPayments, sp);
     if (index == -1) {
       this.checkedSupportedPayments.push(sp.id);
+      this.types.push(sp);
+      console.log(this.types);
+      if(this.dynamicForms[sp.name]==null){
+        this.supportedPaymentsService.getFields(sp.name).subscribe(data => {
+
+              this.dynamicForms[sp.name] = data as any[];
+              // console.log('f: ', this.dynamicForms[sp.name] );
+              this.pipeForm = GetValuesPipe.prototype.transform(this.dynamicForms[sp.name]);
+             // console.log(this.pipeForm)
+          })
+      }
     } else {
       this.checkedSupportedPayments.splice(index, 1);
+      this.types.splice(index, 1);
+      console.log(this.types);
+      if(this.dynamicForms[sp.name]!=null){
+          delete this.dynamicForms[sp.name];
+          console.log(this.dynamicForms)
+      }
     }
   }
+ 
+ 
 
   containsElement(list: any[], element) {
     var index = 0;
@@ -95,3 +215,6 @@ export class NewMerchantComponent implements OnInit {
     return -1;
   }
 }
+
+ 
+ 

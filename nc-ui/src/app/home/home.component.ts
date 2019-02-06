@@ -46,8 +46,8 @@ export class HomeComponent implements OnInit {
 
     this.map["itemType"] = "issue";
     this.map["itemId"] = issue.id;
-    this.map["merchantId"] = magazine.merchant.merchantId;
-    this.map["merchantPas"] = magazine.merchant.merchantPass;
+    this.map["merchantId"] = magazine.issn;
+    //this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
  
     var dto = {
@@ -71,8 +71,8 @@ export class HomeComponent implements OnInit {
 
      this.map["itemType"] = "article";
     this.map["itemId"] = article.id;
-    this.map["merchantId"] = magazine.merchant.merchantId;
-    this.map["merchantPas"] = magazine.merchant.merchantPass;
+     this.map["merchantId"] = magazine.issn;
+    //this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
 
     var dto = {

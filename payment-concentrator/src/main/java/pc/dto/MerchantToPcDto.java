@@ -1,11 +1,11 @@
-package central.dto;
+package pc.dto;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import central.model.PaymentTypeField;
-import central.model.SupportedPayments;
+import pc.model.PaymentTypeField;
+import pc.model.PaymentType;
 
 public class MerchantToPcDto {
 
@@ -16,7 +16,7 @@ public class MerchantToPcDto {
 	
 	private String merchantBankUrl;
 	
-	List<SupportedPayments> supportedPayments;
+	List<PaymentType> supportedPayments;
 
 	private Map<String, Map<String, String>> paymentTypeFields = new HashMap<>();
 		
@@ -37,10 +37,7 @@ public class MerchantToPcDto {
 	public void setMerchantPass(String merchantPass) {
 		this.merchantPass = merchantPass;
 	}
-
-	public List<SupportedPayments> getSupportedPayments() {
-		return supportedPayments;
-	}
+ 
 
 	public String getMerchantBankUrl() {
 		return merchantBankUrl;
@@ -50,7 +47,13 @@ public class MerchantToPcDto {
 		this.merchantBankUrl = merchantBankUrl;
 	}
 
-	public void setSupportedPayments(List<SupportedPayments> supportedPayments) {
+ 
+
+	public List<PaymentType> getSupportedPayments() {
+		return supportedPayments;
+	}
+
+	public void setSupportedPayments(List<PaymentType> supportedPayments) {
 		this.supportedPayments = supportedPayments;
 	}
 

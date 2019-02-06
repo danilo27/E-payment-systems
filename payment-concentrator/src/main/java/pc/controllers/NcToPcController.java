@@ -21,6 +21,7 @@ import pc.model.Cart;
 import pc.model.PaymentType;
 import pc.payments.card.CardService;
 import pc.repositories.CartRepository;
+import pc.repositories.MerchantInfoRepository;
 import pc.repositories.MerchantRepository;
 
 
@@ -31,6 +32,9 @@ public class NcToPcController {
 		
 	@Autowired
 	private CardService cardService;
+	
+	@Autowired
+	private MerchantInfoRepository merchantInfoRepository;
 	
 	@Autowired
 	private CartRepository cartRepository;
@@ -55,7 +59,9 @@ public class NcToPcController {
 		//cart.getItemDetails().put("pcUrl", "http://localhost:4200");
 		//String uuid = UUID.randomUUID().toString();
 		//cart.setToken(uuid);
-	 
+		
+		String merchantpas = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantPassword").getValue();
+		cart.setMerchantPassword(merchantpas);
 		cart = cartRepository.save(cart);//promenice id, ali ce merchantOrderId ostati kao u NC
 		System.out.println("Cart in PC: " + cart.toString());
 	     

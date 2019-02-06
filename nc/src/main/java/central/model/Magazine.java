@@ -42,7 +42,7 @@ public class Magazine {
     private List<Issue> issues = new ArrayList<Issue>();
     
 //    @JsonIgnoreProperties("magazine")
-//    @JsonIgnore
+    @JsonIgnore
     @OneToOne// ( optional = false, orphanRemoval = true, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
     private Merchant merchant;
     

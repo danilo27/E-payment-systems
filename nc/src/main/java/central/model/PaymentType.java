@@ -1,4 +1,4 @@
-package pc.model;
+package central.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,8 +34,8 @@ public class PaymentType implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<PaymentTypeField> fields = new ArrayList<>();
 	
-//	@ManyToMany(mappedBy = "supportedPayments")
-//	private List<Merchant> merchants = new ArrayList<>();
+ 	//@ManyToMany(mappedBy = "supportedPayments", fetch = FetchType.EAGER)
+	//private List<Merchant> merchants = new ArrayList<>();
 	
 	public PaymentType(){}
 
@@ -79,7 +80,9 @@ public class PaymentType implements Serializable{
 		this.label = label;
 	}
 
- 
+	 
+
+	 
 	
 	
 }

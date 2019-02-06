@@ -20,10 +20,10 @@ public class Merchant {
 	@Id
 	private String merchantId;
 	
-	@Column
-	private String merchantPass;
+	//@Column
+	//private String merchantPass;
 	
-	private String merchantBankUrl;
+	//private String merchantBankUrl;
 	
 	//@JsonIgnoreProperties("merchant")
 	@JsonIgnore
@@ -44,13 +44,13 @@ public class Merchant {
 
 
 
-	public String getMerchantPass() {
-		return merchantPass;
-	}
+	//public String getMerchantPass() {
+	//	return merchantPass;
+	//}
 
-	public void setMerchantPass(String merchantPass) {
-		this.merchantPass = merchantPass;
-	}
+	//public void setMerchantPass(String merchantPass) {
+	//	this.merchantPass = merchantPass;
+	//}
 
 	public Magazine getMagazine() {
 		return magazine;
@@ -68,19 +68,19 @@ public class Merchant {
 		this.supportedPayments = supportedPayments;
 	}*/
 
-	public String getMerchantBankUrl() {
-		return merchantBankUrl;
-	}
+	//public String getMerchantBankUrl() {
+	//	return merchantBankUrl;
+	//}
 
-	public void setMerchantBankUrl(String merchantBankUrl) {
-		this.merchantBankUrl = merchantBankUrl;
-	}
+	//public void setMerchantBankUrl(String merchantBankUrl) {
+	//	this.merchantBankUrl = merchantBankUrl;
+	//}
 
-	@Override
-	public String toString() {
-		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
-				+ merchantBankUrl + ", magazine=" + magazine + "]";
-	}
+	//@Override
+	//public String toString() {
+	//	return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
+	//			+ merchantBankUrl + ", magazine=" + magazine + "]";
+	//}
 	
 	
 }

@@ -1,4 +1,4 @@
-package pc.model;
+package central.model;
 
 import java.io.Serializable;
 

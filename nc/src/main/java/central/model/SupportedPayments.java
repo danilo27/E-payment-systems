@@ -58,6 +58,11 @@ public class SupportedPayments {
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
+
+	@Override
+	public String toString() {
+		return "SupportedPayments [id=" + id + ", name=" + name + ", imageUrl=" + imageUrl + "]";
+	}
 	
 	
 }

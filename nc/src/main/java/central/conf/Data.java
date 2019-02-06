@@ -110,19 +110,19 @@ public class Data {
 		m2.setMembershipPrice(Double.parseDouble("35.0"));
 		
 		m3.setIssn("12344321");
-		m3.setPaymentType(MagazinePaymentType.OPEN_ACCESS);
+		m3.setPaymentType(MagazinePaymentType.PAID_ACCESS);
 		m3.setName("Architecture Magazine");
-		m3.setMembershipPrice(Double.parseDouble("35.0"));
+		 
 		
 		m1 = magazineRepository.save(m1);
 		m2 = magazineRepository.save(m2);
 		m3 = magazineRepository.save(m3);
 		
-		System.out.println(m1.toString());
+		//System.out.println(m1.toString());
 		
 		Merchant daniloMerchant = new Merchant();
 		daniloMerchant.setMerchantId("daniloMerchant");
-		daniloMerchant.setMerchantPass("pas");
+		//daniloMerchant.setMerchantPass("pas");
 		merchantRepository.save(daniloMerchant);
 		//daniloMerchant = merchantRepository.save(daniloMerchant);
 		//daniloMerchant.setMagazine(m1);
@@ -132,7 +132,7 @@ public class Data {
 		
 		Merchant drugiMerchant = new Merchant();
 		drugiMerchant.setMerchantId("drugiMerchant");
-		drugiMerchant.setMerchantPass("pas");
+		//drugiMerchant.setMerchantPass("pas");
 		merchantRepository.save(drugiMerchant);
 		//drugiMerchant = merchantRepository.save(drugiMerchant);
 		//drugiMerchant.setMagazine(m2);
@@ -151,7 +151,7 @@ public class Data {
 		 
 		
 		
-		System.out.println(m1.toString());
+		//System.out.println(m1.toString());
 		
 		Issue i1 = new Issue();
 		i1.setDate("01-01-2019");
@@ -165,16 +165,25 @@ public class Data {
 		i2.setPrice(null);
 		//i2.setFilepath("C:/issues/issue2.pdf");
 		
+		Issue i3 = new Issue();
+		i3.setDate("15-01-2019");
+		i3.setMagazine(m3);
+		i3.setPrice(Double.parseDouble("15.0"));
+		i3.setFilepath("C:/issues/"+i3.getMagazine().getIssn()+"_"+i3.getDate()+".pdf");
+		
 		issueRepository.save(i1);
 		issueRepository.save(i2);
+		issueRepository.save(i3);
 		
-		System.out.println("i1: " + i1.toString());
+		//System.out.println("i1: " + i1.toString());
 		
 		m1.getIssues().add(i1);
 		m2.getIssues().add(i2);
+		m3.getIssues().add(i3);
 		
 		magazineRepository.save(m1);
 		magazineRepository.save(m2);
+		magazineRepository.save(m3);
 		
 		Author author1 = new Author();
 		author1.setFirstName("Petar");
@@ -198,16 +207,24 @@ public class Data {
 		a2.setPrice(Double.parseDouble("5.0"));
 		a2.setFilepath("C:/articles/article2.pdf");
 		
-		
 		Article a3 = new Article();
 		a3.setName("IOS and Android programming");
 		a3.setAuthor(author1);
 		a3.setIssue(i1);
 		a3.setPrice(Double.parseDouble("5.0"));
+		a2.setFilepath("C:/articles/article3.pdf");
+		
+		Article a4 = new Article();
+		a4.setName("Rome Architecture");
+		a4.setAuthor(author1);
+		a4.setIssue(i3);
+		a4.setPrice(Double.parseDouble("5.0"));
+		a4.setFilepath("C:/articles/article4.pdf");
 		
 		a1 = articleRepository.save(a1);
 		a2 = articleRepository.save(a2);
 		a3 = articleRepository.save(a3);
+		a4 = articleRepository.save(a4);
 		
 		i1.getArticles().add(a1);
 		i1.getArticles().add(a2);
@@ -216,7 +233,17 @@ public class Data {
 		issueRepository.save(i1);
 		
 		
+		i3.getArticles().add(a4);
+		
+		issueRepository.save(i3);
 			
+		
+		
+		
+		
+		
+		
+		
 		User u1 = new User();
 		u1.setFirstName("Milorad");
 		u1.setLastName("Miloradic");

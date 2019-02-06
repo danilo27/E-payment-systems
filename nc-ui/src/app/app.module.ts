@@ -22,6 +22,7 @@ import { ItemsComponent } from './items/items.component';
  
 import { AdminComponent } from './admin/admin.component';
 import { NewMerchantComponent } from './admin/new-merchant/new-merchant.component';
+import { GetValuesPipe } from './pip.pipe';
  
 
 @NgModule({
@@ -36,7 +37,8 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
     ItemsComponent,
  
     AdminComponent,
-    NewMerchantComponent
+    NewMerchantComponent,
+    GetValuesPipe
  
   ],
   imports: [
@@ -55,7 +57,8 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
   IssueService,
   ArticleService,
   SubscriptionService,
-  TransactionService
+  TransactionService,
+  GetValuesPipe
   ],
   bootstrap: [AppComponent]
 })

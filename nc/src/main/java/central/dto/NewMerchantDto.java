@@ -1,6 +1,10 @@
 package central.dto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import central.model.PaymentTypeField;
 
 public class NewMerchantDto {
 
@@ -9,6 +13,9 @@ public class NewMerchantDto {
 	private String merchantId;
 	private String merchantPassword;
 	private String merchantBankUrl;
+	
+	private Map<String, Map<String, String>> paymentTypeFields = new HashMap<>();
+	
 	public String getMagazineIssn() {
 		return magazineIssn;
 	}
@@ -48,6 +55,23 @@ public class NewMerchantDto {
 	public void setMerchantBankUrl(String merchantBankUrl) {
 		this.merchantBankUrl = merchantBankUrl;
 	}
+
+	public Map<String, Map<String, String>> getPaymentTypeFields() {
+		return paymentTypeFields;
+	}
+
+	public void setPaymentTypeFields(Map<String, Map<String, String>> paymentTypeFields) {
+		this.paymentTypeFields = paymentTypeFields;
+	}
+
+	@Override
+	public String toString() {
+		return "NewMerchantDto [magazineIssn=" + magazineIssn + ", supportedPaymentsIds=" + supportedPaymentsIds
+				+ ", merchantId=" + merchantId + ", merchantPassword=" + merchantPassword + ", merchantBankUrl="
+				+ merchantBankUrl + ", paymentTypeFields=" + paymentTypeFields + "]";
+	}
+
+	 
 	
 
 }

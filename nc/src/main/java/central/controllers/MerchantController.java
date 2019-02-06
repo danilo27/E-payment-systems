@@ -3,6 +3,7 @@ package central.controllers;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,9 +30,12 @@ import central.model.Magazine;
 import central.model.Merchant;
 import central.model.SupportedPayments;
 import central.repository.MagazineRepository;
+import central.repository.MerchantInfoRepository;
 import central.repository.MerchantRepository;
 import central.repository.SupportedPaymentsRepository;
 import javassist.NotFoundException;
+import central.model.MerchantInfo;
+import central.model.PaymentFieldId;
 
 @RestController
 @RequestMapping(value = "/merchant")
@@ -43,12 +47,16 @@ public class MerchantController {
 	@Autowired
 	private MerchantRepository merchantRepository;
 	
+	@Autowired
+	private MerchantInfoRepository merchantInfoRepository;
+	
 	@Value("${pc.url}")
 	private String pcUrl;
 	
 	//@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 	@RequestMapping(value = "/new", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity <ApiResponse> newMerchant(@RequestBody NewMerchantDto merchant){
+		System.out.println(merchant.toString());
 		
 		Merchant newMerchant = new Merchant();
 		Magazine magazine;
@@ -71,24 +79,28 @@ public class MerchantController {
 		}
  	
 		newMerchant.setMerchantId(merchant.getMerchantId());
-		newMerchant.setMerchantPass(merchant.getMerchantPassword());
-		newMerchant.setMerchantBankUrl(merchant.getMerchantBankUrl());
-		
+	//	newMerchant.setMerchantPass(merchant.getMerchantPassword());
+		//newMerchant.setMerchantBankUrl(merchant.getMerchantBankUrl());
+		 
 		merchantRepository.save(newMerchant);
 		magazine.setMerchant(newMerchant);
 		magazineRepository.save(magazine);
+		
+
 		
 		String fooResourceUrl2 = pcUrl+"/api/pc/merchant/new";
 		RestTemplate rt2 = new RestTemplate();
 		MerchantToPcDto mcp = new MerchantToPcDto();
 		mcp.setMerchantId(newMerchant.getMerchantId());
-		mcp.setMerchantPass(newMerchant.getMerchantPass());
+		//mcp.setMerchantPass(newMerchant.getMerchantPass());
 		mcp.setSupportedPayments(supportedPayments);
-		mcp.setMerchantBankUrl(newMerchant.getMerchantBankUrl());
+		//mcp.setMerchantBankUrl(newMerchant.getMerchantBankUrl());
+		mcp.setPaymentTypeFields(merchant.getPaymentTypeFields());
 		
 		ApiResponse response2 = rt2.postForObject(fooResourceUrl2, mcp, ApiResponse.class);
 				
 		return new ResponseEntity<>(response2, HttpStatus.OK);
+	 
 	}
 	
 	@GetMapping("/getBanks")

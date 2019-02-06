@@ -11,4 +11,8 @@ export class SupportedPaymentsService {
   all(){
     return this.http.get('api/nc/supported-payments/all') as Observable<any>;
   }
+
+  getFields(paymentName){
+  	return this.http.get('api/nc/supported-payments/fields/'+paymentName) as Observable<any>;
+  }
 }

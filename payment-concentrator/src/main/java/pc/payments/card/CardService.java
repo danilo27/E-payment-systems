@@ -20,9 +20,11 @@ import pc.model.Cart;
 import pc.model.Merchant;
 import pc.model.Payment;
 import pc.model.PaymentRequest;
+import pc.model.PaymentType;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 import pc.repositories.CartRepository;
+import pc.repositories.MerchantInfoRepository;
 import pc.repositories.MerchantRepository;
 import pc.services.PaymentRequestService;
 
@@ -31,6 +33,9 @@ public class CardService implements IPaymentExtensionPoint{
 	
 	@Autowired
 	private PaymentRequestService paymentRequestService;
+	
+	@Autowired
+	private MerchantInfoRepository merchantInfoRepository;
 	
 	@Value("${bank.acquirer}")
 	private String bankAcquirer;
@@ -58,18 +63,27 @@ public class CardService implements IPaymentExtensionPoint{
 		}
 		Cart cart = cartRepository.findById(req.getId()).orElse(null);
 		
+		 
+		
 		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
 		if(cart!=null){
 			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 			req.setId(null);
-			req.setMerchantId(cart.getMerchantId());
+			
+			String merchantBankId = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantId").getValue();
+			String merchantBankPass = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantPassword").getValue();
+			
+			req.setMerchantId(merchantBankId);
 			req.setMerchantOrderId(cart.getMerchantOrderId());
-			req.setMerchantPassword(cart.getMerchantPassword());
+			req.setMerchantPassword(merchantBankPass);
 			req.setMerchantTimestamp(cart.getMerchantTimestamp());
 			req.setAmount(cart.getTotalPrice());
 			req = paymentRequestService.save(req);
 			System.out.println("PaymentRequest saved: " + req.toString());
-			String fooResourceUrl = merchant.getMerchantBankUrl()+"/acqBank/getUrlAndId";
+			 
+			String bankUrl = merchantInfoRepository.findMerchantData("CARD", cart.getMerchantId(), "merchantBankUrl").getValue();
+			
+			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
 			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, req, Payment.class);
 			PaymentConfirmationDto dto = new PaymentConfirmationDto();
 			dto.setResponse(response);

@@ -1,30 +1,82 @@
 <app-admin></app-admin>
 <br>
-<h3>Creating New Merchant</h3>
-Create Account in Bank:
-  <select [(ngModel)]="selectedBankUrl" name="combobox2">
-    <option *ngFor="let b of banks" value="{{b}}">{{b}}</option>
-  </select><button (click)="request()">Request</button>
-  <div *ngIf="merchantId!=null">
-    Your account info:<br>
-    <label>Merchant Id: </label>{{merchantId}}<br>
-    <label>Merchant Password: </label> {{merchantPassword}}
-  </div>
+<div style="margin-left: 15px; width: 60%">
+ 
+<h2>Creating New Merchant</h2>
+ 
+<br>
 
-<form #form="ngForm" (ngSubmit)="sendData()">
-  MAGAZIN :
+
+
+ 
+
+<form #form="ngForm" (ngSubmit)="sendData(form.value, form)" ngNativeValidate>
+  <strong>Magazine:</strong>
   <select [(ngModel)]="selectedMagazineIssn" name="combobox1">
     <option *ngFor="let m of magazines" value="{{m.issn}}">{{m.name}}</option>
-  </select><br>
+  </select><br><br>
    
    
-  Nacini placanja:
+  <strong>Payment Methods:</strong>
   <div>
     <label *ngFor="let sp of supportedPayments">
       <input type="checkbox" (change)="checkSupportedPayment(sp)" >
-      {{sp.name}}
+       {{sp.name}}&nbsp;
     </label>
   </div>
 
+
+  <div *ngFor="let key of objectKeys(dynamicForms)" style="margin-left: 40px;">
+
+  <h3><strong>{{key}}</strong></h3>
+  <div >
+    <h4>Enter your {{key}} information:</h4>
+    <div *ngFor="let field of dynamicForms[key]">
+     <label>{{field.label}}</label> <input type="text" ngModel name="{{key}}-{{field.id.fieldName}}">
+    </div>
+  </div>
+
+ 
+  <br>
+  <hr>
+  <br>
+</div>
+
+
+
+
+
+
+
+
+
+
   <button class = "btn btn success" type="submit"> Kreiraj prodavca </button>
 </form>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="rdiv">
+   <div class="text-center"><strong style="font-size: 20px;">No account? <br>Instant bank registration</strong></div>
+   <label>Choose Bank:</label>
+   <select [(ngModel)]="selectedBankUrl" name="combobox2">
+       <option *ngFor="let b of banks" value="{{b}}">{{b}}</option>
+     </select>
+     <button (click)="request()" class = "btn btn-primary btn-xs">Request</button>
+    <br>
+    <label>Bank:</label><input type=text value="{{selectedBankUrl}}"><br>
+    <label>Merchant Id:</label><input type=text value="{{cardMerchantId}}"><br>
+    <label>Merchant Password:</label><input type=text value="{{cardMerchantPassword}}">
+</div>
+
+
+ 

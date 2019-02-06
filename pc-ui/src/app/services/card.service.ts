@@ -35,6 +35,13 @@ export class CardService {
   		// errorUrl: ""
       id: token //id cart-a u PC-u
   	}
+
+
+
+
+
+
+    
     console.log('[pc] paymentRequest ', paymentRequest);
   	this.http.post('/api/card/prepare', paymentRequest).subscribe(data=>{
   		if(data!=null){

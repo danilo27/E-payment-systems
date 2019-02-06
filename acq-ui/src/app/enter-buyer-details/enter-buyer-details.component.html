@@ -24,7 +24,7 @@
                               type="text"
                               class="form-control" id="cardNumber" placeholder="Valid Card Number"
                               required autofocus
-
+                              cc-number cc-type="cardType" ng-required="true"
                               type="tel" autocomplete="cc-number" id="cc-number" ccNum #cardNumber
                                />
                               <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
@@ -47,19 +47,20 @@
                           </div>
                       </div>
 
-
+                      <div cc-exp>
                       <div class="row">
                           <div class="col-xs-7 col-md-7">
                               <div class="form-group">
                                   <label for="expityMonth">
                                       EXPIRY DATE</label>
                                   <div class="col-xs-6 col-lg-6 pl-ziro">
-                                      <input type="text" class="form-control" id="expityMonth" placeholder="MM" 
-                                      autocomplete="cc-exp" required #month/>
+                                      <input class="form-control" id="expityMonth" placeholder="MM" 
+                                      cc-exp-month ng-required="true" autocomplete="cc-exp-month" 
+                                      maxlength="2" required #month/>
                                   </div>
                                   <div class="col-xs-6 col-lg-6 pl-ziro">
-                                      <input type="text" class="form-control" id="expityYear" placeholder="YY"
-                                      autocomplete="cc-exp" required #year/></div>
+                                      <input class="form-control" id="expityYear" placeholder="YY"
+                                      cc-exp-year ng-required="true" maxlength="4" required #year/></div>
                               </div>
                           </div>
                           <div class="col-xs-5 col-md-5 pull-right">
@@ -67,11 +68,11 @@
                                   <label for="cvCode">
                                       CV CODE</label>
                                   <input type="password" class="form-control" id="cvCode" placeholder="CV"
-                                      autocomplete="cc-cvc" required #cv/>
+                                      autocomplete="cc-cvc" maxlength="4" required #cv/>
                               </div>
                           </div>
                       </div>
-
+                    </div>
 
 
                     </form>
@@ -89,3 +90,6 @@
     </div>
 </div>
 </div>
+
+
+
