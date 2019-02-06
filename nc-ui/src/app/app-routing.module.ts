@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth.guard';
 import { NewMerchantComponent } from './admin/new-merchant/new-merchant.component';
 import { AdminComponent } from './admin/admin.component';
 import { LoginComponent } from './login/login.component';
@@ -8,6 +9,7 @@ import { IssueComponent } from './issue/issue.component';
 import { AuthorComponent } from './author/author.component';
 import { ItemsComponent } from './items/items.component';
 import { Routes, RouterModule } from '@angular/router';
+import { RoleGuardGuard } from './role-guard.guard';
  
 const routes: Routes = [
 	{
@@ -18,12 +20,13 @@ const routes: Routes = [
   {
 		path:'',
 		component: HomeComponent,
-		pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [AuthGuard]
 	},
   {
     path:'home',
-    component: HomeComponent 
-
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   },
   {
     path:'issue/:id',
@@ -39,12 +42,16 @@ const routes: Routes = [
     component: ItemsComponent
   },
   {
-      path:'admin',
-    component: AdminComponent
+    path:'admin',
+    component: AdminComponent,
+    canActivate: [RoleGuardGuard], 
+    data: {expectedRole: 'ADMINISTRATOR'}
   },
   {
     path:'admin/new-merchant',
-    component: NewMerchantComponent
+    component: NewMerchantComponent,
+    canActivate: [RoleGuardGuard], 
+    data: {expectedRole: 'ADMINISTRATOR'}
    }
   
 ]

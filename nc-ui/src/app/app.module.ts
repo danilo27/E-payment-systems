@@ -1,3 +1,5 @@
+import { AuthenticationService } from './services/authentication/authentication.service';
+import { AuthGuard } from './auth.guard';
 import { TokenInterceptor } from './token.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,6 +9,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
+
 
 
 import { MagazineService } from './services/magazine/magazine.service';
@@ -22,6 +25,7 @@ import { ItemsComponent } from './items/items.component';
  
 import { AdminComponent } from './admin/admin.component';
 import { NewMerchantComponent } from './admin/new-merchant/new-merchant.component';
+import { RoleGuardGuard } from './role-guard.guard';
  
 
 @NgModule({
@@ -32,9 +36,7 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
     IssueComponent,
     AuthorComponent,
     LoginComponent,
- 
     ItemsComponent,
- 
     AdminComponent,
     NewMerchantComponent
  
@@ -51,11 +53,14 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
     useClass: TokenInterceptor,
     multi: true
   },
+  AuthGuard,
+  RoleGuardGuard,
   MagazineService,
   IssueService,
   ArticleService,
   SubscriptionService,
-  TransactionService
+  TransactionService,
+  AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

@@ -33,7 +33,6 @@ public class PaymentController {
 					consumes = MediaType.APPLICATION_JSON_VALUE,
 					produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StringDto> paypalRequest(@RequestBody Cart cart, @PathVariable String paymentType) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-		System.out.println(paymentType);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return payment.prepareTransaction(cart);
 	}
