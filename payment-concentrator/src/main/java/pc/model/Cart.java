@@ -5,26 +5,44 @@ import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import pc.model.enums.TransactionStatus;
 @Entity
 public class Cart {
 	@Id
     @GeneratedValue
     @Column(name = "ID")
     private Long id;
+	
+	@Column
 	private String merchantId;
+	
+	@Column
 	private String merchantPassword;
-	private String paypalApiKey;
-	private String paypalApiPassword;
+	
+	@Column
 	private Long merchantOrderId;
+	
+	@Column
 	private Date merchantTimestamp;
+	
+	@Column 	//inProgress, successful, error, cancelled
 	private String status;
+	
+	@Column
 	private Double totalPrice;
 	 
+	@Transient
 	private HashMap<String, String> itemDetails = new HashMap<String, String>();
  
 	private String token;
+	
+	
 	public Cart(){}
 	
 	public Double getTotalPrice() {
@@ -54,14 +72,6 @@ public class Cart {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public Long getMerchantOrderId() {
@@ -96,20 +106,12 @@ public class Cart {
 		this.merchantTimestamp = merchantTimestamp;
 	}
 
-	public String getPaypalApiKey() {
-		return paypalApiKey;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setPaypalApiKey(String paypalApiKey) {
-		this.paypalApiKey = paypalApiKey;
-	}
-
-	public String getPaypalApiPassword() {
-		return paypalApiPassword;
-	}
-
-	public void setPaypalApiPassword(String paypalApiPassword) {
-		this.paypalApiPassword = paypalApiPassword;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
@@ -118,6 +120,8 @@ public class Cart {
 				+ ", merchantOrderId=" + merchantOrderId + ", merchantTimestamp=" + merchantTimestamp + ", status="
 				+ status + ", totalPrice=" + totalPrice + ", itemDetails=" + itemDetails + ", token=" + token + "]";
 	}
+
+	
  
 	 
 

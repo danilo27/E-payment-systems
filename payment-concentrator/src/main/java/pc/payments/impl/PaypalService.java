@@ -40,28 +40,33 @@ import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
+import pc.repositories.CartRepository;
 import pc.repositories.MerchantInfoRepository;
 
 @Service
 public class PaypalService implements IPaymentExtensionPoint {
-	
+
 	@Autowired
 	private MerchantInfoRepository merchantInfoRepository;
-	
+
+	@Autowired
+	private CartRepository cartRepository;
+
 	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
-	
+	private String proceedUrl = "http://localhost:8080/api/payment/confirm/Paypal";
+
 	private static String payPalApiKey;
 	private static String payPalApiPass;
 
 	@Override
 	public ResponseEntity<StringDto> prepareTransaction(Cart cart) {
-		
-		payPalApiKey = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiKey").getValue();
-		payPalApiPass = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiPassword").getValue();
-				
-		APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
-		
+
+		payPalApiKey = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiKey")
+				.getValue();
+		payPalApiPass = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiPassword")
+				.getValue();
+
 		StringDto result = new StringDto("");
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
@@ -80,18 +85,20 @@ public class PaypalService implements IPaymentExtensionPoint {
 		payment.setTransactions(transactions);
 
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");
-		redirectUrls.setReturnUrl(frontendPort + "/paypal-success");
+		redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");			//MERCHANTOV URL
+		redirectUrls.setReturnUrl(proceedUrl);
+		//redirectUrls.setReturnUrl(frontendPort + "/paypal-success");		//MOJ PROCEED
 		payment.setRedirectUrls(redirectUrls);
 
 		Payment createdPayment;
 		try {
 			String redirectUrl = "";
+			APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 			createdPayment = payment.create(context);
 			if (createdPayment != null) {
-				if(createdPayment.getState().equals("failed"))
-					redirectUrl = frontendPort + "/paypal-error";
-				
+				if (createdPayment.getState().equals("failed"))
+					result = saveError(result, cart);
+
 				List<Links> links = createdPayment.getLinks();
 				for (Links link : links) {
 					if (link.getRel().equals("approval_url")) {
@@ -100,13 +107,22 @@ public class PaypalService implements IPaymentExtensionPoint {
 					}
 				}
 				result.setValue(redirectUrl);
-				return new ResponseEntity<> (result, HttpStatus.OK);
 			}
 		} catch (PayPalRESTException e) {
-			result.setValue(frontendPort + "/paypal-error");
+			result = saveError(result, cart);
 			System.out.println("Error happened during payment creation!");
+		} catch (NullPointerException e) {
+			result = saveError(result, cart);
+			System.out.println("paypal exception durning context creation " + e);
 		}
-		return null;
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+
+	private StringDto saveError(StringDto result, Cart cart) {
+		result.setValue(frontendPort + "/paypal-error");		//MERCHANTOV URL
+		cart.setStatus("error");
+		cartRepository.save(cart);
+		return result;
 	}
 
 	@Override
@@ -114,7 +130,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 		TransactionResult result = new TransactionResult();
 		Payment payment = new Payment();
 		payment.setId(req.getPaymentId());
-		
+
 		PaymentExecution paymentExecution = new PaymentExecution();
 		paymentExecution.setPayerId(req.getPayerId());
 		try {
@@ -122,15 +138,15 @@ public class PaypalService implements IPaymentExtensionPoint {
 			Payment createdPayment = payment.execute(context, paymentExecution);
 			if (createdPayment != null) {
 				result.setSuccessMessage("Success");
+				result.setRedirectUrl(frontendPort + "/paypal-success");
 				System.out.println("SUCESS");
-				return result;
 			}
 		} catch (PayPalRESTException e) {
 			System.err.println(e.getDetails());
+			result.setRedirectUrl(frontendPort + "/paypal-error");
 			result.setSuccessMessage("Failed");
-			return result;
-		}
-		return null;
+		} 
+		return result;
 	}
 
 	@Override
@@ -138,12 +154,13 @@ public class PaypalService implements IPaymentExtensionPoint {
 		APIContext context = new APIContext(req.getPaypalApiKey(), req.getPaypalApiPassword(), production);
 		payPalApiKey = req.getPaypalApiKey();
 		payPalApiPass = req.getPaypalApiPassword();
-				
+
 		TransactionResult transactionResult = new TransactionResult();
 		transactionResult.setRedirectUrl("");
 
 		Plan plan = createPlan(req.getPlanName(), req.getPlanDescription());
-		PaymentDefinition paymentDefinition = createPaymentDefinition(req.getFrequency(), req.getFrequencyInterval(), req.getCycles());
+		PaymentDefinition paymentDefinition = createPaymentDefinition(req.getFrequency(), req.getFrequencyInterval(),
+				req.getCycles());
 		Currency currency = createCurrency(req.getCurrency(), req.getAmount());
 		paymentDefinition.setAmount(currency);
 
@@ -208,7 +225,8 @@ public class PaypalService implements IPaymentExtensionPoint {
 		agreement.setPayer(payer);
 
 		// Set shipping address information
-		ShippingAddress shipping = createShipping(req.getShippingAddress(),req.getCity(), req.getStateCode(), req.getPostalCode(), req.getCountryCode());
+		ShippingAddress shipping = createShipping(req.getShippingAddress(), req.getCity(), req.getStateCode(),
+				req.getPostalCode(), req.getCountryCode());
 		agreement.setShippingAddress(shipping);
 
 		try {
@@ -256,8 +274,9 @@ public class PaypalService implements IPaymentExtensionPoint {
 		return transactionResult;
 
 	}
-	
-	private ShippingAddress createShipping(String shippingAddress, String city, String stateCode, String postalCode, String countryCode) {
+
+	private ShippingAddress createShipping(String shippingAddress, String city, String stateCode, String postalCode,
+			String countryCode) {
 		ShippingAddress shipping = new ShippingAddress();
 		shipping.setLine1(shippingAddress);
 		shipping.setCity(city);
@@ -267,7 +286,6 @@ public class PaypalService implements IPaymentExtensionPoint {
 		return shipping;
 	}
 
-	
 	private Plan createPlan(String planName, String planDescription) {
 		// Build Plan object
 		Plan plan = new Plan();
@@ -276,7 +294,6 @@ public class PaypalService implements IPaymentExtensionPoint {
 		plan.setType("fixed");
 		return plan;
 	}
-	
 
 	private PaymentDefinition createPaymentDefinition(String frequency, String frequencyInterval, String cycles) {
 		PaymentDefinition paymentDefinition = new PaymentDefinition();
@@ -287,7 +304,6 @@ public class PaypalService implements IPaymentExtensionPoint {
 		paymentDefinition.setCycles(cycles);
 		return paymentDefinition;
 	}
-	
 
 	private Agreement createAgreement() {
 		Agreement agreement = new Agreement();
@@ -295,7 +311,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 		agreement.setDescription("Basic Agreement");
 		Date date = new Date();
 		SimpleDateFormat sdf;
-		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");//2018-12-07T13:00:04Z
+		sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");// 2018-12-07T13:00:04Z
 		sdf.setTimeZone(TimeZone.getTimeZone("CET"));
 		String currentDateISO8601 = sdf.format(date) + "Z";
 		agreement.setStartDate(currentDateISO8601);

@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'paypal-success', component: PaypalSuccessComponent },
   { path: 'paypal-success-sub', component: PaypalSuccessSubComponent },
   { path: 'paypal-cancel', component: PaypalCancelComponent },
-  { path: 'paypal-failed', component: PaypalErrorComponent },
+  { path: 'paypal-error', component: PaypalErrorComponent },
   { path: 'bitcoin-success', component: BitcoinSuccessComponent },
   { path: 'bitcoin-error', component: BitcoinErrorComponent }
 ]

@@ -19,6 +19,13 @@ public class PaymentConfirmationDto {
 	public PaymentConfirmationDto(){
 		
 	}
+	
+
+	public PaymentConfirmationDto(String paymentId, String payerId) {
+		super();
+		this.paymentId = paymentId;
+		this.payerId = payerId;
+	}
 
 	public String getPaymentId() {
 		return paymentId;
