@@ -182,6 +182,8 @@ public class AcqPaymentController {
 			accService.save(merchant);
 		}
 		System.out.println("[ACQ] end Cart" + cart.toString());
+		
+		//move to PC proceed
 		ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 	    
 		return new ResponseEntity<Cart>(cart, HttpStatus.OK);

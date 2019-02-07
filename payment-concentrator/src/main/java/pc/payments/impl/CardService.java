@@ -132,6 +132,7 @@ public class CardService implements IPaymentExtensionPoint{
 	@SuppressWarnings("unchecked")
 	@Override
 	public TransactionResult proceedTransaction(PaymentConfirmationDto req) {
+		//ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 		TransactionResult result = new TransactionResult();
 		if(((ResponseEntity<Payment>)req.getResponse()).getBody().getMessage().equals("")){
 			System.out.println(((ResponseEntity<Payment>)req.getResponse()).getBody().toString());
