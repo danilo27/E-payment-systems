@@ -18,6 +18,9 @@ public class Merchant {
 	//onlajn prodaju
 	@Id
 	private String merchantId;
+	private String successUrl;
+	private String failedUrl;
+	private String errorUrl;
 	
 	//lozinka koja se dobije od banke prilikom registracije prodavca
 	//za onlajn prodaju (tip String(100))
@@ -62,6 +65,30 @@ public class Merchant {
 //	public void setMerchantBankUrl(String merchantBankUrl) {
 //		this.merchantBankUrl = merchantBankUrl;
 //	}
+
+	public String getSuccessUrl() {
+		return successUrl;
+	}
+
+	public void setSuccessUrl(String successUrl) {
+		this.successUrl = successUrl;
+	}
+
+	public String getFailedUrl() {
+		return failedUrl;
+	}
+
+	public void setFailedUrl(String failedUrl) {
+		this.failedUrl = failedUrl;
+	}
+
+	public String getErrorUrl() {
+		return errorUrl;
+	}
+
+	public void setErrorUrl(String errorUrl) {
+		this.errorUrl = errorUrl;
+	}
 
 	public List<PaymentType> getSupportedPayments() {
 		return supportedPayments;

@@ -56,20 +56,8 @@ public class CardService implements IPaymentExtensionPoint{
 	private CartRepository cartRepository;
 	
 	@Override
-	public ResponseEntity<StringDto> prepareTransaction(Cart cart) { //req.getId() == id cart-a u PC-u
-		/*System.out.println("req: " + req.toString());
-		//System.out.println(cartRepository.findAll().toString());
-		for(Cart c : cartRepository.findAll()){
-			System.out.println(c.getId() + " - " + c.getMerchantOrderId());
-		}
-		Cart cart = cartRepository.findById(req.getId()).orElse(null);*/
-		
-		System.out.println("cartjbt: " + cart.toString());
-		System.out.println("merid: " + cart.getMerchantId());
-		 
-		System.out.println("all: " + merchantInfoRepository);
-		
-		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
+	public ResponseEntity<StringDto> prepareTransaction(Cart cart) {  
+ 
 		if(cart!=null){
 			//Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 //<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
