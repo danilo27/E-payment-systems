@@ -123,14 +123,13 @@ public class Data {
 		
 		
 		
-		
-		
-		
-		
-		
 		merchantRepository.deleteAll(); 
 		
 		Merchant daniloMerchant = new Merchant("12345678");
+		daniloMerchant.setSuccessUrl("http://localhost:4204/#/success");
+		daniloMerchant.setFailedUrl("http://localhost:4204/#/failed");
+		daniloMerchant.setErrorUrl("http://localhost:4204/#/error");
+		
 		List<PaymentType> supportedPayments = new ArrayList<>();
 
 		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));

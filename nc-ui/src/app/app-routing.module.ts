@@ -10,6 +10,9 @@ import { AuthorComponent } from './author/author.component';
 import { ItemsComponent } from './items/items.component';
 import { Routes, RouterModule } from '@angular/router';
 import { RoleGuardGuard } from './role-guard.guard';
+import { SuccessComponent } from './success/success.component';
+import { FailedComponent } from './failed/failed.component';
+import { ErrorComponent } from './error/error.component';
  
 const routes: Routes = [
 	{
@@ -52,6 +55,18 @@ const routes: Routes = [
     component: NewMerchantComponent,
     canActivate: [RoleGuardGuard], 
     data: {expectedRole: 'ADMINISTRATOR'}
+   },
+   {
+    path:'success',
+    component: SuccessComponent
+   },
+   {
+    path:'failed',
+    component: FailedComponent
+   },
+   {
+    path:'error',
+    component: ErrorComponent
    }
   
 ]

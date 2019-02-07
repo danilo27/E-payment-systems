@@ -73,6 +73,8 @@ public class PaymentTypesController {
 	public ResponseEntity<List<PaymentTypeField>> fields(@PathVariable String id) throws NotFoundException{
 		return new ResponseEntity<List<PaymentTypeField>>(paymentTypeRepository.findByName(id).orElse(null).getFields(), HttpStatus.OK);
 	}
+	
+	 
 //=======
 
 //>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607

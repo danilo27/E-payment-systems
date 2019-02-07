@@ -29,6 +29,9 @@ import { NewMerchantComponent } from './admin/new-merchant/new-merchant.componen
 import { GetValuesPipe } from './pip.pipe';
 
 import { RoleGuardGuard } from './role-guard.guard';
+import { SuccessComponent } from './success/success.component';
+import { FailedComponent } from './failed/failed.component';
+import { ErrorComponent } from './error/error.component';
 
  
 
@@ -43,7 +46,10 @@ import { RoleGuardGuard } from './role-guard.guard';
     ItemsComponent,
     AdminComponent,
     NewMerchantComponent,
-    GetValuesPipe
+    GetValuesPipe,
+    SuccessComponent,
+    FailedComponent,
+    ErrorComponent
  
   ],
   imports: [
