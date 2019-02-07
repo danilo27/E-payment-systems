@@ -1,1 +1,0 @@
-start cmd /c start_acquirer.bat
