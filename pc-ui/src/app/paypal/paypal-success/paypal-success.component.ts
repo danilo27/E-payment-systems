@@ -15,7 +15,7 @@ export class PaypalSuccessComponent implements OnInit {
     this.route.queryParams.subscribe(data => {
       this.paypalService.confirm({'paymentId': data.paymentId, 'payerId': data.PayerID})
       .subscribe((retData: any) => {
-        alert(retData.value);
+        alert(retData.successMessage);
       });
     });
   }

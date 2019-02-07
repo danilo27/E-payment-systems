@@ -34,29 +34,13 @@ export class PaymentTypeComponent implements OnInit {
   }
  
   sendRequest(paymantName) {
-    //if (paymantName == 'CARD') {
       this.card_service.sendRequest(this.token, paymantName); //token == id cart-a u pc-u
-      /*
-    } else if (paymantName == 'PAYPAL') {
-      var mockData = {
-        'amount': '5',
-        'currency': 'USD',
-        'merchantId': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
-        'merchantPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr'
-      }
-      this.paypalService.prepare(mockData).subscribe((data: any) => {
-        //this.router.navigateByUrl(data.value);
-        window.location.href = data.value;
-      })
-    } else if (paymantName == 'BITCOIN') {
-      window.location.href = 'http://localhost:8080/api/bitcoin/prepare'
-    }*/
   }
 
   subscription(){
     var mockData = {
-      'merchantId': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
-      'merchantPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr',
+      'paypalApiKey': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
+      'paypalApiPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr',
       'planName': 'T-Shirt of the Month Club Plan',
       'planDescription': 'Template creation.',
       'frequency': 'MONTH',
@@ -69,11 +53,12 @@ export class PaymentTypeComponent implements OnInit {
       'countryCode': 'US',
       'postalCode': '95070',
       'city': 'Saratoga'
-
     }
-    this.paypalService.prepareSubscription(mockData).subscribe((data: any) => {
-      console.log(data.value);
-      window.location.href = data.value;
+    var paymentName = "Paypal"
+    this.paypalService.prepareSubscription(mockData, paymentName).subscribe((data: any) => {
+      console.log(data);
+      console.log(data.redirectUrl);
+      window.location.href = data.redirectUrl;
       //this.router.navigateByUrl(data.redirect_url);
     });
   }

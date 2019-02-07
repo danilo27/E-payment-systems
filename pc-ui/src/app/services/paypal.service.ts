@@ -9,19 +9,19 @@ export class PaypalService {
   constructor(private http: HttpClient) { }
 
   prepare(requestBody){
-    return this.http.post('/api/paypal/prepare', requestBody);
+    return this.http.post('/api/payment/prepare/Paypal', requestBody);
   }
 
   confirm(requestBody){
-    return this.http.post('/api/paypal/confirm', requestBody);
+    return this.http.post('/api/payment/confirm/Paypal', requestBody);
   }
 
-  prepareSubscription(requestBody){
-    return this.http.post('/api/paypal/prepare/subscription', requestBody);
+  prepareSubscription(requestBody, paymentName){
+    return this.http.post('/api/payment/prepare/subscription/' + paymentName, requestBody);
   }
 
-  confirmSubscription(requestBody){
-    return this.http.post('/api/paypal/confirm/subscription', requestBody);
+  confirmSubscription(requestBody, paymentName){
+    return this.http.post('/api/payment/confirm/subscription/' + paymentName, requestBody);
   }
   
 }
