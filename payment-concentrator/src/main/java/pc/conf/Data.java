@@ -88,16 +88,19 @@ public class Data {
 		paypal.setImageUrl("https://yt3.ggpht.com/a-/AN66SAzETZ0qdNMqaKxIYRua6DYCPY6TSMeyckHnAA=s900-mo-c-c0xffffffff-rj-k-no");
 		paypal = paymentTypeRepository.save(paypal);
 		
-		//TODO dodati ostala polja potrebna merchantu za paypal
 		List<PaymentTypeField> paypalFields = new ArrayList<>();
 		
-		PaymentTypeField paypalMerchantId = new PaymentTypeField (paypal, "Merchant Id", "string");
+		PaymentTypeField paypalApiKey = new PaymentTypeField (paypal, "PayPal Api Key", "string");	
+		paypalApiKey.setId(new KeyClass(paypal.getName(), "paypalApiKey"));
 		
-		paypalMerchantId.setId(new KeyClass(paypal.getName(), "merchantId"));
+		PaymentTypeField paypalApiPassword = new PaymentTypeField (paypal, "PayPal Api Password", "string");	
+		paypalApiPassword.setId(new KeyClass(paypal.getName(), "paypalApiPassword"));
 		
-		paypalMerchantId = paymentTypeFieldRepository.save(paypalMerchantId);
+		paypalApiKey = paymentTypeFieldRepository.save(paypalApiKey);
+		paypalApiPassword = paymentTypeFieldRepository.save(paypalApiPassword);
 		
-		paypalFields.add(paypalMerchantId);
+		paypalFields.add(paypalApiKey);		
+		paypalFields.add(paypalApiPassword);		
 		
 		paypal.setFields(paypalFields);
 		
@@ -179,7 +182,32 @@ public class Data {
 		merchantInfoRepository.save(cardMerchantBankUrlInfo);
 		
 		//System.out.println(merchantInfoRepository.findMerchantData("CARD", "daniloMerchant", "merchantId").getValue());
+
 		
+		//PayPal
+		
+		MerchantInfo paypalApiKeyInfo = new MerchantInfo();
+		paypalApiKeyInfo.setPaymentFieldId(new PaymentFieldId(paypal.getName(),daniloMerchant.getMerchantId(),paypalApiKey.getId().getFieldName()));
+		paypalApiKeyInfo.setMerchant(daniloMerchant);
+		paypalApiKeyInfo.setPaymentType(paypal);
+		paypalApiKeyInfo.setPaymentTypeField(paypalApiKey);
+		paypalApiKeyInfo.setValue("AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o");
+		
+		MerchantInfo paypalApiPasswordInfo = new MerchantInfo();
+		paypalApiPasswordInfo.setPaymentFieldId(new PaymentFieldId(paypal.getName(),daniloMerchant.getMerchantId(),paypalApiPassword.getId().getFieldName()));
+		paypalApiPasswordInfo.setMerchant(daniloMerchant);
+		paypalApiPasswordInfo.setPaymentType(paypal);
+		paypalApiPasswordInfo.setPaymentTypeField(paypalApiPassword);
+		paypalApiPasswordInfo.setValue("EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr");
+		
+		merchantInfoRepository.save(paypalApiKeyInfo);
+		merchantInfoRepository.save(paypalApiPasswordInfo);
+		
+		
+		
+		
+		
+		//TODO dodati podatke za bitcoin
 		
 		
 		
