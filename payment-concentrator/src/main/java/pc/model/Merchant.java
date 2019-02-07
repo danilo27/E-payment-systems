@@ -71,6 +71,11 @@ public class Merchant {
 		this.supportedPayments = supportedPayments;
 	}
 
+	@Override
+	public String toString() {
+		return "Merchant [merchantId=" + merchantId + ", supportedPayments=" + supportedPayments + "]";
+	}
+
 	 
 	
 	

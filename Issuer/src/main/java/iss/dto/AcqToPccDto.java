@@ -1,6 +1,7 @@
 package iss.dto;
 
 import iss.model.Card;
+import iss.model.Payment;
 import iss.model.PaymentRequest;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public class AcqToPccDto {
 	private String acq_url;
 	private String iss_url;
 	private Card card;
-	private PaymentRequest pr;
+	private Payment pr;
 	private TransactionResult transactionResult;
 	
 	public AcqToPccDto(){}
@@ -36,11 +37,13 @@ public class AcqToPccDto {
 		this.acq_url = acq_url;
 	}
 
-	public PaymentRequest getPr() {
+	 
+
+	public Payment getPr() {
 		return pr;
 	}
 
-	public void setPr(PaymentRequest pr) {
+	public void setPr(Payment pr) {
 		this.pr = pr;
 	}
 
@@ -90,14 +93,7 @@ public class AcqToPccDto {
 		this.issuer_timestamp = issuer_timestamp;
 	}
 
-	@Override
-	public String toString() {
-		return "AcqToPccDto [acquirer_order_id=" + acquirer_order_id + ", acquirer_timestamp=" + acquirer_timestamp
-				+ ", issuer_order_id=" + issuer_order_id + ", issuer_timestamp=" + issuer_timestamp + ", acq_url="
-				+ acq_url + ", iss_url=" + iss_url + ", card=" + card + ", pr=" + pr + ", transactionResult="
-				+ transactionResult + "]";
-	}
-	
+ 
 	
 	
 }

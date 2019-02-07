@@ -1,6 +1,7 @@
 package pc.payments;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Service;
 
 import javassist.NotFoundException;
@@ -13,6 +14,9 @@ public class IPaymentExtensionPointFactory {
 	@Autowired
 	private PaymentTypeRepository paymentTypeRepository;
 
+	@Autowired
+	private  AutowireCapableBeanFactory autowireCapableBeanFactory;
+	
 	public IPaymentExtensionPoint getPaymentMethod(String paymentName) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		PaymentType pt = paymentTypeRepository.findByName(paymentName)
 				.orElseThrow(() -> new NotFoundException("Payment type with name " + paymentName + " not found"));
@@ -21,6 +25,9 @@ public class IPaymentExtensionPointFactory {
 			return null;
 		}
 		
-		return (IPaymentExtensionPoint) Class.forName("pc.payments.impl." + paymentName + "Service").newInstance();
+		IPaymentExtensionPoint payment = (IPaymentExtensionPoint) Class.forName("pc.payments.impl." + paymentName + "Service").newInstance();
+		autowireCapableBeanFactory.autowireBean(payment);
+		
+		return payment;
 	}
 }

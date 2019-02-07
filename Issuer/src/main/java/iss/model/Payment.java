@@ -18,16 +18,53 @@ public class Payment implements Serializable {
 	private Long id;
 	
 	private String paymentUrl;
+	private String merchantId;
+	private String merchantPassword;
 	private int paymentId;
 	private Long paymentRequestId;
 	private String message;
 	private String paymentRequestToken;
+	private Double amount;
+	private Long merchantOrderId;
+	private String successUrl;
+	private String errorUrl;
+	private String failedUrl;
 	public Payment(){}
 	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
+	}
+	public String getMerchantId() {
+		return merchantId;
+	}
+	public void setMerchantId(String merchantId) {
+		this.merchantId = merchantId;
+	}
+	public String getMerchantPassword() {
+		return merchantPassword;
+	}
+	public void setMerchantPassword(String merchantPassword) {
+		this.merchantPassword = merchantPassword;
+	}
+	public String getSuccessUrl() {
+		return successUrl;
+	}
+	public void setSuccessUrl(String successUrl) {
+		this.successUrl = successUrl;
+	}
+	public String getErrorUrl() {
+		return errorUrl;
+	}
+	public void setErrorUrl(String errorUrl) {
+		this.errorUrl = errorUrl;
+	}
+	public String getFailedUrl() {
+		return failedUrl;
+	}
+	public void setFailedUrl(String failedUrl) {
+		this.failedUrl = failedUrl;
 	}
 	public Long getPaymentRequestId() {
 		return paymentRequestId;
@@ -53,10 +90,32 @@ public class Payment implements Serializable {
 	public void setPaymentRequestToken(String paymentRequestToken) {
 		this.paymentRequestToken = paymentRequestToken;
 	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Double getAmount() {
+		return amount;
+	}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+	public Long getMerchantOrderId() {
+		return merchantOrderId;
+	}
+	public void setMerchantOrderId(Long merchantOrderId) {
+		this.merchantOrderId = merchantOrderId;
+	}
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", paymentUrl=" + paymentUrl + ", paymentId=" + paymentId + ", paymentRequestId="
-				+ paymentRequestId + ", message=" + message + ", paymentRequestToken=" + paymentRequestToken + "]";
+		return "Payment [id=" + id + ", paymentUrl=" + paymentUrl + ", merchantId=" + merchantId + ", merchantPassword="
+				+ merchantPassword + ", paymentId=" + paymentId + ", paymentRequestId=" + paymentRequestId
+				+ ", message=" + message + ", paymentRequestToken=" + paymentRequestToken + ", amount=" + amount
+				+ ", merchantOrderId=" + merchantOrderId + ", successUrl=" + successUrl + ", errorUrl=" + errorUrl
+				+ ", failedUrl=" + failedUrl + "]";
 	}
-	
+ 
 }

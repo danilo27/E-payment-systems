@@ -44,7 +44,7 @@ public class Data {
 		paymentTypeRepository.deleteAll();
 		
 		PaymentType card = new PaymentType();
-		card.setName("CARD");
+		card.setName("Card");
 		card.setLabel("Card");
 		card.setImageUrl("https://farmaciaproderma.com/wp-content/uploads/2018/08/visa-mastercard-logo.jpg");
 		card = paymentTypeRepository.save(card);
@@ -142,9 +142,9 @@ public class Data {
 		//daniloMerchant.setMerchantBankUrl("http://localhost:8081"); //uzeti iz MerchantInfo
 		List<PaymentType> supportedPayments = new ArrayList<>();
 //<<<<<<< HEAD
-		supportedPayments.add(paymentTypeRepository.findByName("CARD").orElse(null));
-		supportedPayments.add(paymentTypeRepository.findByName("PAYPAL").orElse(null));
-		supportedPayments.add(paymentTypeRepository.findByName("BITCOIN").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));
+		supportedPayments.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
 //=======
 //		supportedPayments.add(paymentTypeRepository.findByName("Card").orElse(null));
 //		supportedPayments.add(paymentTypeRepository.findByName("Paypal").orElse(null));

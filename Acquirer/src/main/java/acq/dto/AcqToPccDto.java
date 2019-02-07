@@ -1,6 +1,7 @@
 package acq.dto;
 
 import acq.model.Card;
+import acq.model.Payment;
 import acq.model.PaymentRequest;
 import acq.model.enums.TransactionResult;
 
@@ -14,7 +15,7 @@ public class AcqToPccDto {
 	private String acq_url;
 	private String iss_url;
 	private Card card;
-	private PaymentRequest pr;
+	private Payment pr;
 	private TransactionResult transactionResult;
 	
 	public AcqToPccDto(){}
@@ -35,11 +36,11 @@ public class AcqToPccDto {
 		this.acq_url = acq_url;
 	}
 
-	public PaymentRequest getPr() {
+	public Payment getPr() {
 		return pr;
 	}
 
-	public void setPr(PaymentRequest pr) {
+	public void setPr(Payment pr) {
 		this.pr = pr;
 	}
 

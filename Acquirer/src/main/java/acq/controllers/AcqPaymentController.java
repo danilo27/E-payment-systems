@@ -77,19 +77,28 @@ public class AcqPaymentController {
 	public Payment redirectToExternalUrl(@RequestBody PaymentRequest pr) throws URISyntaxException {
 		System.out.println("[ACQ] " + pr.toString());
 		Payment payment = new Payment();
- 
-		if(validationService.validatePaymentRequest(pr) == ReturnType.SUCCESS){
-			payment.setPaymentRequestId(pr.getId());
-			payment.setPaymentUrl("http://localhost:4201/enter-buyer-details");
-			payment.setPaymentId(paymentService.findAll().size());
-			payment.setMessage("");
-			payment.setPaymentRequestToken(pr.getToken());
-			
-			paymentService.save(payment);
+		
+		payment.setPaymentRequestId(pr.getId());
+		 
+		//payment.setPaymentId(paymentService.findAll().size());
+		payment.setMerchantPassword(pr.getMerchantPassword());
+		payment.setMessage("");
+		payment.setPaymentRequestToken(pr.getToken());
+		payment.setMerchantOrderId(pr.getMerchantOrderId());
+		payment.setAmount(pr.getAmount());
+		payment.setMerchantId(pr.getMerchantId());
+		
+		payment = paymentService.save(payment);
+		
+		if(validationService.validatePaymentRequest(payment) == ReturnType.SUCCESS){
+			 
+			payment.setPaymentUrl("http://localhost:4201/enter-buyer-details?t="+payment.getId());
 			paymentRequestService.save(pr);
 		} else {
 			payment.setMessage("Error");
 		}
+		
+		System.out.println("Returning payment: " + payment.toString());
 		
 	    return payment;
 	}
@@ -112,58 +121,63 @@ public class AcqPaymentController {
 	@PostMapping("/validateAndExecute/{token}")
 	public ResponseEntity<?> validateCardAndExecute(
 			@RequestBody Card c,
-			@PathVariable String token){
+			@PathVariable Long token){
 		 
-		PaymentRequest pr = paymentRequestService.findByToken(token);
-		System.out.println("u validate and ex : " + pr.toString());
-		Account merchant = accService.findByMerchantId(pr.getMerchantId());
+		//PaymentRequest pr = paymentRequestService.findByToken(token);
+		Payment p = paymentService.findOne(token).orElse(null);
+		System.out.println("u validate and ex : " + p.toString());
+		Account merchant = accService.findByMerchantId(p.getMerchantId());
 		c.setPan(c.getPan().replace(" ", ""));
 		String url = "";
 		Cart cart = new Cart();
 		if(c.getPan().startsWith(bankIin)){
-			if(validationService.validateCard(pr, c) == ReturnType.SUCCESS){ 
+			if(validationService.validateCard(p, c) == ReturnType.SUCCESS){ 
 				url ="http://localhost:4200/payment-card-success";
-				cart.setId(pr.getId());
-				cart.setMerchantOrderId(pr.getMerchantOrderId());
-				cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
+				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
 				cart.getItemDetails().put("successUrl", url);
-				cart.setToken(pr.getMerchantOrderId().toString());
+				cart.setToken(p.getMerchantOrderId().toString());
 				System.out.println("[ACQ] cart after success: " + cart.toString());
-			} else if (validationService.validateCard(pr, c) == ReturnType.FAILED)
-				url = pr.getFailedUrl();
-			else 
-				url = pr.getErrorUrl();
+			} else if (validationService.validateCard(p, c) == ReturnType.FAILED){
+				cart.getItemDetails().put("status", "failed");
+				url = p.getFailedUrl();
+			} else { 
+				cart.getItemDetails().put("status", "error");
+				url = p.getErrorUrl();
+			}
 		} else {
 			//TODO PCC
 			AcqToPccDto toPcc = new AcqToPccDto();
 			toPcc.setCard(c);
 			toPcc.setAcquirer_timestamp(Calendar.getInstance().getTime());
-			toPcc.setAcquirer_order_id(pr.getId());
+			toPcc.setAcquirer_order_id(p.getId());
 			toPcc.setAcq_url(acq_url);
-			toPcc.setPr(pr);
+			toPcc.setPr(p);
 			String fooResourceUrl = pccUrl+"/pcc/forwardToIssuer";
 			ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(fooResourceUrl, toPcc, AcqToPccDto.class);
 			if(((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.SUCCESS){
 				
 				 
 				url = "http://localhost:4200/payment-card-success";
-				cart.setId(pr.getId());
-				cart.setMerchantOrderId(pr.getMerchantOrderId());
-				cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
+				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
 				cart.getItemDetails().put("successUrl", url);
-				cart.setToken(pr.getMerchantOrderId().toString());
+				cart.setToken(p.getMerchantOrderId().toString());
 				System.out.println("[ACQ] cart after success: " + cart.toString());
 							
 			} else {
-				url = pr.getErrorUrl();
-			}
+				url = p.getErrorUrl();
+				cart.getItemDetails().put("status", "error");
+			} 
 		}
 	
-		if(merchant!=null){
+		if(merchant!=null && cart.getItemDetails().get("status").equals("success")){
 			System.out.println("[ACQ] Merchant Balance - Before: " + merchant.getAccountBalance());
-			merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
+			merchant.setAccountBalance(merchant.getAccountBalance()+p.getAmount());
 			System.out.println("[ACQ] Merchant Balance - After: " + merchant.getAccountBalance());
 			accService.save(merchant);
 		}
@@ -203,14 +217,15 @@ public class AcqPaymentController {
 	}
 	
 	@GetMapping("/getCart/{token}")
-	public ResponseEntity<Cart> getCart(@PathVariable String token) throws URISyntaxException{
+	public ResponseEntity<Cart> getCart(@PathVariable Long token) throws URISyntaxException{
 		System.out.println("[Acq] getCart, token: " + token);
-		PaymentRequest pr = paymentRequestService.findByToken(token);
-		System.out.println("pr: " + pr.toString());
+		//PaymentRequest pr = paymentRequestService.findOne(token).orElse(null);
+		Payment p = paymentService.findOne(token).orElse(null);
+		//System.out.println("pr: " + pr.toString());
 		Cart cart = new Cart();
-		cart.setTotalPrice(pr.getAmount());
-		cart.setId(Long.valueOf(pr.getMerchantOrderId()));
-		cart.getItemDetails().put("merchantOrderId", pr.getMerchantOrderId().toString());
+		cart.setTotalPrice(p.getAmount());
+		cart.setId(Long.valueOf(p.getMerchantOrderId()));
+		cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 	    return new ResponseEntity<Cart>(cart, HttpStatus.OK);
 	    
 	}

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import acq.model.Account;
 import acq.model.Card;
+import acq.model.Merchant;
+import acq.model.Payment;
 import acq.model.PaymentRequest;
 import acq.model.enums.ReturnType;
 import acq.services.AccountService;
@@ -26,7 +28,7 @@ public class ValidationServiceImpl implements ValidationService{
 	private MerchantService merchantService;
 	
 	@Override
-	public ReturnType validatePaymentRequest(PaymentRequest pr) {
+	public ReturnType validatePaymentRequest(Payment pr) {
 		 if(merchantService.findByMerchantId(pr.getMerchantId())!=null){
 			 if(merchantService.findByMerchantId(pr.getMerchantId()).getMerchantPass().equals(pr.getMerchantPassword())){
 				return ReturnType.SUCCESS;
@@ -36,7 +38,7 @@ public class ValidationServiceImpl implements ValidationService{
 	}
 
 	@Override
-	public ReturnType validateCard(PaymentRequest pr, Card c) {	 
+	public ReturnType validateCard(Payment pr, Card c) {	 
 		Account merchant = accService.findByMerchantId(pr.getMerchantId());
 		Account buyer = accService.findByPan(c.getPan());
 		 

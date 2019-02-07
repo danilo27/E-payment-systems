@@ -12,6 +12,7 @@ import iss.services.MerchantService;
 import iss.services.ValidationService;
 import iss.model.Account;
 import iss.model.Card;
+import iss.model.Payment;
 import iss.model.PaymentRequest;
 import iss.model.enums.ReturnType;
  
@@ -64,7 +65,7 @@ public class ValidationServiceImpl implements ValidationService{
 	}
 	
 	@Override
-	public ReturnType validateCardUserOnly(PaymentRequest pr, Card c) {	 
+	public ReturnType validateCardUserOnly(Payment pr, Card c) {	 
 	 
 		Account buyer = accService.findByPan(c.getPan());
 		 

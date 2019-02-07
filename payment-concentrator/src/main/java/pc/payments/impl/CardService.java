@@ -64,11 +64,14 @@ public class CardService implements IPaymentExtensionPoint{
 		}
 		Cart cart = cartRepository.findById(req.getId()).orElse(null);*/
 		
+		System.out.println("cartjbt: " + cart.toString());
+		System.out.println("merid: " + cart.getMerchantId());
 		 
+		System.out.println("all: " + merchantInfoRepository);
 		
 		//TODO prikaziti dozvoljene nacine placanja (cart -> merchantId)
 		if(cart!=null){
-			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
+			//Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 //<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
 			//req.setId(null);
 			
@@ -99,25 +102,28 @@ public class CardService implements IPaymentExtensionPoint{
 			
 			PaymentRequest pr = new PaymentRequest();
 			pr.setAmount(cart.getTotalPrice());
-			pr.setMerchantId(cart.getMerchantId());
+			//pr.setMerchantId(cart.getMerchantId());
 			pr.setMerchantOrderId(cart.getMerchantOrderId());
 			pr.setMerchantTimestamp(cart.getMerchantTimestamp());
 			pr.setMerchantId(merchantBankId);
 			pr.setMerchantPassword(merchantBankPass);
 			 
+			pr = paymentRequestService.save(pr);
 			
-			
-			
+			System.out.println("Pr before sending: " + pr.toString());
 			
 			
 			
 			
 			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
-			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, cart, Payment.class);
+			ResponseEntity<Payment> response =  restTemplate().postForEntity(fooResourceUrl, pr, Payment.class);
 //>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607:payment-concentrator/src/main/java/pc/payments/impl/CardService.java
 			PaymentConfirmationDto dto = new PaymentConfirmationDto();
+			StringDto result = new StringDto("");
+			result.setValue(response.getBody().getPaymentUrl());
+			System.out.println("url: " + response.getBody().getPaymentUrl());
 			dto.setResponse(response);
-			return new ResponseEntity<> (new StringDto(proceedTransaction(dto).getRedirectUrl()), HttpStatus.OK);		//	SKONTATI
+			return new ResponseEntity<> (new StringDto(response.getBody().getPaymentUrl()), HttpStatus.OK);		//	SKONTATI
 		}
  
 		 return null;

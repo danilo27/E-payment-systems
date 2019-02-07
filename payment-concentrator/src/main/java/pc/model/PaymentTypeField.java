@@ -72,6 +72,12 @@ public class PaymentTypeField implements Serializable{
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "PaymentTypeField [id=" + id + ", paymentType=" + paymentType + ", label=" + label + ", type=" + type
+				+ "]";
+	}
+
 	 
 
 	 
