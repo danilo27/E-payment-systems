@@ -1,7 +1,5 @@
 package pc.model;
 
-import java.lang.ProcessBuilder.Redirect;
-
 import org.springframework.http.ResponseEntity;
 
 public class TransactionResult {

@@ -1,7 +1,6 @@
 package pc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +16,9 @@ import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
-import pc.model.PaymentRequest;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 import pc.payments.IPaymentExtensionPointFactory;
-import pc.repositories.MerchantInfoRepository;
 
 @RestController
 @RequestMapping(value = "/payment")
@@ -39,33 +36,30 @@ public class PaymentController {
 		return payment.prepareTransaction(cart);
 	}
 	
-	@RequestMapping(value = "/confirm",
+	@RequestMapping(value = "/confirm/{paymentType}",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalConfirmation(@RequestBody PaymentConfirmationDto requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
-		TransactionResult tr = paymentType.proceedTransaction(requestDto);
-		return new ResponseEntity<>(tr, HttpStatus.OK);
+	public ResponseEntity<TransactionResult> paypalConfirmation(@RequestBody PaymentConfirmationDto requestDto, @PathVariable String paymentType) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
+		return new ResponseEntity<>(payment.proceedTransaction(requestDto), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/prepare/subscription",
+	@RequestMapping(value = "/prepare/subscription/{paymentType}",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalSubscription(@RequestBody SubscriptionRequest requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
-		TransactionResult tr = paymentType.prepareSubscription(requestDto);
-		return new ResponseEntity<>(tr, HttpStatus.OK);
+	public ResponseEntity<TransactionResult> paypalSubscription(@RequestBody SubscriptionRequest requestDto, @PathVariable String paymentType) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
+		return new ResponseEntity<>(payment.prepareSubscription(requestDto), HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/confirm/subscription",
+	@RequestMapping(value = "/confirm/subscription/{paymentType}",
 			method = RequestMethod.POST,
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<TransactionResult> paypalSubscriptionConfirmation(@RequestBody SubscriptionConfirmation requestDto) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-		IPaymentExtensionPoint paymentType = factory.getPaymentMethod(requestDto.getPaymentTypeName());
-		TransactionResult tr = paymentType.proceedSubscription(requestDto);
-		return new ResponseEntity<>(tr, HttpStatus.OK);
+	public ResponseEntity<TransactionResult> paypalSubscriptionConfirmation(@RequestBody SubscriptionConfirmation requestDto, @PathVariable String paymentType) throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
+		return new ResponseEntity<>(payment.proceedSubscription(requestDto), HttpStatus.OK);
 	}
 }

@@ -6,7 +6,6 @@ public class PaymentConfirmationDto {
 
 	private String paymentId;
 	private String payerId;
-	private String paymentTypeName;
 	ResponseEntity<?> response;
 	
 	public ResponseEntity<?> getResponse() {
@@ -35,14 +34,6 @@ public class PaymentConfirmationDto {
 
 	public void setPayerId(String payerId) {
 		this.payerId = payerId;
-	}
-
-	public String getPaymentTypeName() {
-		return paymentTypeName;
-	}
-
-	public void setPaymentTypeName(String paymentTypeName) {
-		this.paymentTypeName = paymentTypeName;
 	}
 	
 	

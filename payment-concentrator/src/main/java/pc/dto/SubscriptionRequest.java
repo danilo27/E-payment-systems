@@ -2,8 +2,8 @@ package pc.dto;
 
 public class SubscriptionRequest {
 
-	private String merchantId;
-	private String merchantPassword;
+	private String paypalApiKey;
+	private String paypalApiPassword;
 	private String planName;
 	private String planDescription;
 	private String frequency;
@@ -16,22 +16,24 @@ public class SubscriptionRequest {
 	private String stateCode;
 	private String countryCode;
 	private String postalCode;
-	private String paymentTypeName;
 
-	public String getMerchantId() {
-		return merchantId;
+
+	public String getPaypalApiKey() {
+		return paypalApiKey;
 	}
 
-	public void setMerchantId(String merchantId) {
-		this.merchantId = merchantId;
+	public void setPaypalApiKey(String paypalApiKey) {
+		this.paypalApiKey = paypalApiKey;
 	}
 
-	public String getMerchantPassword() {
-		return merchantPassword;
+
+
+	public String getPaypalApiPassword() {
+		return paypalApiPassword;
 	}
 
-	public void setMerchantPassword(String merchantPassword) {
-		this.merchantPassword = merchantPassword;
+	public void setPaypalApiPassword(String paypalApiPassword) {
+		this.paypalApiPassword = paypalApiPassword;
 	}
 
 	public String getPlanName() {
@@ -128,14 +130,6 @@ public class SubscriptionRequest {
 
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
-	}
-
-	public String getPaymentTypeName() {
-		return paymentTypeName;
-	}
-
-	public void setPaymentTypeName(String paymentTypeName) {
-		this.paymentTypeName = paymentTypeName;
 	}
 
 }

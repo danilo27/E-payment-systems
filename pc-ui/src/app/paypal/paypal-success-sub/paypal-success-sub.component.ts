@@ -13,8 +13,8 @@ export class PaypalSuccessSubComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(data => {
-      this.paypalService.confirmSubscription({'token': data.token}).subscribe((retData: any) => {
-        alert(retData.value);
+      this.paypalService.confirmSubscription({'token': data.token}, "Paypal").subscribe((retData: any) => {
+        alert(retData.successMessage);
       });
     });
   }

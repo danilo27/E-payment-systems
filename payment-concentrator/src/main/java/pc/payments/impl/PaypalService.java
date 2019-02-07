@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,27 +40,32 @@ import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
+import pc.repositories.MerchantInfoRepository;
 
 @Service
 public class PaypalService implements IPaymentExtensionPoint {
-
+	
+	@Autowired
+	private MerchantInfoRepository merchantInfoRepository;
+	
 	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
 	
-	private String merchantId;
-	private String merchantPassword;
+	private static String payPalApiKey;
+	private static String payPalApiPass;
 
 	@Override
-	public ResponseEntity<StringDto> prepareTransaction(Cart req) {
-		System.out.println("PAYPAL KEYS " + req.getPaypalApiKey() + " " + req.getPaypalApiPassword());
-		APIContext context = new APIContext(req.getPaypalApiKey(), req.getPaypalApiPassword(), production);
-		merchantId = req.getMerchantId();
-		merchantPassword = req.getMerchantPassword();
+	public ResponseEntity<StringDto> prepareTransaction(Cart cart) {
+		
+		payPalApiKey = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiKey").getValue();
+		payPalApiPass = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiPassword").getValue();
+				
+		APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 		
 		StringDto result = new StringDto("");
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
-		amount.setTotal(req.getTotalPrice().toString());
+		amount.setTotal(cart.getTotalPrice().toString());
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
 		List<Transaction> transactions = new ArrayList<Transaction>();
@@ -74,7 +80,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 		payment.setTransactions(transactions);
 
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl(frontendPort + "/paypal-error");
+		redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");
 		redirectUrls.setReturnUrl(frontendPort + "/paypal-success");
 		payment.setRedirectUrls(redirectUrls);
 
@@ -83,6 +89,9 @@ public class PaypalService implements IPaymentExtensionPoint {
 			String redirectUrl = "";
 			createdPayment = payment.create(context);
 			if (createdPayment != null) {
+				if(createdPayment.getState().equals("failed"))
+					redirectUrl = frontendPort + "/paypal-error";
+				
 				List<Links> links = createdPayment.getLinks();
 				for (Links link : links) {
 					if (link.getRel().equals("approval_url")) {
@@ -94,6 +103,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 				return new ResponseEntity<> (result, HttpStatus.OK);
 			}
 		} catch (PayPalRESTException e) {
+			result.setValue(frontendPort + "/paypal-error");
 			System.out.println("Error happened during payment creation!");
 		}
 		return null;
@@ -104,28 +114,31 @@ public class PaypalService implements IPaymentExtensionPoint {
 		TransactionResult result = new TransactionResult();
 		Payment payment = new Payment();
 		payment.setId(req.getPaymentId());
-
+		
 		PaymentExecution paymentExecution = new PaymentExecution();
 		paymentExecution.setPayerId(req.getPayerId());
 		try {
-			APIContext context = new APIContext(merchantId, merchantPassword, production);
+			APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 			Payment createdPayment = payment.execute(context, paymentExecution);
 			if (createdPayment != null) {
 				result.setSuccessMessage("Success");
+				System.out.println("SUCESS");
 				return result;
 			}
 		} catch (PayPalRESTException e) {
 			System.err.println(e.getDetails());
+			result.setSuccessMessage("Failed");
+			return result;
 		}
 		return null;
 	}
 
 	@Override
 	public TransactionResult prepareSubscription(SubscriptionRequest req) {
-		APIContext context = new APIContext(req.getMerchantId(), req.getMerchantPassword(), production);
-		merchantId = req.getMerchantId();
-		merchantPassword = req.getMerchantPassword();
-		
+		APIContext context = new APIContext(req.getPaypalApiKey(), req.getPaypalApiPassword(), production);
+		payPalApiKey = req.getPaypalApiKey();
+		payPalApiPass = req.getPaypalApiPassword();
+				
 		TransactionResult transactionResult = new TransactionResult();
 		transactionResult.setRedirectUrl("");
 
@@ -179,6 +192,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 
 		} catch (PayPalRESTException e1) {
 			// TODO Auto-generated catch block
+			transactionResult.setRedirectUrl(frontendPort + "/paypal-error");
 			e1.printStackTrace();
 		}
 		// Kreiranje agreement-a
@@ -209,10 +223,13 @@ public class PaypalService implements IPaymentExtensionPoint {
 				}
 			}
 		} catch (PayPalRESTException e) {
+			transactionResult.setRedirectUrl(frontendPort + "/paypal-error");
 			System.err.println(e.getDetails());
 		} catch (MalformedURLException e) {
+			transactionResult.setRedirectUrl(frontendPort + "/paypal-error");
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
+			transactionResult.setRedirectUrl(frontendPort + "/paypal-error");
 			e.printStackTrace();
 		}
 
@@ -222,7 +239,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 	@Override
 	public TransactionResult proceedSubscription(SubscriptionConfirmation req) {
 		// TODO Auto-generated method stub
-		APIContext context = new APIContext(merchantId, merchantPassword, production);
+		APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 		TransactionResult transactionResult = new TransactionResult();
 
 		Agreement agreement = new Agreement();
@@ -234,6 +251,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 			transactionResult.setSuccessMessage("Success");
 		} catch (PayPalRESTException e) {
 			System.err.println(e.getDetails());
+			transactionResult.setSuccessMessage("Failed");
 		}
 		return transactionResult;
 
