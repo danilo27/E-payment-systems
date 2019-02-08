@@ -52,12 +52,11 @@ public class PaymentTypesController {
 		return new ResponseEntity<List<PaymentType>>(merchant.getSupportedPayments(), HttpStatus.OK);
 	}
 	
-	
-/*
-	@GetMapping("/{id}")
+
+	@GetMapping("/getOne/{id}")
 	public ResponseEntity<PaymentType> getById(@PathVariable Long id) throws NotFoundException{
 		return new ResponseEntity<>(paymentTypeRepository.findById(id).orElseThrow(() -> new NotFoundException("payment type with id " + id + " not found")), HttpStatus.OK);
-	}*/
+	}
 	
 	@GetMapping("/{cartId}")
 	public ResponseEntity<List<PaymentType>> getPaymentTypes(@PathVariable String cartId) throws NotFoundException{

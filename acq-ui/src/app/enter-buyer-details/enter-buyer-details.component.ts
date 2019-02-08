@@ -44,7 +44,7 @@ export class EnterBuyerDetailsComponent implements OnInit {
 	  		  if(data['itemDetails']['status']==='success')
   				  window.location.href = data['itemDetails']['successUrl'];
           else if(data['itemDetails']['status']==='failed')
-            window.location.href = data['itemDetails']['faieldUrl'];
+            window.location.href = data['itemDetails']['failedUrl'];
           else 
             window.location.href = data['itemDetails']['errorUrl'];
   			} else {

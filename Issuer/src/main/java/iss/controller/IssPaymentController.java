@@ -60,16 +60,13 @@ public class IssPaymentController {
 		
 		if(toPcc.getCard().getPan().startsWith(bankIin)){
 			if(validationService.validateCardUserOnly(toPcc.getPr(), toPcc.getCard()) == ReturnType.SUCCESS){ 
-				System.out.println("udje u success");
 				toPcc.setTransactionResult(TransactionResult.SUCCESS);
 				IssueOrder issueOrder= new IssueOrder();
 				issueOrder = issueOrderRepository.save(issueOrder);
 				toPcc.setIssuer_order_id(issueOrder.getId());
 			} else if(validationService.validateCardUserOnly(toPcc.getPr(), toPcc.getCard()) == ReturnType.FAILED){ 
-				System.out.println("faield");
 				toPcc.setTransactionResult(TransactionResult.FAILED);
 			} else { 
-				System.out.println("errorgggg");
 				toPcc.setTransactionResult(TransactionResult.ERROR);	
 			}
 		}

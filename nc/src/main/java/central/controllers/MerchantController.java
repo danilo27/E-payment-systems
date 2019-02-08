@@ -64,7 +64,7 @@ public class MerchantController {
 		try {
 			magazine = magazineRepository.findById(merchant.getMagazineIssn()).orElseThrow(() -> new NotFoundException("magazine with issn " + merchant.getMagazineIssn() + " not found"));
 			for (Long spId : merchant.getSupportedPaymentsIds()){
-				String fooResourceUrl = pcUrl+"/api/payment-types/" + spId;
+				String fooResourceUrl = pcUrl+"/api/payment-types/getOne/" + spId;
 				RestTemplate rt = new RestTemplate();
 				SupportedPayments sp = rt.getForObject(fooResourceUrl, SupportedPayments.class);
 				
