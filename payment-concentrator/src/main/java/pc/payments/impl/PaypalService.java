@@ -11,9 +11,11 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.paypal.api.payments.Agreement;
 import com.paypal.api.payments.Amount;
@@ -131,6 +133,8 @@ public class PaypalService implements IPaymentExtensionPoint {
 		} catch (NullPointerException e) {
 			result = saveError(result, cart, errorEndpoint);
 			System.out.println("paypal exception durning context creation " + e);
+		} finally {
+			sendToNc(cart);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
@@ -163,6 +167,8 @@ public class PaypalService implements IPaymentExtensionPoint {
 			APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 			Payment createdPayment = payment.execute(context, paymentExecution);
 			if (createdPayment != null) {
+				cart.setStatus("success");
+				cartRepository.save(cart);
 				result.setSuccessMessage("Success");
 				result.setRedirectUrl(successUrl);
 				System.out.println("PAYMENT EXECUTED SUCCESFULLY");
@@ -173,8 +179,16 @@ public class PaypalService implements IPaymentExtensionPoint {
 		}  catch (NullPointerException e) {
 			result = saveErrorProceed(result, cart, errorUrl);
 			System.out.println("paypal exception durning context creation " + e);
+		} finally {
+			sendToNc(cart);
 		}
 		return result;
+	}
+
+	private void sendToNc(Cart cart) {
+		// TODO Auto-generated method stub
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Boolean> res = restTemplate.postForEntity("http://localhost:8080/api/pc/returnToPc", cart, Boolean.class);
 	}
 
 	private TransactionResult saveErrorProceed(TransactionResult result, Cart cart, String errorUrl) {
@@ -368,6 +382,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 			Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("cart with id " + cartId + " not found"));
 			cart.setStatus("cancelled");
 			cartRepository.save(cart);
+			sendToNc(cart);
 			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 			return new StringDto(merchant.getFailedUrl());
 		} catch (NotFoundException e) {
@@ -383,6 +398,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 			Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("cart with id " + cartId + " not found"));
 			cart.setStatus("error");
 			cartRepository.save(cart);
+			sendToNc(cart);
 			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
 			return new StringDto(merchant.getErrorUrl());
 		} catch (NotFoundException e) {
