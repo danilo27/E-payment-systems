@@ -12,4 +12,8 @@ export class TransactionService {
         return this.http.post("api/nc/transaction/proceedToPc", dto) as Observable<any>;
    }
 
+   sendSubscription(data){
+      return this.http.post("api/nc/transaction/sendSubscription", data) as Observable<any>;
+   }
+
 }

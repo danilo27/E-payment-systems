@@ -70,6 +70,7 @@ public class PaymentController {
 	public ResponseEntity<TransactionResult> paymentSubscriptionConfirmation(
 			@RequestBody SubscriptionConfirmation requestDto, @PathVariable String paymentType)
 			throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return new ResponseEntity<>(payment.proceedSubscription(requestDto), HttpStatus.OK);
 	}

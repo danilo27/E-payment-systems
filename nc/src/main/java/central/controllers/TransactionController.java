@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import central.dto.StringDto;
+import central.dto.SubscriptionRequest;
+import central.dto.TransactionResult;
 import central.model.Article;
 import central.model.Cart;
 import central.model.Issue;
@@ -60,6 +62,16 @@ public class TransactionController {
 	}
 	
  
+	@PreAuthorize("hasAuthority('USER')")
+	@PostMapping("/sendSubscription")
+	public ResponseEntity<TransactionResult> sendSubscription(@RequestBody SubscriptionRequest req) {
+		
+		String fooResourceUrl = "http://localhost:8080/api/payment/prepare/subscription/Paypal";
+		ResponseEntity<TransactionResult> response = restTemplate().postForEntity(fooResourceUrl, req, TransactionResult.class);
+
+	    return response;
+	   
+	}
 	
 	//redirect
 	@PreAuthorize("hasAuthority('USER')")
