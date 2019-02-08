@@ -111,8 +111,12 @@ public class Payment implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Payment [id=" + id + ", paymentUrl=" + paymentUrl + ", paymentId=" + paymentId + ", paymentRequestId="
-				+ paymentRequestId + ", message=" + message + ", paymentRequestToken=" + paymentRequestToken + "]";
+		return "Payment [id=" + id + ", paymentUrl=" + paymentUrl + ", merchantId=" + merchantId + ", merchantPassword="
+				+ merchantPassword + ", paymentId=" + paymentId + ", paymentRequestId=" + paymentRequestId
+				+ ", message=" + message + ", paymentRequestToken=" + paymentRequestToken + ", amount=" + amount
+				+ ", merchantOrderId=" + merchantOrderId + ", successUrl=" + successUrl + ", errorUrl=" + errorUrl
+				+ ", failedUrl=" + failedUrl + "]";
 	}
+  
 	
 }

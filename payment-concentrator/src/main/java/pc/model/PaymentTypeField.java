@@ -2,13 +2,14 @@ package pc.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -20,6 +21,7 @@ public class PaymentTypeField implements Serializable{
 	
 	@MapsId("Name")
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
     @JoinColumn(name="name", insertable = false, updatable = false, referencedColumnName="name") 
     private PaymentType paymentType;
  
@@ -72,11 +74,11 @@ public class PaymentTypeField implements Serializable{
 		this.type = type;
 	}
 
-	@Override
-	public String toString() {
-		return "PaymentTypeField [id=" + id + ", paymentType=" + paymentType + ", label=" + label + ", type=" + type
-				+ "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "PaymentTypeField [id=" + id + ", paymentType=" + paymentType + ", label=" + label + ", type=" + type
+//				+ "]";
+//	}
 
 	 
 

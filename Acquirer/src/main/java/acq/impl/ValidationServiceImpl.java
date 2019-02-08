@@ -62,7 +62,7 @@ public class ValidationServiceImpl implements ValidationService{
 				}
 			}
 		}
-		return ReturnType.ERROR;
+		return ReturnType.FAILED;
 	}
 
 }

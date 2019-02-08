@@ -89,6 +89,9 @@ public class AcqPaymentController {
 		payment.setMerchantOrderId(pr.getMerchantOrderId());
 		payment.setAmount(pr.getAmount());
 		payment.setMerchantId(pr.getMerchantId());
+		payment.setSuccessUrl(pr.getSuccessUrl());
+		payment.setErrorUrl(pr.getErrorUrl());
+		payment.setFailedUrl(pr.getFailedUrl());
 		
 		payment = paymentService.save(payment);
 		
@@ -150,18 +153,17 @@ public class AcqPaymentController {
 			toPcc.setAcq_url(acq_url);
 			toPcc.setPr(p);
 			String fooResourceUrl = pccUrl+"/pcc/forwardToIssuer";
-			ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(fooResourceUrl, toPcc, AcqToPccDto.class);
+			ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(fooResourceUrl, toPcc, AcqToPccDto.class);		 
 			if(((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.SUCCESS){
- 
 				cart.setId(p.getId());
 				cart.setMerchantOrderId(p.getMerchantOrderId());
 				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
 				cart.getItemDetails().put("successUrl", p.getSuccessUrl());
+				cart.setStatus("success");
 				cart.setToken(p.getMerchantOrderId().toString());
 				url = p.getSuccessUrl();
-				System.out.println("[ACQ] cart after success: " + cart.toString());
-							
+				System.out.println("[ACQ] cart after success: " + cart.toString());				
 			} else if (((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.FAILED){
 				cart.setId(p.getId());
 				cart.setMerchantOrderId(p.getMerchantOrderId());
@@ -192,10 +194,10 @@ public class AcqPaymentController {
 		//move to PC proceed
 		ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 	    
-		//return new ResponseEntity<Cart>(cart, HttpStatus.OK);
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create(url));
-		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.setLocation(URI.create(url));
+//		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
 	
 	@GetMapping("/makeMerchantAccount")

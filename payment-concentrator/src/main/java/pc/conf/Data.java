@@ -81,18 +81,78 @@ public class Data {
 		
 		List<PaymentTypeField> paypalFields = new ArrayList<>();
 		
-		PaymentTypeField paypalApiKey = new PaymentTypeField (paypal, "PayPal Api Key", "string");	
+		PaymentTypeField paypalApiKey = new PaymentTypeField (paypal, "Api Key", "string");	
 		paypalApiKey.setId(new KeyClass(paypal.getName(), "paypalApiKey"));
 		
-		PaymentTypeField paypalApiPassword = new PaymentTypeField (paypal, "PayPal Api Password", "string");	
+		PaymentTypeField paypalApiPassword = new PaymentTypeField (paypal, "Api Password", "string");	
 		paypalApiPassword.setId(new KeyClass(paypal.getName(), "paypalApiPassword"));
+		
+		PaymentTypeField paypalPlanName = new PaymentTypeField (paypal, "Plan Name", "string");	
+		paypalPlanName.setId(new KeyClass(paypal.getName(), "paypalPlanName"));
+		
+		PaymentTypeField paypalPlanDescription = new PaymentTypeField (paypal, "Plan Description", "string");	
+		paypalPlanDescription.setId(new KeyClass(paypal.getName(), "paypalPlanDescription"));
+		
+		PaymentTypeField paypalFrequency = new PaymentTypeField (paypal, "Frequency", "string");	
+		paypalFrequency.setId(new KeyClass(paypal.getName(), "paypalFrequency"));
+		
+		PaymentTypeField paypalFrequencyInterval = new PaymentTypeField (paypal, "Frequency Interval", "string");	
+		paypalFrequencyInterval.setId(new KeyClass(paypal.getName(), "paypalFrequencyInterval"));
+
+		PaymentTypeField paypalCycles = new PaymentTypeField (paypal, "Cycles", "string");	
+		paypalCycles.setId(new KeyClass(paypal.getName(), "paypalCycles"));
+		
+		PaymentTypeField paypalCurrency = new PaymentTypeField (paypal, "Currency", "string");	
+		paypalCurrency.setId(new KeyClass(paypal.getName(), "paypalCurrency"));
+		
+		PaymentTypeField paypalAmount = new PaymentTypeField (paypal, "Amount", "string");	
+		paypalAmount.setId(new KeyClass(paypal.getName(), "paypalAmount"));
+		
+		PaymentTypeField paypalShippingAddress = new PaymentTypeField (paypal, "Shipping Address", "string");	
+		paypalShippingAddress.setId(new KeyClass(paypal.getName(), "paypalShippingAddress"));
+		
+		PaymentTypeField paypalCity = new PaymentTypeField (paypal, "City", "string");	
+		paypalCity.setId(new KeyClass(paypal.getName(), "paypalCity"));
+		
+		PaymentTypeField paypalStateCode = new PaymentTypeField (paypal, "State Code", "string");	
+		paypalStateCode.setId(new KeyClass(paypal.getName(), "paypalStateCode"));
+		
+		PaymentTypeField paypalCountryCode = new PaymentTypeField (paypal, "Country Code", "string");	
+		paypalCountryCode.setId(new KeyClass(paypal.getName(), "paypalCountryCode"));
+		
+		PaymentTypeField paypalPostalCode = new PaymentTypeField (paypal, "Postal Code", "string");	
+		paypalPostalCode.setId(new KeyClass(paypal.getName(), "paypalPostalCode"));
 		
 		paypalApiKey = paymentTypeFieldRepository.save(paypalApiKey);
 		paypalApiPassword = paymentTypeFieldRepository.save(paypalApiPassword);
-		
+		paypalPlanName = paymentTypeFieldRepository.save(paypalPlanName);
+		paypalPlanDescription = paymentTypeFieldRepository.save(paypalPlanDescription);
+		paypalFrequency = paymentTypeFieldRepository.save(paypalFrequency);
+		paypalFrequencyInterval = paymentTypeFieldRepository.save(paypalFrequencyInterval);
+		paypalCycles = paymentTypeFieldRepository.save(paypalCycles);
+		paypalCurrency = paymentTypeFieldRepository.save(paypalCurrency);
+		paypalAmount = paymentTypeFieldRepository.save(paypalAmount);
+		paypalShippingAddress = paymentTypeFieldRepository.save(paypalShippingAddress);
+		paypalCity = paymentTypeFieldRepository.save(paypalCity);
+		paypalStateCode = paymentTypeFieldRepository.save(paypalStateCode);
+		paypalCountryCode = paymentTypeFieldRepository.save(paypalCountryCode);
+		paypalPostalCode = paymentTypeFieldRepository.save(paypalPostalCode);
+				
 		paypalFields.add(paypalApiKey);		
-		paypalFields.add(paypalApiPassword);		
-		
+		paypalFields.add(paypalApiPassword);	
+		paypalFields.add(paypalPlanName);
+		paypalFields.add(paypalPlanDescription);
+		paypalFields.add(paypalFrequency);
+		paypalFields.add(paypalFrequencyInterval);
+		paypalFields.add(paypalCycles);
+		paypalFields.add(paypalCurrency);
+		paypalFields.add(paypalAmount);
+		paypalFields.add(paypalShippingAddress);
+		paypalFields.add(paypalCity);
+		paypalFields.add(paypalStateCode);
+		paypalFields.add(paypalCountryCode);
+		paypalFields.add(paypalPostalCode);
+
 		paypal.setFields(paypalFields);
 		
 		paymentTypeRepository.save(paypal);

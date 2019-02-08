@@ -214,7 +214,7 @@ public class Data {
 		a3.setAuthor(author1);
 		a3.setIssue(i1);
 		a3.setPrice(Double.parseDouble("5.0"));
-		a2.setFilepath("C:/articles/article3.pdf");
+		a3.setFilepath("C:/articles/article3.pdf");
 		
 		Article a4 = new Article();
 		a4.setName("Rome Architecture");

@@ -33,7 +33,7 @@ public class ValidationServiceImpl implements ValidationService{
 				return ReturnType.SUCCESS;
 			 }
 		 }
-		 return null;
+		 return ReturnType.FAILED;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ValidationServiceImpl implements ValidationService{
 				}
 			}
 		}
-		return ReturnType.ERROR;
+		return ReturnType.FAILED;
 	}
 	
 	@Override
@@ -87,7 +87,7 @@ public class ValidationServiceImpl implements ValidationService{
 				}
 			}
 		}
-		return ReturnType.ERROR;
+		return ReturnType.FAILED;
 	}
 
 }

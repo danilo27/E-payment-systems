@@ -79,11 +79,11 @@ public class PaymentType implements Serializable{
 		this.label = label;
 	}
 
-	@Override
-	public String toString() {
-		return "PaymentType [id=" + id + ", name=" + name + ", label=" + label + ", imageUrl=" + imageUrl + ", fields="
-				+ fields + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "PaymentType [id=" + id + ", name=" + name + ", label=" + label + ", imageUrl=" + imageUrl + ", fields="
+//				+ fields + "]";
+//	}
 
  
 	
