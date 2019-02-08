@@ -28,7 +28,7 @@ public class Cart {
 	@Column
 	private Date merchantTimestamp;
 	
-	@Column 	//inProgress, successful, error, cancelled
+	@Column 	//inProgress, successful, error, cancelled, expired
 	private String status;
 	
 	@Column

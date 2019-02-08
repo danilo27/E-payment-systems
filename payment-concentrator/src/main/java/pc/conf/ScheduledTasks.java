@@ -1,37 +1,36 @@
-/*package pc.conf;
+package pc.conf;
 
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
-import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RestController;
 
-import pc.payments.IPaymentExtensionPoint;
+import pc.model.Cart;
+import pc.repositories.CartRepository;
+
 
 @Component
 public class ScheduledTasks {
 
-    @Scheduled(fixedRate = 30000)
-    public void reportCurrentTime() throws ClassNotFoundException {
-    	Reflections paymentTypeR = new Reflections("pc");
-		//Reflections controllerR = new Reflections("pc.controllers");
-
-		Set<Class<? extends IPaymentExtensionPoint>> paymentImplementations = paymentTypeR.getSubTypesOf(IPaymentExtensionPoint.class);
-		//Set<Class<? extends IPaymentExtensionPoint>> factoryClass = paymentTypeR.getSubTypesOf(IPaymentExtensionPoint.class);
-
-		Class<?> c = Class.forName("pc.payments.IPaymentExtensionPointFactory");
+	@Autowired
+	private CartRepository cartRepository;
+	
+    @Scheduled(fixedRate = 36000000)	//svakih sat vremena
+    public void reportCurrentTime(){
+    	
+		//System.out.println("SCHEDUELED");
+		List<Cart> carts = cartRepository.findByStatus("inProgress");
 		
-		System.out.println("FABRIKA " + c);
-
-		for(Class<?> a : paymentImplementations){
-			System.out.println(a.getName());
-			//Class.forName(a.getName());
-			CustomClassLoader cl = new CustomClassLoader();
-			cl.loadClass(a.getName(), true);
-			//this.getClass().getClassLoader().loadClass(a.getName());
+		for (Cart cart: carts){
+			Date now = new Date();
+			Long differenceInMiliseconds = now.getTime() - cart.getMerchantTimestamp().getTime();	
+			if (differenceInMiliseconds >= 18000000){
+				cart.setStatus("expired");
+				cartRepository.save(cart);
+			}
+			
 		}
-
     }
 }
-*/
