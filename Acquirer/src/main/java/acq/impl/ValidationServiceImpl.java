@@ -34,7 +34,7 @@ public class ValidationServiceImpl implements ValidationService{
 				return ReturnType.SUCCESS;
 			 }
 		 }
-		 return null;
+		 return ReturnType.FAILED;
 	}
 
 	@Override

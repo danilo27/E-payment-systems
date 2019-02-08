@@ -1,5 +1,6 @@
 package acq.controllers;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.UUID;
@@ -7,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -90,34 +92,18 @@ public class AcqPaymentController {
 		
 		payment = paymentService.save(payment);
 		
-		if(validationService.validatePaymentRequest(payment) == ReturnType.SUCCESS){
-			 
+		if(validationService.validatePaymentRequest(payment) == ReturnType.SUCCESS){	 
 			payment.setPaymentUrl("http://localhost:4201/enter-buyer-details?t="+payment.getId());
 			paymentRequestService.save(pr);
 		} else {
-			payment.setMessage("Error");
+			payment.setMessage("error");
 		}
 		
 		System.out.println("Returning payment: " + payment.toString());
 		
 	    return payment;
 	}
-	
-	@RequestMapping(path = "/sendPaymentRequest", method = RequestMethod.GET, produces = "application/json")
-	@ResponseStatus(value = HttpStatus.OK)
-	public ResponseEntity<?> requestPayment(@RequestBody PaymentRequest request){
-		PaymentRequest req = paymentRequestService.save(request);
-		
-		//TODO validate request
-		
-		//TODO generate PAYMENT_URL String 256 and PAYMENT_ID Number 10
-		//and redirect buyer to acquirer site
-		
-		System.out.println("Recieved request");
-		
-		return new ResponseEntity<>(HttpStatus.FOUND);
-	}
-	
+ 
 	@PostMapping("/validateAndExecute/{token}")
 	public ResponseEntity<?> validateCardAndExecute(
 			@RequestBody Card c,
@@ -131,24 +117,32 @@ public class AcqPaymentController {
 		String url = "";
 		Cart cart = new Cart();
 		if(c.getPan().startsWith(bankIin)){
-			if(validationService.validateCard(p, c) == ReturnType.SUCCESS){ 
-				url ="http://localhost:4200/payment-card-success";
+			if(validationService.validateCard(p, c) == ReturnType.SUCCESS){ 		
 				cart.setId(p.getId());
 				cart.setMerchantOrderId(p.getMerchantOrderId());
-				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
-				cart.getItemDetails().put("successUrl", url);
+				cart.getItemDetails().put("successUrl", p.getSuccessUrl());
+				cart.setStatus("success");
+				url = p.getSuccessUrl();
 				cart.setToken(p.getMerchantOrderId().toString());
 				System.out.println("[ACQ] cart after success: " + cart.toString());
 			} else if (validationService.validateCard(p, c) == ReturnType.FAILED){
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
 				cart.getItemDetails().put("status", "failed");
+				cart.getItemDetails().put("failedUrl", p.getFailedUrl());
+				cart.setStatus("failed");
 				url = p.getFailedUrl();
 			} else { 
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
 				cart.getItemDetails().put("status", "error");
+				cart.getItemDetails().put("errorUrl", p.getErrorUrl());
+				cart.setStatus("error");
 				url = p.getErrorUrl();
 			}
 		} else {
-			//TODO PCC
+			// PCC
 			AcqToPccDto toPcc = new AcqToPccDto();
 			toPcc.setCard(c);
 			toPcc.setAcquirer_timestamp(Calendar.getInstance().getTime());
@@ -158,24 +152,36 @@ public class AcqPaymentController {
 			String fooResourceUrl = pccUrl+"/pcc/forwardToIssuer";
 			ResponseEntity<AcqToPccDto> response = restTemplate().postForEntity(fooResourceUrl, toPcc, AcqToPccDto.class);
 			if(((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.SUCCESS){
-				
-				 
-				url = "http://localhost:4200/payment-card-success";
+ 
 				cart.setId(p.getId());
 				cart.setMerchantOrderId(p.getMerchantOrderId());
 				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "success");
-				cart.getItemDetails().put("successUrl", url);
+				cart.getItemDetails().put("successUrl", p.getSuccessUrl());
 				cart.setToken(p.getMerchantOrderId().toString());
+				url = p.getSuccessUrl();
 				System.out.println("[ACQ] cart after success: " + cart.toString());
 							
-			} else {
-				url = p.getErrorUrl();
+			} else if (((AcqToPccDto)response.getBody()).getTransactionResult()==TransactionResult.FAILED){
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
+				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
+				cart.getItemDetails().put("status", "failed");
+				cart.getItemDetails().put("failedUrl", p.getFailedUrl());
+				cart.setStatus("failed");
+				url = p.getFailedUrl();
+			} else { 
+				cart.setId(p.getId());
+				cart.setMerchantOrderId(p.getMerchantOrderId());
+				cart.getItemDetails().put("merchantOrderId", p.getMerchantOrderId().toString());
 				cart.getItemDetails().put("status", "error");
-			} 
+				cart.getItemDetails().put("errorUrl", p.getErrorUrl());
+				cart.setStatus("error");
+				url = p.getErrorUrl();
+			}
 		}
-	
-		if(merchant!=null && cart.getItemDetails().get("status").equals("success")){
+		
+		if(merchant!=null && cart.getStatus().equals("success")){
 			System.out.println("[ACQ] Merchant Balance - Before: " + merchant.getAccountBalance());
 			merchant.setAccountBalance(merchant.getAccountBalance()+p.getAmount());
 			System.out.println("[ACQ] Merchant Balance - After: " + merchant.getAccountBalance());
@@ -186,7 +192,10 @@ public class AcqPaymentController {
 		//move to PC proceed
 		ResponseEntity<Boolean> res = restTemplate().postForEntity(pcUrl+"/api/pc/returnToPc", cart, Boolean.class);
 	    
-		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+		//return new ResponseEntity<Cart>(cart, HttpStatus.OK);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(url));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
 	
 	@GetMapping("/makeMerchantAccount")

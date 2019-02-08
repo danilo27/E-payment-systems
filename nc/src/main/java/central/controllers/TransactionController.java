@@ -91,12 +91,11 @@ public class TransactionController {
 	//credit card
 	@PostMapping("/returnToNc")
 	public ResponseEntity<Boolean> returnToPc(@RequestBody Cart cart) throws URISyntaxException{
-		System.out.println("[NC] finished:" + cart.toString());
-		System.out.println("all: " + cartRepository.findAll().toString());
-		if(cart.getItemDetails().get("status").equals("success")){
-			//Cart c = cartRepository.findOneByToken(cart.getToken());
-			Cart c = cartRepository.findByMerchantOrderId(cart.getMerchantOrderId());
- 
+		System.out.println("[NC] finished:" + cart.toString()); 
+		Cart c = cartRepository.findByMerchantOrderId(cart.getMerchantOrderId());
+		if(cart.getStatus().equals("success")){
+			c.setStatus("success");
+			cartRepository.save(c);
 			if(c!=null){
 				c.getItemDetails().put("status", "success");
 				User user = userRepository.findByUsername(c.getItemDetails().get("username")).orElse(null);
@@ -108,8 +107,14 @@ public class TransactionController {
 				}
 				
 			}
+		} else if(cart.getStatus().equals("failed")){
+			c.setStatus("failed");
+			cartRepository.save(c);
+		} else {
+			c.setStatus("error");
+			cartRepository.save(c);
 		}
-		 
+		  
 		
 	     
 	    return new ResponseEntity<Boolean>(false, HttpStatus.OK);

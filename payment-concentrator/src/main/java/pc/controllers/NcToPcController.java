@@ -56,9 +56,6 @@ public class NcToPcController {
 	@PostMapping("/sendCart")
 	public ResponseEntity<Cart> sendCart(@RequestBody Cart cart) throws URISyntaxException{
 		System.out.println("[PC] " + cart.toString());
-		//cart.getItemDetails().put("pcUrl", "http://localhost:4200");
-		//String uuid = UUID.randomUUID().toString();
-		//cart.setToken(uuid);
 		
 		String merchantpas = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantPassword").getValue();
 		cart.setMerchantPassword(merchantpas);

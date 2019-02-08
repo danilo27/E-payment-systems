@@ -59,59 +59,36 @@ public class CardService implements IPaymentExtensionPoint{
 	public ResponseEntity<StringDto> prepareTransaction(Cart cart) {  
  
 		if(cart!=null){
-			//Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
-//<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
-			//req.setId(null);
+			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
+
 			
 			String merchantBankId = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantId").getValue();
 			String merchantBankPass = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantPassword").getValue();
 			String bankUrl = merchantInfoRepository.findMerchantData("Card", cart.getMerchantId(), "merchantBankUrl").getValue();
-		//	req.setMerchantId(merchantBankId);
-//=======
-			/*req.setId(null);
-			req.setMerchantId(cart.getMerchantId());
->>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607:payment-concentrator/src/main/java/pc/payments/impl/CardService.java
-			req.setMerchantOrderId(cart.getMerchantOrderId());
-			req.setMerchantPassword(merchantBankPass);
-			req.setMerchantTimestamp(cart.getMerchantTimestamp());
-			req.setAmount(cart.getTotalPrice());
-			req = paymentRequestService.save(req);
-<<<<<<< HEAD:payment-concentrator/src/main/java/pc/payments/card/CardService.java
-			System.out.println("PaymentRequest saved: " + req.toString());
-			 
-			 
-			
-			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
-			ResponseEntity<Payment> response = restTemplate().postForEntity(fooResourceUrl, req, Payment.class);
-=======
-			System.out.println("PaymentRequest saved: " + req.toString());*/
-			
-			
-			
+	
 			PaymentRequest pr = new PaymentRequest();
-			pr.setAmount(cart.getTotalPrice());
-			//pr.setMerchantId(cart.getMerchantId());
+			pr.setAmount(cart.getTotalPrice()); 
 			pr.setMerchantOrderId(cart.getMerchantOrderId());
 			pr.setMerchantTimestamp(cart.getMerchantTimestamp());
 			pr.setMerchantId(merchantBankId);
 			pr.setMerchantPassword(merchantBankPass);
+			pr.setSuccessUrl(merchant.getSuccessUrl());
+			pr.setErrorUrl(merchant.getErrorUrl());
+			pr.setFailedUrl(merchant.getFailedUrl());
 			 
 			pr = paymentRequestService.save(pr);
 			
 			System.out.println("Pr before sending: " + pr.toString());
-			
-			
-			
-			
+ 
 			String fooResourceUrl = bankUrl+"/acqBank/getUrlAndId";
 			ResponseEntity<Payment> response =  restTemplate().postForEntity(fooResourceUrl, pr, Payment.class);
-//>>>>>>> 0c5dc2f1c2e6ae9c0ee9d2b8e5544a473118b607:payment-concentrator/src/main/java/pc/payments/impl/CardService.java
+
 			PaymentConfirmationDto dto = new PaymentConfirmationDto();
 			StringDto result = new StringDto("");
 			result.setValue(response.getBody().getPaymentUrl());
 			System.out.println("url: " + response.getBody().getPaymentUrl());
 			dto.setResponse(response);
-			return new ResponseEntity<> (new StringDto(response.getBody().getPaymentUrl()), HttpStatus.OK);		//	SKONTATI
+			return new ResponseEntity<> (new StringDto(response.getBody().getPaymentUrl()), HttpStatus.OK);		 
 		}
  
 		 return null;
