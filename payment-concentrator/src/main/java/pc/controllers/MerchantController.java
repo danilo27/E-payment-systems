@@ -40,6 +40,9 @@ public class MerchantController {
 		Merchant merch = new Merchant();
 		merch.setMerchantId(merchant.getMerchantId());
 		merch.setSupportedPayments(merchant.getSupportedPayments());
+		merch.setSuccessUrl(merchant.getSuccessUrl());
+		merch.setFailedUrl(merchant.getFailedUrl());
+		merch.setErrorUrl(merchant.getErrorUrl());
 		merchantRepository.save(merch);
 
 		MerchantInfo miField = new MerchantInfo();

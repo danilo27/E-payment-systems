@@ -79,9 +79,10 @@ public class MerchantController {
 		}
  	
 		newMerchant.setMerchantId(merchant.getMerchantId());
-	//	newMerchant.setMerchantPass(merchant.getMerchantPassword());
-		//newMerchant.setMerchantBankUrl(merchant.getMerchantBankUrl());
-		 
+		newMerchant.setSuccessUrl(merchant.getSuccessUrl());
+		newMerchant.setFailedUrl(merchant.getFailedUrl());
+		newMerchant.setErrorUrl(merchant.getErrorUrl());
+ 
 		merchantRepository.save(newMerchant);
 		magazine.setMerchant(newMerchant);
 		magazineRepository.save(magazine);
@@ -92,9 +93,11 @@ public class MerchantController {
 		RestTemplate rt2 = new RestTemplate();
 		MerchantToPcDto mcp = new MerchantToPcDto();
 		mcp.setMerchantId(newMerchant.getMerchantId());
-		//mcp.setMerchantPass(newMerchant.getMerchantPass());
+		mcp.setSuccessUrl(newMerchant.getSuccessUrl());
+		mcp.setFailedUrl(newMerchant.getFailedUrl());
+		mcp.setErrorUrl(newMerchant.getErrorUrl());
 		mcp.setSupportedPayments(supportedPayments);
-		//mcp.setMerchantBankUrl(newMerchant.getMerchantBankUrl());
+ 
 		mcp.setPaymentTypeFields(merchant.getPaymentTypeFields());
 		
 		ApiResponse response2 = rt2.postForObject(fooResourceUrl2, mcp, ApiResponse.class);

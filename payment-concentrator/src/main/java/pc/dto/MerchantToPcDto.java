@@ -16,6 +16,10 @@ public class MerchantToPcDto {
 	
 	private String merchantBankUrl;
 	
+	private String successUrl;
+	private String failedUrl;
+	private String errorUrl;
+	
 	List<PaymentType> supportedPayments;
 
 	private Map<String, Map<String, String>> paymentTypeFields = new HashMap<>();
@@ -66,6 +70,37 @@ public class MerchantToPcDto {
 	}
 
 	public MerchantToPcDto(){}
+
+	public String getSuccessUrl() {
+		return successUrl;
+	}
+
+	public void setSuccessUrl(String successUrl) {
+		this.successUrl = successUrl;
+	}
+
+	public String getFailedUrl() {
+		return failedUrl;
+	}
+
+	public void setFailedUrl(String failedUrl) {
+		this.failedUrl = failedUrl;
+	}
+
+	public String getErrorUrl() {
+		return errorUrl;
+	}
+
+	public void setErrorUrl(String errorUrl) {
+		this.errorUrl = errorUrl;
+	}
+
+	@Override
+	public String toString() {
+		return "MerchantToPcDto [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
+				+ merchantBankUrl + ", successUrl=" + successUrl + ", failedUrl=" + failedUrl + ", errorUrl=" + errorUrl
+				+ ", supportedPayments=" + supportedPayments + ", paymentTypeFields=" + paymentTypeFields + "]";
+	}
 	
 	
 }

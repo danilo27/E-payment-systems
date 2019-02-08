@@ -19,21 +19,15 @@ public class Merchant {
 
 	@Id
 	private String merchantId;
-	
-	//@Column
-	//private String merchantPass;
-	
-	//private String merchantBankUrl;
-	
-	//@JsonIgnoreProperties("merchant")
+	 
 	@JsonIgnore
-	 @OneToOne
+	@OneToOne
 	private Magazine magazine;
 	
-	/*
-	@ManyToMany
-	private Set<SupportedPayments> supportedPayments = new HashSet<SupportedPayments>();
-*/
+	private String successUrl;
+	private String failedUrl;
+	private String errorUrl;
+	
 	public String getMerchantId() {
 		return merchantId;
 	}
@@ -41,17 +35,7 @@ public class Merchant {
 	public void setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 	}
-
-
-
-	//public String getMerchantPass() {
-	//	return merchantPass;
-	//}
-
-	//public void setMerchantPass(String merchantPass) {
-	//	this.merchantPass = merchantPass;
-	//}
-
+ 
 	public Magazine getMagazine() {
 		return magazine;
 	}
@@ -59,41 +43,30 @@ public class Merchant {
 	public void setMagazine(Magazine magazine) {
 		this.magazine = magazine;
 	}
-/*
-	public Set<SupportedPayments> getSupportedPayments() {
-		return supportedPayments;
+
+	public String getSuccessUrl() {
+		return successUrl;
 	}
 
-	public void setSupportedPayments(Set<SupportedPayments> supportedPayments) {
-		this.supportedPayments = supportedPayments;
-	}*/
+	public void setSuccessUrl(String successUrl) {
+		this.successUrl = successUrl;
+	}
 
-	//public String getMerchantBankUrl() {
-	//	return merchantBankUrl;
-	//}
+	public String getFailedUrl() {
+		return failedUrl;
+	}
 
- 
-	//public void setMerchantBankUrl(String merchantBankUrl) {
-	//	this.merchantBankUrl = merchantBankUrl;
-	//}
+	public void setFailedUrl(String failedUrl) {
+		this.failedUrl = failedUrl;
+	}
 
-	//@Override
-	//public String toString() {
-	//	return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
-	//			+ merchantBankUrl + ", magazine=" + magazine + "]";
-	//}
+	public String getErrorUrl() {
+		return errorUrl;
+	}
+
+	public void setErrorUrl(String errorUrl) {
+		this.errorUrl = errorUrl;
+	}
 	
- 
-//	public void setMerchantBankUrl(String merchantBankUrl) {
-//		this.merchantBankUrl = merchantBankUrl;
-//	}
-/*
-	@Override
-	public String toString() {
-		return "Merchant [merchantId=" + merchantId + ", merchantPass=" + merchantPass + ", merchantBankUrl="
-				+ merchantBankUrl + ", magazine=" + magazine + "]";
-	}
-	*/
- 
 	
 }

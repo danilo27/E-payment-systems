@@ -215,6 +215,7 @@ public class AcqPaymentController {
 		Account a = new Account();
 		a.setAccountBalance(0);
 		a.setMerchantId(m.getMerchantId());
+		//accService.save(a);
 		MerchantAccountDto dto = new MerchantAccountDto();
 		dto.setMerchantId(m.getMerchantId().toString());
 		dto.setMerchantPassword(m.getMerchantPass());

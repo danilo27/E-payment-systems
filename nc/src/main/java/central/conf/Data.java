@@ -71,7 +71,6 @@ public class Data {
 	
 	@PostConstruct
 	private void init() {
-		//System.out.println(passwordEncoder.encode("pera"));
 		
 		magazineRepository.deleteAll();
 		issueRepository.deleteAll();
@@ -120,25 +119,15 @@ public class Data {
 		m2 = magazineRepository.save(m2);
 		m3 = magazineRepository.save(m3);
 		
-		//System.out.println(m1.toString());
-		
 		Merchant daniloMerchant = new Merchant();
 		daniloMerchant.setMerchantId("12345678");
-		//daniloMerchant.setMerchantPass("pas");
 		merchantRepository.save(daniloMerchant);
-		//daniloMerchant = merchantRepository.save(daniloMerchant);
-		//daniloMerchant.setMagazine(m1);
-		//merchantRepository.save(daniloMerchant);
 		
 		m1.setMerchant(daniloMerchant);
 		
 		Merchant drugiMerchant = new Merchant();
 		drugiMerchant.setMerchantId("87654321");
-		//drugiMerchant.setMerchantPass("pas");
 		merchantRepository.save(drugiMerchant);
-		//drugiMerchant = merchantRepository.save(drugiMerchant);
-		//drugiMerchant.setMagazine(m2);
-		//merchantRepository.save(drugiMerchant);
 		
 		m2.setMerchant(drugiMerchant);
 		
@@ -148,13 +137,7 @@ public class Data {
 		daniloMerchant.setMagazine(m1);
 		drugiMerchant.setMagazine(m2);
 		
-		
-		 
-		 
-		
-		
-		//System.out.println(m1.toString());
-		
+
 		Issue i1 = new Issue();
 		i1.setDate("01-01-2019");
 		i1.setMagazine(m1);
@@ -177,7 +160,6 @@ public class Data {
 		issueRepository.save(i2);
 		issueRepository.save(i3);
 		
-		//System.out.println("i1: " + i1.toString());
 		
 		m1.getIssues().add(i1);
 		m2.getIssues().add(i2);
@@ -271,22 +253,7 @@ public class Data {
 		a.setRole(r3);
 		
 		adminRepository.save(a);
-		/*
-		SupportedPayments sp1 = new SupportedPayments();
-		sp1.setPaymentName("Paypal");
-		SupportedPayments sp2 = new SupportedPayments();
-		sp2.setPaymentName("Bitcoin");
-		SupportedPayments sp3 = new SupportedPayments();
-		sp3.setPaymentName("Credit Card");
-		
-		supportedPaymentsRepository.save(sp1);
-		supportedPaymentsRepository.save(sp2);
-		supportedPaymentsRepository.save(sp3);*/
-		
-		 
-		//System.out.println(m1.toString());
-		//magazineRepository.save(m1);
-		//magazineRepository.save(m2);
+
 		
 	}
 

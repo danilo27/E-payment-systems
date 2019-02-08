@@ -29,6 +29,10 @@ export class NewMerchantComponent implements OnInit {
   private selectedBankUrl: string;
   private dynamicForms: IHash = {};  
   private pipeForm = [];
+  private successUrl = "http://localhost:4204/#/success";
+  private failedUrl = "http://localhost:4204/#/failed";
+  private errorUrl = "http://localhost:4204/#/error";
+
   constructor(private magazineService: MagazineService, 
               private supportedPaymentsService: SupportedPaymentsService,
               private merchantService: MerchantService,
@@ -63,28 +67,13 @@ export class NewMerchantComponent implements OnInit {
 
   sendData(value, form){
     
-
-   // let lista = [];
-    //pokupi sve fieldove za odredjeni tip placanja
-    // for (var property in value) {
-    //   let payTypeKey = property.split('-')[0];
-    //   var index = this.containsElement(lista, sp);
-    //   if (index == -1) {
-    //   }
-    // }
-
-
-
-    
-
+ 
     for(var type in this.types){
       console.log('typename ', this.types[type]['name'])
-      this.innerMapFields = {}; //restartuj unutrasnju mapu
+      this.innerMapFields = {}; 
       for (var property in value) {
-       // console.log('prop: ', property)
         let payTypeKey = property.split('-')[0];
         let fieldKey = property.split('-')[1];
-        //console.log('fk', fieldKey)
 
         if(this.types[type]['name'] == payTypeKey){
           this.innerMapFields[fieldKey] = value[property];
@@ -95,53 +84,7 @@ export class NewMerchantComponent implements OnInit {
 
     console.log(this.paymentTypeFields);
 
-
-
-    // let o = new Array();
-    // for (var property in value) {
-    //   let payTypeKey = property.split('-')[0];
-    //   let fieldKey = property.split('-')[1];
-
-      
-
-
-
-
-
-
-      
-       
-
-      //innerListFields[fieldKey] = value[property];
-
-    //  console.log(payTypeKey);
-     // console.log(fieldKey);
-      //paymentTypeFields[payTypeKey]
-
-
-     // if(fieldKey!==undefined){
-    //    console.log('iner:', innerListFields);
-    //  }
-
-
-
-
-    //  o.push({fieldId : property, fieldValue : value[property]});
-//
-      //this.paymentTypeFields[property.split('-')[0]] = innerListFields;
-      //console.log(this.paymentTypeFields);
-
-     // if(property.split('-')[0] in paymentTypeFields){
-
-     // }
-
-     
-
-    //  this.paymentTypeFields[property.split('-')[0]] = innerListFields;
-
-   // }
-
-  //  console.log('params: ', o);
+ 
 
     var paymentTypeFields = {
 
@@ -152,13 +95,14 @@ export class NewMerchantComponent implements OnInit {
       "supportedPaymentsIds": this.checkedSupportedPayments,
        paymentTypeFields: this.paymentTypeFields,
        merchantId: this.selectedMagazineIssn
-    //  "merchantPassword": this.merchantPassword,
-     //  "merchantBankUrl": this.selectedBankUrl
+       successUrl: this.successUrl,
+       failedUrl: this.failedUrl,
+       errorUrl: this.errorUrl
     }
 
    console.log('request: ', request);
-    this.merchantService.createMerchant(request).subscribe((data: any) => {
-      alert(data.message);
+   this.merchantService.createMerchant(request).subscribe((data: any) => {
+     alert(data.message);
     })
   }
 

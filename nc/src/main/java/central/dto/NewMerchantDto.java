@@ -13,6 +13,9 @@ public class NewMerchantDto {
 	private String merchantId;
 	private String merchantPassword;
 	private String merchantBankUrl;
+	private String successUrl;
+	private String failedUrl;
+	private String errorUrl;
 	
 	private Map<String, Map<String, String>> paymentTypeFields = new HashMap<>();
 	
@@ -64,12 +67,31 @@ public class NewMerchantDto {
 		this.paymentTypeFields = paymentTypeFields;
 	}
 
-	@Override
-	public String toString() {
-		return "NewMerchantDto [magazineIssn=" + magazineIssn + ", supportedPaymentsIds=" + supportedPaymentsIds
-				+ ", merchantId=" + merchantId + ", merchantPassword=" + merchantPassword + ", merchantBankUrl="
-				+ merchantBankUrl + ", paymentTypeFields=" + paymentTypeFields + "]";
+	public String getSuccessUrl() {
+		return successUrl;
 	}
+
+	public void setSuccessUrl(String successUrl) {
+		this.successUrl = successUrl;
+	}
+
+	public String getFailedUrl() {
+		return failedUrl;
+	}
+
+	public void setFailedUrl(String failedUrl) {
+		this.failedUrl = failedUrl;
+	}
+
+	public String getErrorUrl() {
+		return errorUrl;
+	}
+
+	public void setErrorUrl(String errorUrl) {
+		this.errorUrl = errorUrl;
+	}
+
+	 
 
 	 
 	
