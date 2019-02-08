@@ -5,13 +5,10 @@ import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import pc.model.enums.TransactionStatus;
 @Entity
 public class Cart {
 	@Id
@@ -39,7 +36,11 @@ public class Cart {
 	 
 	@Transient
 	private HashMap<String, String> itemDetails = new HashMap<String, String>();
+	
+	@Column(unique = true)
+	private String paymentId;
  
+	@Column
 	private String token;
 	
 	
@@ -119,6 +120,14 @@ public class Cart {
 		return "Cart [id=" + id + ", merchantId=" + merchantId + ", merchantPassword=" + merchantPassword
 				+ ", merchantOrderId=" + merchantOrderId + ", merchantTimestamp=" + merchantTimestamp + ", status="
 				+ status + ", totalPrice=" + totalPrice + ", itemDetails=" + itemDetails + ", token=" + token + "]";
+	}
+
+	public String getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(String paymentId) {
+		this.paymentId = paymentId;
 	}
 
 	

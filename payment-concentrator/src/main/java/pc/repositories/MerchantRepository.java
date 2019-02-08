@@ -8,4 +8,5 @@ import pc.model.Merchant;
 @Repository
 public interface MerchantRepository extends JpaRepository<Merchant, Long>{
 	Merchant findByMerchantId(String merchantId);
+
 }

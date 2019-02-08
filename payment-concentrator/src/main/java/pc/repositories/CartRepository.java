@@ -9,4 +9,5 @@ import pc.model.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long>{
 	public Cart findByToken(String token);
 	public Cart findByMerchantOrderId(Long merchantOrderId);
+	public Cart findByPaymentId(String paymentId);
 }

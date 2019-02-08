@@ -31,33 +31,43 @@ import com.paypal.api.payments.RedirectUrls;
 import com.paypal.api.payments.ShippingAddress;
 import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
+import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 
+import javassist.NotFoundException;
 import pc.dto.PaymentConfirmationDto;
 import pc.dto.StringDto;
 import pc.dto.SubscriptionConfirmation;
 import pc.dto.SubscriptionRequest;
 import pc.model.Cart;
+import pc.model.Merchant;
 import pc.model.TransactionResult;
 import pc.payments.IPaymentExtensionPoint;
 import pc.repositories.CartRepository;
 import pc.repositories.MerchantInfoRepository;
+import pc.repositories.MerchantRepository;
 
 @Service
 public class PaypalService implements IPaymentExtensionPoint {
 
 	@Autowired
 	private MerchantInfoRepository merchantInfoRepository;
+	
+	@Autowired
+	private MerchantRepository merchantRepository;
 
 	@Autowired
 	private CartRepository cartRepository;
 
 	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
-	private String proceedUrl = "http://localhost:8080/api/payment/confirm/Paypal";
+	private String proceedEndpoint = "http://localhost:8080/api/payment/confirm/Paypal";
+	private String cancelEndpoint = "http://localhost:8080/api/payment/cancel/Paypal";
+	private String errorEndpoint = "http://localhost:8080/api/payment/error/Paypal";
 
 	private static String payPalApiKey;
 	private static String payPalApiPass;
+
 
 	@Override
 	public ResponseEntity<StringDto> prepareTransaction(Cart cart) {
@@ -66,7 +76,12 @@ public class PaypalService implements IPaymentExtensionPoint {
 				.getValue();
 		payPalApiPass = merchantInfoRepository.findMerchantData("Paypal", cart.getMerchantId(), "paypalApiPassword")
 				.getValue();
-
+		/*
+		Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
+		
+		String errorUrl = merchant.getErrorUrl();
+		String cancelUrl = merchant.getFailedUrl();
+		*/
 		StringDto result = new StringDto("");
 		Amount amount = new Amount();
 		amount.setCurrency("USD");
@@ -85,9 +100,8 @@ public class PaypalService implements IPaymentExtensionPoint {
 		payment.setTransactions(transactions);
 
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl(frontendPort + "/paypal-cancel");			//MERCHANTOV URL
-		redirectUrls.setReturnUrl(proceedUrl);
-		//redirectUrls.setReturnUrl(frontendPort + "/paypal-success");		//MOJ PROCEED
+		redirectUrls.setCancelUrl(cancelEndpoint + "/" + cart.getId());			//MERCHANTOV URL
+		redirectUrls.setReturnUrl(proceedEndpoint);
 		payment.setRedirectUrls(redirectUrls);
 
 		Payment createdPayment;
@@ -96,32 +110,38 @@ public class PaypalService implements IPaymentExtensionPoint {
 			APIContext context = new APIContext(payPalApiKey, payPalApiPass, production);
 			createdPayment = payment.create(context);
 			if (createdPayment != null) {
+				cart.setPaymentId(createdPayment.getId());
+				cartRepository.save(cart);
+				
 				if (createdPayment.getState().equals("failed"))
-					result = saveError(result, cart);
+					result = saveError(result, cart, errorEndpoint);
 
 				List<Links> links = createdPayment.getLinks();
 				for (Links link : links) {
 					if (link.getRel().equals("approval_url")) {
 						redirectUrl = link.getHref();
+						result = saveSuccess(result, redirectUrl);
 						break;
 					}
 				}
-				result.setValue(redirectUrl);
 			}
 		} catch (PayPalRESTException e) {
-			result = saveError(result, cart);
+			result = saveError(result, cart, errorEndpoint);
 			System.out.println("Error happened during payment creation!");
 		} catch (NullPointerException e) {
-			result = saveError(result, cart);
+			result = saveError(result, cart, errorEndpoint);
 			System.out.println("paypal exception durning context creation " + e);
 		}
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
-	private StringDto saveError(StringDto result, Cart cart) {
-		result.setValue(frontendPort + "/paypal-error");		//MERCHANTOV URL
-		cart.setStatus("error");
-		cartRepository.save(cart);
+	private StringDto saveSuccess(StringDto result, String redirectUrl) {
+		result.setValue(redirectUrl);
+		return result;
+	}
+
+	private StringDto saveError(StringDto result, Cart cart, String errorUrl) {
+		result.setValue(errorUrl + "/" + cart.getId());		//MERCHANTOV URL
 		return result;
 	}
 
@@ -130,7 +150,13 @@ public class PaypalService implements IPaymentExtensionPoint {
 		TransactionResult result = new TransactionResult();
 		Payment payment = new Payment();
 		payment.setId(req.getPaymentId());
-
+		
+		Cart cart = cartRepository.findByPaymentId(req.getPaymentId());
+		Merchant m = merchantRepository.findByMerchantId(cart.getMerchantId());
+		
+		String successUrl = m.getSuccessUrl();
+		String errorUrl = m.getErrorUrl();
+		
 		PaymentExecution paymentExecution = new PaymentExecution();
 		paymentExecution.setPayerId(req.getPayerId());
 		try {
@@ -138,14 +164,25 @@ public class PaypalService implements IPaymentExtensionPoint {
 			Payment createdPayment = payment.execute(context, paymentExecution);
 			if (createdPayment != null) {
 				result.setSuccessMessage("Success");
-				result.setRedirectUrl(frontendPort + "/paypal-success");
-				System.out.println("SUCESS");
+				result.setRedirectUrl(successUrl);
+				System.out.println("PAYMENT EXECUTED SUCCESFULLY");
 			}
 		} catch (PayPalRESTException e) {
+			result = saveErrorProceed(result, cart, errorUrl);
 			System.err.println(e.getDetails());
-			result.setRedirectUrl(frontendPort + "/paypal-error");
-			result.setSuccessMessage("Failed");
-		} 
+		}  catch (NullPointerException e) {
+			result = saveErrorProceed(result, cart, errorUrl);
+			System.out.println("paypal exception durning context creation " + e);
+		}
+		return result;
+	}
+
+	private TransactionResult saveErrorProceed(TransactionResult result, Cart cart, String errorUrl) {
+		// TODO Auto-generated method stub
+		cart.setStatus("error");
+		cartRepository.save(cart);
+		result.setRedirectUrl(errorUrl);
+		result.setSuccessMessage("Failed");
 		return result;
 	}
 
@@ -323,6 +360,36 @@ public class PaypalService implements IPaymentExtensionPoint {
 		c.setCurrency(currency);
 		c.setValue(amount);
 		return c;
+	}
+
+	@Override
+	public StringDto cancelTransaction(Long cartId){
+		try {
+			Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("cart with id " + cartId + " not found"));
+			cart.setStatus("cancelled");
+			cartRepository.save(cart);
+			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
+			return new StringDto(merchant.getFailedUrl());
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public StringDto errorTransaction(Long cartId) {
+		try {
+			Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("cart with id " + cartId + " not found"));
+			cart.setStatus("error");
+			cartRepository.save(cart);
+			Merchant merchant = merchantRepository.findByMerchantId(cart.getMerchantId());
+			return new StringDto(merchant.getErrorUrl());
+		} catch (NotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

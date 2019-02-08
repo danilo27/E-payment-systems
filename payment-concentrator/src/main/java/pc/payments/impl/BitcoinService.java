@@ -111,6 +111,19 @@ public class BitcoinService implements IPaymentExtensionPoint {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public StringDto cancelTransaction(Long cartId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public StringDto errorTransaction(Long cartId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 

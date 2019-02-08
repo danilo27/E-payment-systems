@@ -13,6 +13,8 @@ public interface IPaymentExtensionPoint {
 	
 	ResponseEntity<StringDto> prepareTransaction(Cart req);
 	TransactionResult proceedTransaction(PaymentConfirmationDto req);
+	StringDto cancelTransaction(Long cartId);
+	StringDto errorTransaction(Long cartId);
 	TransactionResult prepareSubscription(SubscriptionRequest req);
 	TransactionResult proceedSubscription(SubscriptionConfirmation req);
 }

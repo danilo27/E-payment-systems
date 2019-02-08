@@ -73,4 +73,22 @@ public class PaymentController {
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return new ResponseEntity<>(payment.proceedSubscription(requestDto), HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/cancel/{paymentType}/{cartId}", method = RequestMethod.GET)
+	public ResponseEntity<StringDto> cancelRequest(@PathVariable String paymentType, @PathVariable Long cartId, @PathParam(value = "token") String token) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NotFoundException {
+		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
+		StringDto response = payment.cancelTransaction(cartId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(response.getValue()));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+	}
+	
+	@RequestMapping(value = "/error/{paymentType}/{cartId}", method = RequestMethod.GET)
+	public ResponseEntity<StringDto> errorRequest(@PathVariable String paymentType, @PathVariable Long cartId, @PathParam(value = "token") String token) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NotFoundException {
+		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
+		StringDto response = payment.errorTransaction(cartId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(response.getValue()));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+	}
 }
