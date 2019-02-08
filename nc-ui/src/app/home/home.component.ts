@@ -1,4 +1,4 @@
-import { AuthenticationService } from './../services/authentication/authentication.service';
+import { SupportedPaymentsService } from './../services/supported-payments/supported-payments.service';
 import { Component, OnInit } from '@angular/core';
 import { MagazineService } from '../services/magazine/magazine.service';
 import { Router } from '@angular/router';
@@ -12,12 +12,12 @@ export interface IHash {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [AuthenticationService]
+  providers: [SupportedPaymentsService]
 })
 export class HomeComponent implements OnInit {
 
   constructor(private magazineService: MagazineService,
-    private authenticationService: AuthenticationService,
+    private supportedPaymentsService: SupportedPaymentsService,
     private transactionService: TransactionService,
     private router: Router) { }
 
@@ -34,6 +34,14 @@ export class HomeComponent implements OnInit {
 
 
   subscribe(magazine) {
+    this.supportedPaymentsService.getByMagazineIssn(magazine.issn).subscribe(data => {
+      if(data == null)
+        alert('Subscription not supported')
+      else{
+        console.log(data);
+      }
+
+    })
   }
 
   buyIssue(magazine, issue) {

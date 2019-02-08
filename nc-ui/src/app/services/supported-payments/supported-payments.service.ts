@@ -15,4 +15,9 @@ export class SupportedPaymentsService {
   getFields(paymentName){
   	return this.http.get('api/nc/supported-payments/fields/'+paymentName) as Observable<any>;
   }
+
+  getByMagazineIssn(magazineIssn){
+    return this.http.get('api/nc/supported-payments/'+magazineIssn) as Observable<any>;
+
+  }
 }

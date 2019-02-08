@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import central.dto.MerchantCredentialsDto;
+import central.model.Magazine;
 import central.model.PaymentType;
 import central.model.PaymentTypeField;
-import central.model.SupportedPayments;
-import central.repository.SupportedPaymentsRepository;
+import central.repository.MagazineRepository;
 import javassist.NotFoundException;
  
 
@@ -28,31 +27,30 @@ public class SupportedPaymentsController {
 	@Value("${pc.url}")
 	private String pcUrl;
 	
-//	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
-//	@GetMapping("/all")
-//	public ResponseEntity<?> all(){	
-//		String fooResourceUrl = pcUrl+"/api/payment-types/all";
-//		RestTemplate rt = new RestTemplate();
-//		ResponseEntity<SupportedPayments[]> response = rt.getForEntity(fooResourceUrl, SupportedPayments[].class);
-//		SupportedPayments[] supportedPayments = response.getBody();
-//		
-//		for(SupportedPayments sp : supportedPayments) 
-//			System.out.println(sp.getName());
-//		
-//		
-//		return new ResponseEntity<>(supportedPayments, HttpStatus.OK);
-//	    
-//	}
+	@Autowired
+	private MagazineRepository magazineRepository;
 	
 	@PreAuthorize("hasAuthority('ADMINISTRATOR')")
 	@GetMapping("/all")
 	public ResponseEntity<List<PaymentType>> all(){	
 		String fooResourceUrl = pcUrl+"/api/payment-types/all";
 		RestTemplate rt = new RestTemplate();
-		ResponseEntity response = rt.getForEntity(fooResourceUrl, List.class);
-	 
-		
-		
+		ResponseEntity response = rt.getForEntity(fooResourceUrl, List.class);	
+		return new ResponseEntity<List<PaymentType>>((List<PaymentType>)response.getBody(), HttpStatus.OK);
+	    
+	}
+	
+	
+	@PreAuthorize("hasAuthority('USER')")
+	@GetMapping("/{magazineIssn}")
+	public ResponseEntity<List<PaymentType>> getByMagazineIssn(@PathVariable String magazineIssn){	
+		Magazine magazine = magazineRepository.findOneByIssn(magazineIssn);
+		if (magazine.getMerchant() == null)
+			return new ResponseEntity<>(null, HttpStatus.OK);
+
+		String fooResourceUrl = pcUrl+"/api/payment-types/byMerchant/" + magazine.getMerchant().getMerchantId();
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity response = rt.getForEntity(fooResourceUrl, List.class);	
 		return new ResponseEntity<List<PaymentType>>((List<PaymentType>)response.getBody(), HttpStatus.OK);
 	    
 	}

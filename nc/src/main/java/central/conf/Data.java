@@ -101,16 +101,18 @@ public class Data {
 		
 		m1.setIssn("12345678");
 		m1.setPaymentType(MagazinePaymentType.PAID_ACCESS);
+		m1.setMembershipPrice(Double.parseDouble("4.0"));
 		m1.setName("Computer Science Magazine");
 		
 		
 		m2.setIssn("87654321");
 		m2.setPaymentType(MagazinePaymentType.OPEN_ACCESS);
 		m2.setName("Biology Magazine");
-		m2.setMembershipPrice(Double.parseDouble("35.0"));
+		m2.setMembershipPrice(Double.parseDouble("4.0"));
 		
 		m3.setIssn("12344321");
 		m3.setPaymentType(MagazinePaymentType.PAID_ACCESS);
+		m3.setMembershipPrice(Double.parseDouble("3.0"));
 		m3.setName("Architecture Magazine");
 		 
 		
@@ -121,7 +123,7 @@ public class Data {
 		//System.out.println(m1.toString());
 		
 		Merchant daniloMerchant = new Merchant();
-		daniloMerchant.setMerchantId("daniloMerchant");
+		daniloMerchant.setMerchantId("12345678");
 		//daniloMerchant.setMerchantPass("pas");
 		merchantRepository.save(daniloMerchant);
 		//daniloMerchant = merchantRepository.save(daniloMerchant);
@@ -131,7 +133,7 @@ public class Data {
 		m1.setMerchant(daniloMerchant);
 		
 		Merchant drugiMerchant = new Merchant();
-		drugiMerchant.setMerchantId("drugiMerchant");
+		drugiMerchant.setMerchantId("87654321");
 		//drugiMerchant.setMerchantPass("pas");
 		merchantRepository.save(drugiMerchant);
 		//drugiMerchant = merchantRepository.save(drugiMerchant);
