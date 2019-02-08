@@ -25,23 +25,58 @@ export class HomeComponent implements OnInit {
   map: IHash = {};
 
   ngOnInit() {
-      this.magazineService.all().subscribe(data => {
-        this.magazines = data as any[];
-        console.log(this.magazines);
-      })
+    this.magazineService.all().subscribe(data => {
+      this.magazines = data as any[];
+      console.log(this.magazines);
+    })
   }
 
 
 
   subscribe(magazine) {
-    this.supportedPaymentsService.getByMagazineIssn(magazine.issn).subscribe(data => {
-      if(data == null)
+    this.supportedPaymentsService.getByMagazineIssn(magazine.issn).subscribe((data: Array<any>) => {
+      if (data == null) {
         alert('Subscription not supported')
-      else{
-        console.log(data);
+        return;
+      } else {
+        var paypalFound = false;
+        data.forEach(item => {
+          if (item.name == 'Paypal')
+            paypalFound = true;
+        });
+        if (!paypalFound){
+          alert('Subscription not supported')
+          return;
+        }else {
+          var mockData = this.prepareSubscription();
+
+          this.transactionService.sendSubscription(mockData).subscribe(data => {
+            window.location.href = data.redirectUrl;
+          });
+        }
       }
 
     })
+  }
+
+  prepareSubscription(){
+    var mockData = {
+      'paypalApiKey': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
+      'paypalApiPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr',
+      'planName': 'T-Shirt of the Month Club Plan',
+      'planDescription': 'Template creation.',
+      'frequency': 'MONTH',
+      'frequencyInterval': '1',
+      'cycles': '12',
+      'currency': 'USD',
+      'amount': '20',
+      'shippingAddress': '111 First Street',
+      'stateCode': 'CA',
+      'countryCode': 'US',
+      'postalCode': '95070',
+      'city': 'Saratoga'
+    }
+    return mockData;
   }
 
   buyIssue(magazine, issue) {
@@ -52,7 +87,7 @@ export class HomeComponent implements OnInit {
     this.map["merchantId"] = magazine.issn;
     //this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
- 
+
     var dto = {
       totalPrice: issue.price,
       itemDetails: this.map
@@ -61,7 +96,7 @@ export class HomeComponent implements OnInit {
 
     console.log('transaction: ', dto);
     console.log('itemId', issue.id)
-    
+
 
     this.transactionService.proceedToPc(dto).subscribe(data => {
       window.location.href = data['value'];
@@ -72,9 +107,9 @@ export class HomeComponent implements OnInit {
   buyArticle(magazine, article) {
     this.map = {};
 
-     this.map["itemType"] = "article";
+    this.map["itemType"] = "article";
     this.map["itemId"] = article.id;
-     this.map["merchantId"] = magazine.issn;
+    this.map["merchantId"] = magazine.issn;
     //this.map["merchantPas"] = magazine.merchant.merchantPass;
     this.map["username"] = localStorage.getItem("username");
 
@@ -86,7 +121,7 @@ export class HomeComponent implements OnInit {
 
     console.log('transaction: ', dto);
     console.log('itemId', article.id)
- 
+
 
     this.transactionService.proceedToPc(dto).subscribe(data => {
       window.location.href = data['value'];

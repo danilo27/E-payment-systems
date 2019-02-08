@@ -17,7 +17,7 @@ export class SupportedPaymentsService {
   }
 
   getByMagazineIssn(magazineIssn){
-    return this.http.get('api/nc/supported-payments/'+magazineIssn) as Observable<any>;
+    return this.http.get('api/nc/supported-payments/'+magazineIssn);
 
   }
 }
