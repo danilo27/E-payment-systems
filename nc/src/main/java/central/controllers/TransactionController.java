@@ -74,7 +74,7 @@ public class TransactionController {
 	}
 	
 	//redirect
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USER') or hasAuthority('AUTHOR')")
 	@PostMapping("/proceedToPc")
 	public ResponseEntity<StringDto> proceedToPc(@RequestBody Cart cart){
 		cart.getItemDetails().put("status", "inProcess");
@@ -110,12 +110,16 @@ public class TransactionController {
 			cartRepository.save(c);
 			if(c!=null){
 				c.getItemDetails().put("status", "success");
-				User user = userRepository.findByUsername(c.getItemDetails().get("username")).orElse(null);
-				if(user!=null){ 
-					user.getUserItems().add(getItem(c));
-					user = userRepository.save(user);
-					System.out.println("User: " + user.getUsername() +" - Items: " + user.getUserItems().toString());
-					return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+				if(c.getItemDetails().get("itemType").equals("subscription")){
+					subscribe(c);
+				} else {
+					User user = userRepository.findByUsername(c.getItemDetails().get("username")).orElse(null);
+					if(user!=null){ 
+						user.getUserItems().add(getItem(c));
+						user = userRepository.save(user);
+						System.out.println("User: " + user.getUsername() +" - Items: " + user.getUserItems().toString());
+						return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+					}
 				}
 				
 			}
@@ -145,8 +149,6 @@ public class TransactionController {
 				item.setItemType("issue");
 				item.setItemName(issue.getMagazine().getName() + " - " + issue.getDate());
 			} 
-		} else if (c.getItemDetails().get("itemType").equals("subscription")){
-			 
 		} else if (c.getItemDetails().get("itemType").equals("article")){
 			Article article = articleRepository.findById(Long.parseLong(c.getItemDetails().get("itemId"))).orElse(null);
 			if(article!=null){
@@ -156,5 +158,13 @@ public class TransactionController {
 		}
 		item = userItemRepository.save(item);
 		return item;
+	}
+	
+	public void subscribe(Cart c){
+		Article article = articleRepository.findById(Long.parseLong(c.getItemDetails().get("itemId"))).orElse(null);
+		if(article!=null){ 
+			article.setPrice(Double.parseDouble("0.0"));
+			articleRepository.save(article); 
+		} 
 	}
 }

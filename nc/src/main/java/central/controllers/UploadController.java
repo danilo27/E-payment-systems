@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import central.model.Article;
+import central.model.MagazinePaymentType;
 import central.repository.ArticleRepository;
 import central.repository.AuthorRepository;
 import central.repository.IssueRepository;
@@ -44,7 +45,9 @@ public class UploadController {
 	
 	@PostMapping("/addArticle")
 	public void addPaper(@RequestBody Article article) throws IOException{
-		article.setPrice(Double.parseDouble("5.0"));
+		if(article.getIssue().getMagazine().getPaymentType()==MagazinePaymentType.PAID_ACCESS)
+			article.setPrice(Double.parseDouble("5.0"));
+		
 		article.setAuthor(authorRepository.findAll().get(0));
 		Article a = articleRepository.save(article);
 		

@@ -205,23 +205,29 @@ public class Data {
 		a4.setPrice(Double.parseDouble("5.0"));
 		a4.setFilepath("C:/articles/article4.pdf");
 		
+		Article a5 = new Article();
+		a5.setName("Biology of Wild Animals");
+		a5.setAuthor(author1);
+		a5.setIssue(i2);
+		a5.setPrice(null);
+		a5.setFilepath("C:/articles/article4.pdf");
+		
 		a1 = articleRepository.save(a1);
 		a2 = articleRepository.save(a2);
 		a3 = articleRepository.save(a3);
 		a4 = articleRepository.save(a4);
+		a5 = articleRepository.save(a5);
 		
 		i1.getArticles().add(a1);
 		i1.getArticles().add(a2);
-		i1.getArticles().add(a3);
-		
+		i1.getArticles().add(a3);	
 		issueRepository.save(i1);
-		
-		
-		i3.getArticles().add(a4);
-		
+			
+		i3.getArticles().add(a4);	
 		issueRepository.save(i3);
 			
-		
+		i2.getArticles().add(a5);
+		issueRepository.save(i2);
 		
 		
 		

@@ -23,8 +23,10 @@ export class HomeComponent implements OnInit {
 
   magazines = [];
   map: IHash = {};
+  username = null;
 
   ngOnInit() {
+    this.username = localStorage.getItem('username');
     this.magazineService.all().subscribe(data => {
       this.magazines = data as any[];
       console.log(this.magazines);
@@ -115,6 +117,28 @@ export class HomeComponent implements OnInit {
 
     var dto = {
       totalPrice: article.price,
+      itemDetails: this.map
+
+    }
+
+    console.log('transaction: ', dto);
+    console.log('itemId', article.id)
+
+
+    this.transactionService.proceedToPc(dto).subscribe(data => {
+      window.location.href = data['value'];
+    })
+  }
+
+  pay(magazine, article){
+    this.map = {};
+    this.map["itemType"] = "subscription";
+    this.map["itemId"] = article.id;
+    this.map["merchantId"] = magazine.issn; 
+    this.map["username"] = localStorage.getItem("username");
+
+    var dto = {
+      totalPrice: "43.0",
       itemDetails: this.map
 
     }

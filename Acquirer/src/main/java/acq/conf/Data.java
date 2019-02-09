@@ -35,13 +35,22 @@ public class Data {
 		cardService.save(c1);
 		
 		Account a1 = new Account("1111111111111111", 5000.0, c1);
-		//a1.setMerchantId("daniloMerchant");
 		accService.save(a1);
 		
 		Account merchant = new Account("1111111111114444", 0, null);
 		merchant.setMerchantId("daniloMerchant");
+		accService.save(merchant);
  		
 		Merchant m1 = new Merchant("daniloMerchant", "pas", "http://localhost:8081");
 		merchantService.save(m1);
+		
+ 
+		
+		Account merchant2 = new Account("1111111144444444", 0, null);
+		merchant2.setMerchantId("drugiMerchant");
+		accService.save(merchant2);
+ 		
+		Merchant m2 = new Merchant("drugiMerchant", "pas", "http://localhost:8081");
+		merchantService.save(m2);
 	}
 }

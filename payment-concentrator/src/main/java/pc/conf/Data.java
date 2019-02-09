@@ -240,15 +240,69 @@ public class Data {
 		
 		merchantInfoRepository.save(paypalApiKeyInfo);
 		merchantInfoRepository.save(paypalApiPasswordInfo);
-	
+		
+
 		//TODO dodati podatke za bitcoin
+
 		
+		Merchant drugiMerchant = new Merchant("87654321");
+		drugiMerchant.setSuccessUrl("http://localhost:4204/#/success");
+		drugiMerchant.setFailedUrl("http://localhost:4204/#/failed");
+		drugiMerchant.setErrorUrl("http://localhost:4204/#/error");
 		
+		List<PaymentType> supportedPayments2 = new ArrayList<>();
+
+		supportedPayments2.add(paymentTypeRepository.findByName("Card").orElse(null));
+		supportedPayments2.add(paymentTypeRepository.findByName("Paypal").orElse(null));
+		supportedPayments2.add(paymentTypeRepository.findByName("Bitcoin").orElse(null));
+
+		drugiMerchant.setSupportedPayments(supportedPayments2);
+		merchantRepository.save(drugiMerchant);
+	
+		MerchantInfo card2MerchantIdInfo = new MerchantInfo();
+		card2MerchantIdInfo.setPaymentFieldId(new PaymentFieldId(card.getName(),drugiMerchant.getMerchantId(),cardMerchantId.getId().getFieldName()));
+		card2MerchantIdInfo.setMerchant(drugiMerchant);
+		card2MerchantIdInfo.setPaymentType(card);
+		card2MerchantIdInfo.setPaymentTypeField(cardMerchantId);
+		card2MerchantIdInfo.setValue("drugiMerchant");
 		
+		MerchantInfo card2MerchantPasswordInfo = new MerchantInfo();
+		card2MerchantPasswordInfo.setPaymentFieldId(new PaymentFieldId(card.getName(),drugiMerchant.getMerchantId(),cardMerchantPassword.getId().getFieldName()));
+		card2MerchantPasswordInfo.setMerchant(drugiMerchant);
+		card2MerchantPasswordInfo.setPaymentType(card);
+		card2MerchantPasswordInfo.setPaymentTypeField(cardMerchantPassword);
+		card2MerchantPasswordInfo.setValue("pas");
 		
+		MerchantInfo card2MerchantBankUrlInfo = new MerchantInfo();
+		card2MerchantBankUrlInfo.setPaymentFieldId(new PaymentFieldId(card.getName(),drugiMerchant.getMerchantId(),cardMerchantBankUrl.getId().getFieldName()));
+		card2MerchantBankUrlInfo.setMerchant(drugiMerchant);
+		card2MerchantBankUrlInfo.setPaymentType(card);
+		card2MerchantBankUrlInfo.setPaymentTypeField(cardMerchantBankUrl);
+		card2MerchantBankUrlInfo.setValue("http://localhost:8081");
+		
+		merchantInfoRepository.save(card2MerchantIdInfo);
+		merchantInfoRepository.save(card2MerchantPasswordInfo);
+		merchantInfoRepository.save(card2MerchantBankUrlInfo);
+		
+		MerchantInfo paypal2ApiKeyInfo = new MerchantInfo();
+		paypal2ApiKeyInfo.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalApiKey.getId().getFieldName()));
+		paypal2ApiKeyInfo.setMerchant(drugiMerchant);
+		paypal2ApiKeyInfo.setPaymentType(paypal);
+		paypal2ApiKeyInfo.setPaymentTypeField(paypalApiKey);
+		paypal2ApiKeyInfo.setValue("AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o");
+		
+		MerchantInfo paypal2ApiPasswordInfo = new MerchantInfo();
+		paypal2ApiPasswordInfo.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalApiPassword.getId().getFieldName()));
+		paypal2ApiPasswordInfo.setMerchant(drugiMerchant);
+		paypal2ApiPasswordInfo.setPaymentType(paypal);
+		paypal2ApiPasswordInfo.setPaymentTypeField(paypalApiPassword);
+		paypal2ApiPasswordInfo.setValue("EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr");
+		
+		merchantInfoRepository.save(paypal2ApiKeyInfo);
+		merchantInfoRepository.save(paypal2ApiPasswordInfo);
 	
 		
-		
+		//TODO dodati podatke za bitcoin
  
 		
 			

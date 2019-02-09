@@ -1,6 +1,7 @@
 package iss.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +30,9 @@ public class Payment implements Serializable {
 	private String successUrl;
 	private String errorUrl;
 	private String failedUrl;
+	private Date merchantTimestamp;
+	private Date acquirerTimestamp;
+	private Date issuerTimestamp;
 	public Payment(){}
 	public String getMessage() {
 		return message;
@@ -108,6 +112,24 @@ public class Payment implements Serializable {
 	}
 	public void setMerchantOrderId(Long merchantOrderId) {
 		this.merchantOrderId = merchantOrderId;
+	}
+	public Date getMerchantTimestamp() {
+		return merchantTimestamp;
+	}
+	public void setMerchantTimestamp(Date merchantTimestamp) {
+		this.merchantTimestamp = merchantTimestamp;
+	}
+	public Date getAcquirerTimestamp() {
+		return acquirerTimestamp;
+	}
+	public void setAcquirerTimestamp(Date acquirerTimestamp) {
+		this.acquirerTimestamp = acquirerTimestamp;
+	}
+	public Date getIssuerTimestamp() {
+		return issuerTimestamp;
+	}
+	public void setIssuerTimestamp(Date issuerTimestamp) {
+		this.issuerTimestamp = issuerTimestamp;
 	}
 	@Override
 	public String toString() {

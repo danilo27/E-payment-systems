@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import iss.dto.AcqToPccDto;
 import iss.model.IssueOrder;
+import iss.model.Payment;
 import iss.model.enums.ReturnType;
 import iss.model.enums.TransactionResult;
 import iss.repositories.IssueOrderRepository;
@@ -58,21 +59,33 @@ public class IssPaymentController {
 		System.out.println("[Issuer]");
 		System.out.println(toPcc.toString());
 		
+		toPcc.setIssuer_timestamp(Calendar.getInstance().getTime());
+		toPcc.setIss_url(iss_url); 
+		
+		Payment p = new Payment();
+		p = toPcc.getPr();
+		p.setId(null);
+		p.setIssuerTimestamp(toPcc.getIssuer_timestamp());
+		p = paymentService.save(p);
+		
 		if(toPcc.getCard().getPan().startsWith(bankIin)){
 			if(validationService.validateCardUserOnly(toPcc.getPr(), toPcc.getCard()) == ReturnType.SUCCESS){ 
 				toPcc.setTransactionResult(TransactionResult.SUCCESS);
 				IssueOrder issueOrder= new IssueOrder();
 				issueOrder = issueOrderRepository.save(issueOrder);
 				toPcc.setIssuer_order_id(issueOrder.getId());
+				p.setMessage("success");
 			} else if(validationService.validateCardUserOnly(toPcc.getPr(), toPcc.getCard()) == ReturnType.FAILED){ 
 				toPcc.setTransactionResult(TransactionResult.FAILED);
+				p.setMessage("failed");
 			} else { 
 				toPcc.setTransactionResult(TransactionResult.ERROR);	
+				p.setMessage("error");
 			}
 		}
 		System.out.println(toPcc.toString());
-		toPcc.setIssuer_timestamp(Calendar.getInstance().getTime());
-		toPcc.setIss_url(iss_url); 
+		paymentService.save(p);
+		 
 		
 	    return new ResponseEntity<>(toPcc,HttpStatus.OK);
 	}

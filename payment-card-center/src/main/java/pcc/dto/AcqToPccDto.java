@@ -3,6 +3,7 @@ package pcc.dto;
  
 import java.util.Date;
 
+import pcc.model.Payment;
 import pcc.enums.TransactionResult;
 import pcc.model.PaymentRequest;
 import pcc.model.Card;
@@ -15,7 +16,7 @@ public class AcqToPccDto {
 	private String acq_url;
 	private String iss_url;
 	private Card card;
-	private PaymentRequest pr;
+	private Payment pr;
 	private TransactionResult transactionResult;
 	
 	public AcqToPccDto(){}
@@ -36,11 +37,12 @@ public class AcqToPccDto {
 		this.acq_url = acq_url;
 	}
 
-	public PaymentRequest getPr() {
+ 
+	public Payment getPr() {
 		return pr;
 	}
 
-	public void setPr(PaymentRequest pr) {
+	public void setPr(Payment pr) {
 		this.pr = pr;
 	}
 

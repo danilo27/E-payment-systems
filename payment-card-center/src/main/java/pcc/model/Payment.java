@@ -1,4 +1,4 @@
-package acq.model;
+package pcc.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -139,6 +139,5 @@ public class Payment implements Serializable {
 				+ ", merchantOrderId=" + merchantOrderId + ", successUrl=" + successUrl + ", errorUrl=" + errorUrl
 				+ ", failedUrl=" + failedUrl + "]";
 	}
-  
-	
+ 
 }

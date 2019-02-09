@@ -30,5 +30,9 @@ public class PaymentServiceImpl implements PaymentService{
 	public Payment save(Payment arg) {
 		return repo.save(arg);
 	}
-
+	
+	@Override
+	public List<Payment> findByMessage(String string) {
+		return repo.findByMessage(string);
+	}
 }

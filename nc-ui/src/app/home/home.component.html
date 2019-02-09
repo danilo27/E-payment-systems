@@ -18,8 +18,15 @@
 					Single Articles from this Issue:
 					<ol>
 						<li *ngFor="let article of issue.articles">
-							<em>{{article.name}} by {{article.author.fName}} {{article.author.lName}}</em>
-							<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/article', article.id]">Download</a>
+							<em >{{article.name}} by {{article.author.firstName}} {{article.author.lastName}}</em>
+							<a *ngIf="magazine.paymentType=='OPEN_ACCESS' && article.price=='0'" [routerLink]="['/article', article.id]">Download</a>
+
+							<button *ngIf="magazine.paymentType=='OPEN_ACCESS'
+							 && article.price==null 
+							 && article.author.username == username"
+							 class="btn btn-success btn-xs" (click)="pay(magazine, article)">Pay to Publish
+							</button>
+
 							<span *ngIf="magazine.paymentType=='PAID_ACCESS'">${{article.price}}</span>
 							<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-default btn-xs" (click)="buyArticle(magazine, article)">Buy Article</button>
 							

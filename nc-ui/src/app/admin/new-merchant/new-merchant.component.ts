@@ -94,7 +94,7 @@ export class NewMerchantComponent implements OnInit {
       "magazineIssn": this.selectedMagazineIssn,
       "supportedPaymentsIds": this.checkedSupportedPayments,
        paymentTypeFields: this.paymentTypeFields,
-       merchantId: this.selectedMagazineIssn
+       merchantId: this.selectedMagazineIssn,
        successUrl: this.successUrl,
        failedUrl: this.failedUrl,
        errorUrl: this.errorUrl

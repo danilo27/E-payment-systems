@@ -28,7 +28,7 @@ public class Article {
 	@JsonBackReference
     private Issue issue;
 	
-	@Column(name = "PRICE", nullable = false)
+	@Column(name = "PRICE", nullable = true)
 	private Double price;
 	
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
