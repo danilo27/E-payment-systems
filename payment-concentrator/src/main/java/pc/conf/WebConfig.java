@@ -1,4 +1,4 @@
-package pc.conf;
+/*package pc.conf;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -21,4 +21,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             registry.addMapping("/api/nc/transaction/proceedToPc").allowedOrigins("http://localhost:8080");
             registry.addMapping("/api/nc/transaction/proceedToPc").allowedOrigins("http://localhost:4200");
     }
-}
+}*/

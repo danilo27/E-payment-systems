@@ -36,7 +36,7 @@ import central.repository.UserRepository;
 
 @RestController
 @RequestMapping(value = "/nc/transaction")
-@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4204"})
+//@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:4204"})
 public class TransactionController {
 	
 	@Autowired
@@ -59,6 +59,9 @@ public class TransactionController {
 	
 	@Value("${pc.url}")
 	private String pcUrl;
+	
+	@Value("${pc.frontend}")
+	private String pcFrontend;
 	
 	@Bean
 	public RestTemplate restTemplate() {
@@ -100,7 +103,7 @@ public class TransactionController {
 		//cart = cartRepository.save(response.getBody());
 		//StringDto dto = new StringDto("value",response.getBody().getItemDetails().get("pcUrl")+"?t="+response.getBody().getToken());
 		Long cartIdInPc = response.getBody().getId();
-		StringDto dto = new StringDto("value","http://localhost:4200?t="+cartIdInPc); //id cart-a u PC-u!
+		StringDto dto = new StringDto("value", pcFrontend + "?t=" + cartIdInPc); //id cart-a u PC-u!
 		System.out.println("[NC]" + dto.toString());
 		return new ResponseEntity<StringDto>(dto, HttpStatus.OK);
 	}

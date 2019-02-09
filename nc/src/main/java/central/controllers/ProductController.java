@@ -30,7 +30,7 @@ import central.repository.UserRepository;
 
 @RestController
 @RequestMapping(value = "/nc")
-@CrossOrigin(origins = {"http://localhost:4204"})
+//@CrossOrigin(origins = {"http://localhost:4204"})
 public class ProductController {
 	
 

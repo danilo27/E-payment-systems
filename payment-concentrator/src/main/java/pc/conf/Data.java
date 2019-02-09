@@ -250,9 +250,9 @@ public class Data {
 
 		
 		Merchant drugiMerchant = new Merchant("87654321");
-		drugiMerchant.setSuccessUrl("http://localhost:4204/#/success");
-		drugiMerchant.setFailedUrl("http://localhost:4204/#/failed");
-		drugiMerchant.setErrorUrl("http://localhost:4204/#/error");
+		drugiMerchant.setSuccessUrl(ncUrl + "/#/success");
+		drugiMerchant.setFailedUrl(ncUrl + "/#/failed");
+		drugiMerchant.setErrorUrl(ncUrl + "/#/error");
 		
 		List<PaymentType> supportedPayments2 = new ArrayList<>();
 

@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,8 +61,10 @@ public class PaypalService implements IPaymentExtensionPoint {
 
 	@Autowired
 	private CartRepository cartRepository;
+	
+	@Value("${nc.frontend}")
+	private String ncFrontend;
 
-	private String frontendPort = "http://localhost:4200";
 	private String production = "sandbox";
 	private String proceedEndpoint = "http://localhost:8080/api/payment/confirm/Paypal";
 	private String proceedSubscriptionEndpoint = "http://localhost:8080/api/payment/confirm/subscription/Paypal";
@@ -233,7 +236,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 		// merchant_preferences
 		MerchantPreferences merchantPreferences = new MerchantPreferences();
 		merchantPreferences.setSetupFee(currency);
-		merchantPreferences.setCancelUrl("http://localhost:4204/#/failed");
+		merchantPreferences.setCancelUrl(ncFrontend + "/#/failed");
 		merchantPreferences.setReturnUrl(proceedSubscriptionEndpoint);
 		merchantPreferences.setMaxFailAttempts("0");
 		merchantPreferences.setAutoBillAmount("YES");
@@ -262,7 +265,7 @@ public class PaypalService implements IPaymentExtensionPoint {
 
 		} catch (PayPalRESTException e1) {
 			// TODO Auto-generated catch block
-			transactionResult.setRedirectUrl("http://localhost:4204/#/error");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/error");
 			e1.printStackTrace();
 		}
 		// Kreiranje agreement-a
@@ -294,13 +297,13 @@ public class PaypalService implements IPaymentExtensionPoint {
 				}
 			}
 		} catch (PayPalRESTException e) {
-			transactionResult.setRedirectUrl("http://localhost:4204/#/error");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/error");
 			System.err.println(e.getDetails());
 		} catch (MalformedURLException e) {
-			transactionResult.setRedirectUrl("http://localhost:4204/#/error");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/error");
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			transactionResult.setRedirectUrl("http://localhost:4204/#/error");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/error");
 			e.printStackTrace();
 		}
 
@@ -320,11 +323,11 @@ public class PaypalService implements IPaymentExtensionPoint {
 			Agreement activeAgreement = Agreement.execute(context, agreement.getToken());
 			System.out.println("Agreement created with ID " + activeAgreement.getId());
 			transactionResult.setSuccessMessage("Success");
-			transactionResult.setRedirectUrl("http://localhost:4204/#/success");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/success");
 		} catch (PayPalRESTException e) {
 			System.err.println(e.getDetails());
 			transactionResult.setSuccessMessage("Failed");
-			transactionResult.setRedirectUrl("http://localhost:4204/#/error");
+			transactionResult.setRedirectUrl(ncFrontend + "/#/error");
 		}
 		return transactionResult;
 
