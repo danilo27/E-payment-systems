@@ -10,5 +10,5 @@ public interface PaymentService {
 	Optional<Payment> findOne(Long id);
  	List<Payment> findAll();
  	Payment save(Payment arg);
-  
+ 	public List<Payment> findByMessage(String string);
 }

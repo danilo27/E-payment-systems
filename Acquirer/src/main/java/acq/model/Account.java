@@ -85,6 +85,12 @@ public class Account implements Serializable {
 	public void setMerchantId(String merchantId) {
 		this.merchantId = merchantId;
 	}
+
+	@Override
+	public String toString() {
+		return "Account [id=" + id + ", accountNumber=" + accountNumber + ", accountBalance=" + accountBalance
+				+ ", card=" + card + ", merchantId=" + merchantId + "]";
+	}
 	 
 	
 	

@@ -30,19 +30,15 @@ public class Data {
 	@PostConstruct
 	private void init() throws ParseException {
 		String oldstring = "11-2019";
-		Date date = new SimpleDateFormat("MM-yyyy").parse(oldstring);
 											
 		Card c1 = new Card("3333333333333333", 333, "John Wick", oldstring);
 		cardService.save(c1);
 								   
 		Account a1 = new Account("3333333333333333", 5000.0, c1);
-		a1.setMerchantId("johnMerchant");
+		//a1.setMerchantId("johnMerchant");
 		accService.save(a1);
 		
-		System.out.println(cardService.findAll());
-		System.out.println(accService.findAll());
-		
-		Merchant m1 = new Merchant("johnMerchant", "pas", "http://localhost:8083");
-		merchantService.save(m1);
+		//Merchant m1 = new Merchant("johnMerchant", "pas", "http://localhost:8083");
+		//merchantService.save(m1);
 	}
 }

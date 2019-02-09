@@ -42,6 +42,12 @@ public class ValidationServiceImpl implements ValidationService{
 		Account merchant = accService.findByMerchantId(pr.getMerchantId());
 		Account buyer = accService.findByPan(c.getPan());
 		 
+		for(Account acc : accService.findAll()){
+			System.out.println("uval: " + acc.toString());
+		}
+		
+ 
+		
 		if(merchant != null && buyer != null){
 			if(c.getCardHolderName().equals(accService.findByPan(c.getPan()).getCard().getCardHolderName())){
 				if(c.getSecurityCode() == accService.findByPan(c.getPan()).getCard().getSecurityCode()){
@@ -49,10 +55,8 @@ public class ValidationServiceImpl implements ValidationService{
 						if(Integer.parseInt(c.getExpiringDate().split("-")[1])>=Calendar.getInstance().get(Calendar.YEAR)){
 							if(Integer.parseInt(c.getExpiringDate().split("-")[0])>=Calendar.getInstance().get(Calendar.MONTH)){
 								if(buyer.getAccountBalance() - pr.getAmount() >= 0 ){
-									buyer.setAccountBalance(buyer.getAccountBalance()-pr.getAmount());
-									merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
-									accService.save(buyer);
-									accService.save(merchant);
+									buyer.setAccountBalance(buyer.getAccountBalance()-pr.getAmount()); 
+									accService.save(buyer); 
 									
 									return ReturnType.SUCCESS;
 								}

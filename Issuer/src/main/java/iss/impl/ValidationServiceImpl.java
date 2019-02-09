@@ -49,9 +49,7 @@ public class ValidationServiceImpl implements ValidationService{
 							if(Integer.parseInt(c.getExpiringDate().split("-")[0])>=Calendar.getInstance().get(Calendar.MONTH)){
 								if(buyer.getAccountBalance() - pr.getAmount() >= 0 ){
 									buyer.setAccountBalance(buyer.getAccountBalance()-pr.getAmount());
-									merchant.setAccountBalance(merchant.getAccountBalance()+pr.getAmount());
-									accService.save(buyer);
-									accService.save(merchant);
+									accService.save(buyer); 
 									
 									return ReturnType.SUCCESS;
 								}
