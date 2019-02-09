@@ -154,6 +154,7 @@ public class TransactionController {
 			if(article!=null){
 				item.setItemUrl(article.getFilepath());
 				item.setItemType("article");
+				item.setItemName(article.getName());
 			}
 		}
 		item = userItemRepository.save(item);

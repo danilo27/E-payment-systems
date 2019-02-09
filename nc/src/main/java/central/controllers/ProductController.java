@@ -40,14 +40,14 @@ public class ProductController {
 	@Autowired
 	private UserItemRepository userItemRepository;
 	
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USER') or hasAuthority('AUTHOR')")
 	@GetMapping("/items/{username}")
 	public ResponseEntity<List<UserItem>> all(@PathVariable String username){
 		return new ResponseEntity<List<UserItem>>(userRepository.findByUsername(username).orElse(null).getUserItems(), HttpStatus.OK);
 	    
 	}
 	
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAuthority('USER') or hasAuthority('AUTHOR')")
 	@RequestMapping(value = "/file", method = RequestMethod.POST, produces = "application/pdf")
 	 
 	public ResponseEntity<byte[]> getFile(@RequestBody StringDto dto) throws IOException {

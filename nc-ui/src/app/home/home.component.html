@@ -25,7 +25,7 @@
 							<button *ngIf="magazine.paymentType=='OPEN_ACCESS'
 							 && article.price==null 
 							 && article.author.username == username"
-							 class="btn btn-success btn-xs" (click)="pay(magazine, article)">Pay to Publish
+							 class="btn btn-info btn-xs" (click)="pay(magazine, article)">Pay to Publish
 							</button>
 
 							<span *ngIf="magazine.paymentType=='PAID_ACCESS'">${{article.price}}</span>
