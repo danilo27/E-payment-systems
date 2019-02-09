@@ -37,8 +37,4 @@ export class PaymentTypeComponent implements OnInit {
       this.card_service.sendRequest(this.token, paymantName); //token == id cart-a u pc-u
   }
 
-  subscription(){
-    
-  }
-
 }

@@ -291,6 +291,7 @@ public class Data {
 		paypal2ApiKeyInfo.setPaymentTypeField(paypalApiKey);
 		paypal2ApiKeyInfo.setValue("AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o");
 		
+		
 		MerchantInfo paypal2ApiPasswordInfo = new MerchantInfo();
 		paypal2ApiPasswordInfo.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalApiPassword.getId().getFieldName()));
 		paypal2ApiPasswordInfo.setMerchant(drugiMerchant);
@@ -298,8 +299,117 @@ public class Data {
 		paypal2ApiPasswordInfo.setPaymentTypeField(paypalApiPassword);
 		paypal2ApiPasswordInfo.setValue("EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr");
 		
+		//----------------------------
+		
+		
+		MerchantInfo planName = new MerchantInfo();
+		planName.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalPlanName.getId().getFieldName()));
+		planName.setMerchant(drugiMerchant);
+		planName.setPaymentType(paypal);
+		planName.setPaymentTypeField(paypalPlanName);
+		planName.setValue("T-Shirt of the Month Club Plan");
+		
+		
+		MerchantInfo planDescription = new MerchantInfo();
+		planDescription.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalPlanDescription.getId().getFieldName()));
+		planDescription.setMerchant(drugiMerchant);
+		planDescription.setPaymentType(paypal);
+		planDescription.setPaymentTypeField(paypalPlanDescription);
+		planDescription.setValue("Template creation.");
+		
+		
+		MerchantInfo frequency = new MerchantInfo();
+		frequency.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalFrequency.getId().getFieldName()));
+		frequency.setMerchant(drugiMerchant);
+		frequency.setPaymentType(paypal);
+		frequency.setPaymentTypeField(paypalFrequency);
+		frequency.setValue("MONTH");
+		
+		
+		MerchantInfo frequencyInterval = new MerchantInfo();
+		frequencyInterval.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalFrequencyInterval.getId().getFieldName()));
+		frequencyInterval.setMerchant(drugiMerchant);
+		frequencyInterval.setPaymentType(paypal);
+		frequencyInterval.setPaymentTypeField(paypalFrequencyInterval);
+		frequencyInterval.setValue("1");
+		
+		
+		MerchantInfo cycles = new MerchantInfo();
+		cycles.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalCycles.getId().getFieldName()));
+		cycles.setMerchant(drugiMerchant);
+		cycles.setPaymentType(paypal);
+		cycles.setPaymentTypeField(paypalCycles);
+		cycles.setValue("12");
+		
+		
+		MerchantInfo currency = new MerchantInfo();
+		currency.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalCurrency.getId().getFieldName()));
+		currency.setMerchant(drugiMerchant);
+		currency.setPaymentType(paypal);
+		currency.setPaymentTypeField(paypalCurrency);
+		currency.setValue("USD");
+		
+		
+		MerchantInfo amount = new MerchantInfo();
+		amount.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalAmount.getId().getFieldName()));
+		amount.setMerchant(drugiMerchant);
+		amount.setPaymentType(paypal);
+		amount.setPaymentTypeField(paypalAmount);
+		amount.setValue("4");
+		
+		
+		MerchantInfo shippingAddress = new MerchantInfo();
+		shippingAddress.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalShippingAddress.getId().getFieldName()));
+		shippingAddress.setMerchant(drugiMerchant);
+		shippingAddress.setPaymentType(paypal);
+		shippingAddress.setPaymentTypeField(paypalShippingAddress);
+		shippingAddress.setValue("111 First Street");
+		
+		
+		MerchantInfo stateCode = new MerchantInfo();
+		stateCode.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalStateCode.getId().getFieldName()));
+		stateCode.setMerchant(drugiMerchant);
+		stateCode.setPaymentType(paypal);
+		stateCode.setPaymentTypeField(paypalStateCode);
+		stateCode.setValue("CA");
+		
+		MerchantInfo countryCode = new MerchantInfo();
+		countryCode.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalCountryCode.getId().getFieldName()));
+		countryCode.setMerchant(drugiMerchant);
+		countryCode.setPaymentType(paypal);
+		countryCode.setPaymentTypeField(paypalCountryCode);
+		countryCode.setValue("US");
+
+		MerchantInfo postalCode = new MerchantInfo();
+		postalCode.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalPostalCode.getId().getFieldName()));
+		postalCode.setMerchant(drugiMerchant);
+		postalCode.setPaymentType(paypal);
+		postalCode.setPaymentTypeField(paypalPostalCode);
+		postalCode.setValue("95070");
+		
+		MerchantInfo city = new MerchantInfo();
+		city.setPaymentFieldId(new PaymentFieldId(paypal.getName(),drugiMerchant.getMerchantId(),paypalCity.getId().getFieldName()));
+		city.setMerchant(drugiMerchant);
+		city.setPaymentType(paypal);
+		city.setPaymentTypeField(paypalCity);
+		city.setValue("Saratoga");
+		
+		//------------------
 		merchantInfoRepository.save(paypal2ApiKeyInfo);
 		merchantInfoRepository.save(paypal2ApiPasswordInfo);
+		
+		merchantInfoRepository.save(planName);
+		merchantInfoRepository.save(planDescription);
+		merchantInfoRepository.save(frequency);
+		merchantInfoRepository.save(frequencyInterval);
+		merchantInfoRepository.save(cycles);
+		merchantInfoRepository.save(currency);
+		merchantInfoRepository.save(amount);
+		merchantInfoRepository.save(shippingAddress);
+		merchantInfoRepository.save(stateCode);
+		merchantInfoRepository.save(countryCode);
+		merchantInfoRepository.save(postalCode);
+		merchantInfoRepository.save(city);
 	
 		
 		//TODO dodati podatke za bitcoin

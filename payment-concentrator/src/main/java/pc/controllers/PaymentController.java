@@ -4,6 +4,8 @@ import java.net.URI;
 
 import javax.websocket.server.PathParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -35,10 +37,14 @@ public class PaymentController {
 
 	@Autowired
 	private CartRepository cartRepository;
+	
+	private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
 	@RequestMapping(value = "/prepare/{paymentType}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StringDto> paymentRequest(@RequestBody Cart cart, @PathVariable String paymentType)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, NotFoundException {
+		
+		logger.info("PAYMENT: payment type: " + paymentType + " merchant order id: " + cart.getMerchantOrderId() + " merchant id: " + cart.getMerchantId());
 		cartRepository.save(cart);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return payment.prepareTransaction(cart);
@@ -50,6 +56,7 @@ public class PaymentController {
 			@PathParam(value = "PayerID") String PayerID)
 			throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 	
+		logger.info("PAYMENT: payment id: " + paymentId + " Payer ID: " + PayerID + " payment type: " + paymentType);
 		PaymentConfirmationDto pcd = new PaymentConfirmationDto(paymentId, PayerID);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		TransactionResult tr = payment.proceedTransaction(pcd);
@@ -62,17 +69,24 @@ public class PaymentController {
 	public ResponseEntity<TransactionResult> paymentSubscription(@RequestBody SubscriptionRequest requestDto,
 			@PathVariable String paymentType)
 			throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		logger.info("SUBSCRIPTION: payment type: " + paymentType);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
 		return new ResponseEntity<>(payment.prepareSubscription(requestDto), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/confirm/subscription/{paymentType}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/confirm/subscription/{paymentType}", method = RequestMethod.GET)
 	public ResponseEntity<TransactionResult> paymentSubscriptionConfirmation(
-			@RequestBody SubscriptionConfirmation requestDto, @PathVariable String paymentType)
+			@PathVariable String paymentType, @PathParam("token") String token)
 			throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		
+		logger.info("SUBSCRIPTION PROCEED payment type: " + paymentType);
+		SubscriptionConfirmation requestDto = new SubscriptionConfirmation(token);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
-		return new ResponseEntity<>(payment.proceedSubscription(requestDto), HttpStatus.OK);
+		TransactionResult tr = payment.proceedSubscription(requestDto);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(tr.getRedirectUrl()));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
 	
 	@RequestMapping(value = "/cancel/{paymentType}/{cartId}", method = RequestMethod.GET)
