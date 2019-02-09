@@ -26,7 +26,7 @@ public class ScheduledTasks {
 		
 		for (Payment payment: payments){
 			Date now = new Date();
-			Long differenceInMiliseconds = now.getTime() - payment.getMerchantTimestamp().getTime();	
+			Long differenceInMiliseconds = now.getTime() - payment.getAcquirerTimestamp().getTime();	
 			if (differenceInMiliseconds >= 18000000){
 				payment.setMessage("expired");
 				paymentService.save(payment);

@@ -28,12 +28,6 @@ import pcc.repositories.PaymentRepository;
 @RequestMapping("/pcc")
 public class PccController {
 	
-//	@Value("${bank.iin}")
-//	private String bankIin;
-//	
-//	@Value("${pcc.url}")
-//	private String pccUrl;
-	
 	@Autowired
 	BankRepository bankRepository;
 	

@@ -84,6 +84,8 @@ public class AcqPaymentController {
 		  
 		payment.setMerchantPassword(pr.getMerchantPassword());
 		payment.setMessage("inProgress");
+		payment.setAcquirerTimestamp(Calendar.getInstance().getTime());
+		payment.setMerchantTimestamp(pr.getMerchantTimestamp());
 		payment.setPaymentRequestToken(pr.getToken());
 		payment.setMerchantOrderId(pr.getMerchantOrderId());
 		payment.setAmount(pr.getAmount());

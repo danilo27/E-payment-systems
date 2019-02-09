@@ -9,7 +9,8 @@
 			<ol>
 				<li *ngFor="let issue of magazine.issues">
 					<em>{{issue.date}}</em>
-					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Download</a>
+					<!--
+					<a *ngIf="magazine.paymentType=='OPEN_ACCESS'" [routerLink]="['/issue', issue.id]">Download</a>-->
 					<span *ngIf="magazine.paymentType=='PAID_ACCESS'">${{issue.price}}</span>
 					<button *ngIf="magazine.paymentType=='PAID_ACCESS'" class="btn btn-primary btn-sm" (click)="buyIssue(magazine, issue)">Buy Issue</button>
 					
