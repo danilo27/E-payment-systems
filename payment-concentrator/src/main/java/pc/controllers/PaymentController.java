@@ -66,13 +66,17 @@ public class PaymentController {
 		return new ResponseEntity<>(payment.prepareSubscription(requestDto), HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/confirm/subscription/{paymentType}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/confirm/subscription/{paymentType}", method = RequestMethod.GET)
 	public ResponseEntity<TransactionResult> paymentSubscriptionConfirmation(
-			@RequestBody SubscriptionConfirmation requestDto, @PathVariable String paymentType)
+			@PathVariable String paymentType, @PathParam("token") String token)
 			throws NotFoundException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		
+		SubscriptionConfirmation requestDto = new SubscriptionConfirmation(token);
 		IPaymentExtensionPoint payment = factory.getPaymentMethod(paymentType);
-		return new ResponseEntity<>(payment.proceedSubscription(requestDto), HttpStatus.OK);
+		TransactionResult tr = payment.proceedSubscription(requestDto);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create(tr.getRedirectUrl()));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
 	
 	@RequestMapping(value = "/cancel/{paymentType}/{cartId}", method = RequestMethod.GET)

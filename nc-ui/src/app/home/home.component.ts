@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit {
           alert('Subscription not supported')
           return;
         }else {
-          var mockData = this.prepareSubscription();
+          var mockData = this.prepareSubscription(magazine.issn);
 
           this.transactionService.sendSubscription(mockData).subscribe(data => {
             window.location.href = data.redirectUrl;
@@ -61,7 +61,31 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  prepareSubscription(){
+  prepareSubscription(magazineIssn){
+/*
+    this.map = {};
+
+    this.map["merchantId"] = magazineIssn;
+    this.map["paypalApiKey"] = 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o';
+    this.map["paypalApiPassword"] = 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr';
+    this.map["paypalPlanName"] = 'T-Shirt of the Month Club Plan';
+    this.map["paypalPlanDescription"] = 'Template creation.';
+    this.map["paypalFrequency"] = 'MONTH';
+    this.map["paypalFrequencyInterval"] = '1';
+    this.map["paypalCycles"] = '12';
+    this.map["paypalCurrency"] = 'USD';
+    this.map["paypalAmount"] = '4';
+    this.map["paypalShippingAddress"] = '111 First Street';
+    this.map["paypalStateCode"] = 'CA';
+    this.map["paypalCountryCode"] = 'US';
+    this.map["paypalPostalCode"] = '95070';
+    this.map["paypalCity"] = 'Saratoga';
+    this.map["username"] = localStorage.getItem("username");
+
+    var dto = {
+      itemDetails: this.map
+    }*/
+
     var mockData = {
       'paypalApiKey': 'AWSFgD4EBA8g6SrzszTOTrtw5PfBEalEMszEWja7eo9eZNJHt9QgxRdglWGRrqNL1sICvMKhWKolE71o',
       'paypalApiPassword': 'EAbj-IqR0uJb2-mNM8pX1e-3e_ZoYJ4hkiU11xct6T_TMM4uH1P9nrnNi4_hBDWqJGbhEuiL9uTejSbr',
@@ -71,7 +95,7 @@ export class HomeComponent implements OnInit {
       'frequencyInterval': '1',
       'cycles': '12',
       'currency': 'USD',
-      'amount': '20',
+      'amount': '4',
       'shippingAddress': '111 First Street',
       'stateCode': 'CA',
       'countryCode': 'US',
