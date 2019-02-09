@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import pc.model.KeyClass;
@@ -37,6 +38,9 @@ public class Data {
 	
 	@Autowired
 	private MerchantInfoRepository merchantInfoRepository;
+	
+	@Value("${nc.frontend}")
+	private String ncUrl;
 	
 	@PostConstruct
 	private void init() {
@@ -186,9 +190,9 @@ public class Data {
 		merchantRepository.deleteAll(); 
 		
 		Merchant daniloMerchant = new Merchant("12345678");
-		daniloMerchant.setSuccessUrl("http://localhost:4204/#/success");
-		daniloMerchant.setFailedUrl("http://localhost:4204/#/failed");
-		daniloMerchant.setErrorUrl("http://localhost:4204/#/error");
+		daniloMerchant.setSuccessUrl(ncUrl + "/#/success");
+		daniloMerchant.setFailedUrl(ncUrl + "/#/failed");
+		daniloMerchant.setErrorUrl(ncUrl + "/#/error");
 		
 		List<PaymentType> supportedPayments = new ArrayList<>();
 

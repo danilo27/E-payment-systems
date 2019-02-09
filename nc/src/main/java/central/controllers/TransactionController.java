@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,9 @@ public class TransactionController {
 	@Autowired
 	private UserItemRepository userItemRepository;
 	
+	@Value("${pc.url}")
+	private String pcUrl;
+	
 	@Bean
 	public RestTemplate restTemplate() {
 	    return new RestTemplate();
@@ -66,7 +70,7 @@ public class TransactionController {
 	@PostMapping("/sendSubscription")
 	public ResponseEntity<TransactionResult> sendSubscription(@RequestBody SubscriptionRequest req) {
 		
-		String fooResourceUrl = "http://localhost:8080/api/payment/prepare/subscription/Paypal";
+		String fooResourceUrl = pcUrl + "/api/payment/prepare/subscription/Paypal";
 		ResponseEntity<TransactionResult> response = restTemplate().postForEntity(fooResourceUrl, req, TransactionResult.class);
 
 	    return response;
@@ -87,7 +91,8 @@ public class TransactionController {
 		cart = cartRepository.save(cart);
 		 
 		 
-		String fooResourceUrl = "http://localhost:8080/api/pc/sendCart";
+		String fooResourceUrl = pcUrl + "/api/pc/sendCart";
+		System.out.println("AAA " + fooResourceUrl);
 		ResponseEntity<Cart> response = restTemplate().postForEntity(fooResourceUrl, cart, Cart.class);//notify PC to save new transaction
 		//cart.setToken(response.getBody().getToken());
 		//cart = cartRepository.save(cart);
